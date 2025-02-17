@@ -31,12 +31,20 @@ const Header = (props: Props) => {
 
   const privateNavItems: navItems[] = [
     {
+      text: "Dashboard",
+      url: "/dashboard",
+    },
+    {
       text: "adicionar um projeto",
-      url: "/signin",
+      url: "/addProject",
     },
     {
       text: "meus projetos",
-      url: "/register",
+      url: "/myProject",
+    },
+    {
+      text: "perfil",
+      url: "/perfil",
     },
   ];
 
@@ -48,26 +56,24 @@ const Header = (props: Props) => {
         </Link>
 
         <ul className="hidden md:flex gap-10">
-          {user && (
+          {!user && (
             <>
-              {publicNavItems.map((items) => (
-                <>
-                  <Link href={items.url} key={items.url}>
-                    <li className="btn ">{items.text}</li>
-                  </Link>
-                </>
+              {publicNavItems.map((items, index) => (
+                <Link href={items.url} key={index}>
+                  <li className="btn ">{items.text}</li>
+                </Link>
               ))}
             </>
           )}
 
-          {!user && (
+          {user && (
             <>
-              {privateNavItems.map((items) => (
-                <>
-                  <Link href={items.url} key={items.url}>
-                    <li className="btn ">{items.text}</li>
-                  </Link>
-                </>
+              {privateNavItems.map((items, index) => (
+                <Link href={items.url} key={index}>
+                  <li className="btn bg-transparent text-white ">
+                    {items.text}
+                  </li>
+                </Link>
               ))}
             </>
           )}

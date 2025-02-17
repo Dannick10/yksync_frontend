@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { redirect  } from "next/navigation";
+import { redirect } from "next/navigation";
 import { RootState } from "@/redux/store";
 
 const registerSchema = z
@@ -43,7 +43,7 @@ const page = () => {
   const dispatch = useDispatch();
 
   const { user, loading, error } = useSelector((state: RootState) => state.auth);
-
+  console.log(error);
   const handleRegister: SubmitHandler<formData> = (data) => {
     dispatch(signUser(data));
   };
@@ -53,14 +53,15 @@ const page = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(user) 
-    redirect('/dashboard')
-  },[user])
+    if (user) redirect("/dashboard");
+  }, [user]);
+
 
   return (
     <main className="flex justify-center py-4">
       <section className="w-[650px] p-4  text-black bg-zinc-900 rounded-2xl">
         <form
+          method="post"
           className="bg-white rounded-2xl p-8"
           onSubmit={handleSubmit(handleRegister)}
         >
@@ -76,7 +77,7 @@ const page = () => {
                 </span>
                 <input
                   type="text"
-                  className={`input flex-1 ${errors.name ? 'border border-red-400' : ''}`}
+                  className={`input flex-1 ${errors.name ? "border border-red-400" : ""}`}
                   placeholder="Nome completo"
                   autoComplete="off"
                   {...register("name")}
@@ -90,7 +91,7 @@ const page = () => {
                 </span>
                 <input
                   type="text"
-                  className={`input flex-1 ${errors.email ? 'border border-red-400' : ''}`}
+                  className={`input flex-1 ${errors.email ? "border border-red-400" : ""}`}
                   placeholder="Email"
                   autoComplete="off"
                   {...register("email")}
@@ -104,7 +105,7 @@ const page = () => {
                 </span>
                 <input
                   type="password"
-                  className={`input flex-1 ${errors.password ? 'border border-red-400' : ''}`}
+                  className={`input flex-1 ${errors.password ? "border border-red-400" : ""}`}
                   placeholder="Senha"
                   autoComplete="off"
                   {...register("password")}
@@ -120,7 +121,7 @@ const page = () => {
                 </span>
                 <input
                   type="password"
-                  className={`input flex-1 ${errors.confirmPassword ? 'border border-red-400' : ''}`}
+                  className={`input flex-1 ${errors.confirmPassword ? "border border-red-400" : ""}`}
                   placeholder="Confirme a senha"
                   autoComplete="off"
                   {...register("confirmPassword")}
@@ -144,6 +145,7 @@ const page = () => {
                   disabled
                 />
               )}
+              {error && <p className="msg">{error}</p>}
             </div>
           </fieldset>
         </form>
