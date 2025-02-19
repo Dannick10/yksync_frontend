@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "./Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { Getprofile } from "@/redux/slices/userSlices";
 
 type Props = {};
 
@@ -14,9 +15,13 @@ type navItems = {
 };
 
 const Header = (props: Props) => {
-  const { user, loading, error } = useSelector(
-    (state: RootState) => state.auth
+
+  const { user } = useSelector(
+    (state: RootState) => state.user
   );
+
+  const {token} = useSelector((state: RootState) => state.auth)
+
 
   const publicNavItems: navItems[] = [
     {
@@ -35,15 +40,7 @@ const Header = (props: Props) => {
       url: "/dashboard",
     },
     {
-      text: "adicionar um projeto",
-      url: "/addProject",
-    },
-    {
-      text: "meus projetos",
-      url: "/myProject",
-    },
-    {
-      text: "perfil",
+      text: "Perfil",
       url: "/perfil",
     },
   ];
@@ -56,7 +53,7 @@ const Header = (props: Props) => {
         </Link>
 
         <ul className="hidden md:flex gap-10">
-          {!user && (
+          {!token  && (
             <>
               {publicNavItems.map((items, index) => (
                 <Link href={items.url} key={index}>
@@ -66,7 +63,7 @@ const Header = (props: Props) => {
             </>
           )}
 
-          {user && (
+          {token  && (
             <>
               {privateNavItems.map((items, index) => (
                 <Link href={items.url} key={index}>

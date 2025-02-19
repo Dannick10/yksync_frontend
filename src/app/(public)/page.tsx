@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect } from "react";
 import Projects from "../../components/Projects";
 import {
@@ -10,7 +11,6 @@ import {
 import { SiTypescript } from "react-icons/si";
 import Cards from "../../components/cards";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
 
 type Props = {};
 
@@ -42,6 +42,7 @@ const Page = (props: Props) => {
     },
   ];
 
+
   return (
     <>
       <section className="flex flex-wrap items-center justify-center gap-6 px-6 py-10 ">
@@ -54,12 +55,14 @@ const Page = (props: Props) => {
               <Projects
                 id="123"
                 title="Webcommerce"
+                answerable="unknow"
                 description="Um e-commerce desenvolvido em Next.js"
                 time="Falta 1 mês"
               />
               <Projects
                 id="233"
                 title="Legal"
+                answerable="unknow"
                 description="Um projeto interessante"
                 time="Falta 1 mês"
               />

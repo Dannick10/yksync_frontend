@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
-import { RootState } from "@/redux/store";
+import { redirect, useRouter } from "next/navigation";
+import { AppDispatch, RootState } from "@/redux/store";
+import { Getprofile } from "@/redux/slices/userSlices";
 
 const registerSchema = z
   .object({
@@ -40,22 +41,15 @@ const page = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { user, loading, error } = useSelector((state: RootState) => state.auth);
-  console.log(error);
-  const handleRegister: SubmitHandler<formData> = (data) => {
-    dispatch(signUser(data));
+  const { token, loading, error } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  const handleRegister: SubmitHandler<formData> = async (data) => {
+    await dispatch(signUser(data));
   };
-
-  useEffect(() => {
-    dispatch(reset());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (user) redirect("/dashboard");
-  }, [user]);
-
 
   return (
     <main className="flex justify-center py-4">

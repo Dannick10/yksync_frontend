@@ -2,36 +2,42 @@
 
 import { LogoutUser, reset } from "@/redux/slices/AuthSlices";
 import { AppDispatch, RootState } from "@/redux/store";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { Getprofile } from "@/redux/slices/userSlices";
 
 const page = () => {
-  const { user, loading, error } = useSelector(
-    (state: RootState) => state.auth
+  const { user, message, error, loading }: any = useSelector(
+    (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
 
-  const handleLogout = () => {
+  console.log(user)
+
+
+  const handleLoogout = () => {
     dispatch(LogoutUser());
+    dispatch(reset());
+    router.push('/')
   };
 
   useEffect(() => {
-    if (!user) {
-      redirect("/register");
-    }
-  }, [user]);
+  dispatch(Getprofile())
+  },[])
 
-  useEffect(() => {
-    dispatch(reset());
-  }, [dispatch]);
 
   return (
-    <div>
-      <button className="btn" onClick={handleLogout}>
-        Deslogar
-      </button>
-    </div>
+    <main className="flex flex-col min-h-screen">
+      <div>
+        <p className="text-2xl font-bold">{user.name}</p>
+        <button className="btn">Editar</button>
+        <button className="btn" onClick={handleLoogout}>
+          Logout
+        </button>
+      </div>
+    </main>
   );
 };
 

@@ -6,9 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { loginUser, reset } from "@/redux/slices/AuthSlices";
-import { redirect } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Adicione um email válido"),
@@ -26,10 +25,8 @@ const page = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { user, loading, error } = useSelector(
-    (state: RootState) => state.auth
-  );
-  const dispatch = useDispatch();
+  const {loading, error} = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch<AppDispatch>();
 
   const loginSubmit: SubmitHandler<formData> = (data) => {
     dispatch(loginUser(data));
@@ -39,9 +36,7 @@ const page = () => {
     dispatch(reset());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (user) redirect("/dashboard");
-  }, [user]);
+
 
   return (
     <main className="flex justify-center py-4">
@@ -62,6 +57,7 @@ const page = () => {
                 </span>
                 <input
                   type="text"
+                  autoComplete="off"
                   className={`input flex-1 ${errors.email ? "border border-red-400" : ""}`}
                   placeholder="Email"
                   {...register("email")}

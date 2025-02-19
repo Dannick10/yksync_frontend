@@ -3,10 +3,10 @@ import Cookies from "js-cookie";
 import { authServices } from "../services/AuthService";
 import { create } from "domain";
 
-const user = Cookies.get("token");
+const token = Cookies.get("token");
 
 const initialState = {
-  user: user ?? null,
+  token: token ?? null,
   error: null,
   loading: false,
   sucess: false,
@@ -79,18 +79,18 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.sucess = true;
-        state.user = action.payload;
+        state.token = action.payload.token;
       })
       .addCase(signUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.user = null;
+        state.token = null;
       })
       .addCase(LogoutUser.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
         state.sucess = false;
-        state.user = null;
+        state.token = null;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -100,12 +100,14 @@ export const authSlice = createSlice({
         state.loading = false;
         state.sucess = true;
         state.error = null;
-        state.user = action.payload;
+        state.token = action.payload.token;
+
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.user = null;
+        state.token = null;
+        state.sucess = false
       });
   },
 });
