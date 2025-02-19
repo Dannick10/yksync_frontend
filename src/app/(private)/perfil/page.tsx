@@ -7,14 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { Getprofile } from "@/redux/slices/userSlices";
 
+
 const page = () => {
-  const { user, message, error, loading }: any = useSelector(
+  const { user, message, error, loading } = useSelector(
     (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
-
-  console.log(user)
 
 
   const handleLoogout = () => {
@@ -31,7 +30,7 @@ const page = () => {
   return (
     <main className="flex flex-col min-h-screen">
       <div>
-        <p className="text-2xl font-bold">{user.name}</p>
+        <p className="text-2xl font-bold">{user?.name}</p>
         <button className="btn">Editar</button>
         <button className="btn" onClick={handleLoogout}>
           Logout

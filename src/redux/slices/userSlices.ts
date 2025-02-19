@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "../services/userService";
 import { AppDispatch, RootState } from "../store";
+import { user, userStates } from "@/@types/userTypes";
 
-const initialState = {
-  user: {},
+const initialState: userStates = {
+  user: null,
   error: null,
   sucess: false,
   loading: false,
   message: null,
 };
 
-export const Getprofile = createAsyncThunk<any, void, { state: RootState }>(
+export const Getprofile = createAsyncThunk<any, user | void, { state: RootState }>(
   "user/profile",
   async (_, Thunkapi) => {
     try {

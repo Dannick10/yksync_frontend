@@ -2,13 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import projectService from "../services/projectService";
 import { RootState } from "@/redux/store";
 
-interface ProjectState {
-  projects: any[];
-  error: string | null;
-  loading: boolean;
-  success: boolean;
-  message: string | null;
-}
 
 const initialState: ProjectState = {
   projects: [],
@@ -18,7 +11,7 @@ const initialState: ProjectState = {
   message: null,
 };
 
-export const createProject = createAsyncThunk<any, void, {state: RootState}>(
+export const createProject = createAsyncThunk<responseProject, project, {state: RootState}>(
   "project/create",
   async (project: any, thunkapi) => {
     try {
@@ -36,7 +29,7 @@ export const createProject = createAsyncThunk<any, void, {state: RootState}>(
   }
 );
 
-export const getProject = createAsyncThunk<any, void, {state: RootState}>(
+export const getProject = createAsyncThunk<responseProject, project, {state: RootState}>(
   "project/get",
   async (_, thunkapi) => {
     try {

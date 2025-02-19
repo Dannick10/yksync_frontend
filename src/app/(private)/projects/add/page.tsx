@@ -1,6 +1,4 @@
 "use client";
-import { reset, signUser } from "@/redux/slices/AuthSlices";
-
 import React, { useEffect, useState } from "react";
 import {
   RiUser2Fill,
@@ -20,6 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { createProject, resetMessage } from "@/redux/slices/ProjectSlices";
+import { Getprofile } from "@/redux/slices/userSlices";
 
 
 const projectSchema = z.object({
@@ -59,7 +58,7 @@ const page = () => {
     resolver: zodResolver(projectSchema),
   });
 
-  const techFrontendOptions = [
+  const techFrontendOptions: string[] = [
     "html",
     "css",
     "styles-components",
@@ -68,7 +67,7 @@ const page = () => {
     "TailwindCSS",
   ];
   const selectedFrontendTechs = watch("frontend") || [];
-  const techBackendOptions = [
+  const techBackendOptions: string[] = [
     "node",
     "java",
     "c#",
@@ -77,7 +76,7 @@ const page = () => {
     "goLang",
   ];
   const selectedBackendTechs = watch("backend") || [];
-  const techDatabaseOptions = [
+  const techDatabaseOptions: string[] = [
     "mongodb",
     "mysql",
     "postgree",
@@ -87,9 +86,14 @@ const page = () => {
     "azure Database",
   ];
   const selectedDatabaseOptions = watch("database") || [];
-  const techTestsOptions = ["unit", "integration", "e2e"];
+  const techTestsOptions: string[] = ["unit", "integration", "e2e"];
   const selectedTestsOptions = watch("tests") || [];
-  const DeployProjectOptions = ["Vercel", "Netlify", "AWS", "DigitalOcean"];
+  const DeployProjectOptions: string[] = [
+    "Vercel",
+    "Netlify",
+    "AWS",
+    "DigitalOcean",
+  ];
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -98,21 +102,23 @@ const page = () => {
     (state: RootState) => state.project
   );
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleProject: SubmitHandler<formData> = (data: any) => {
     dispatch(createProject(data));
-    reset()
+    reset();
 
     setTimeout(() => {
-      dispatch(resetMessage())
-      router.push('/dashboard')
-    },800)
+      dispatch(resetMessage());
+      router.push("/dashboard");
+    }, 800);
   };
 
   useEffect(() => {
-    dispatch(resetMessage())
-  },[dispatch])
+    dispatch(resetMessage());
+  }, [dispatch]);
+
+
 
   return (
     <main className="flex justify-center py-4">
@@ -166,7 +172,7 @@ const page = () => {
                   className={`input flex-1 ${errors.answerable ? "border border-red-400" : ""}`}
                   placeholder="Responsável"
                   autoComplete="off"
-                  {...register("answerable", { value: user.name })}
+                  {...register("answerable", { value: user?.name })}
                 />
               </label>
               {errors.answerable && (
@@ -253,7 +259,7 @@ const page = () => {
                 ))}
               </div>
               <legend className="font-semibold flex gap-2 items-center">
-              <RiStackFill />
+                <RiStackFill />
                 Selecione as tecnologias backend
               </legend>
               <div className="flex flex-wrap gap-4">
@@ -276,11 +282,11 @@ const page = () => {
                 ))}
               </div>
               <legend className="font-semibold flex gap-2 items-center">
-              <RiTestTubeFill />
+                <RiTestTubeFill />
                 Selecione as tecnologias testes
               </legend>
               <div className="flex flex-wrap gap-4">
-                {techTestsOptions.map((tech) => (
+                {techTestsOptions.map((tech: any) => (
                   <label key={tech} className="flex items-center gap-2">
                     <input
                       type="checkbox"
