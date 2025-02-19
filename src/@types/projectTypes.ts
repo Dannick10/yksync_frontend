@@ -1,4 +1,5 @@
 interface project {
+  _id: string;
   name: string;
   description: string;
   answerable: string;
@@ -30,12 +31,18 @@ interface resumeProject {
   endDate: string;
 }
 
-interface responseProject {
+interface responseProjects {
   message: string;
   project: project[];
 }
 
+interface responseProjectId {
+  message: string;
+  project: project;
+}
+
 interface ProjectState {
+  project: project | undefined,
   projects: project[];
   error: string | null;
   loading: boolean;

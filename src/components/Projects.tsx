@@ -1,5 +1,5 @@
+import { useRouter } from "next/navigation";
 import React from "react";
-
 
 type ProjectProps = {
   title: string;
@@ -9,7 +9,19 @@ type ProjectProps = {
   id: string;
 };
 
-const Projects = ({ title, description, time,answerable, id }: ProjectProps) => {
+const Projects = ({
+  title,
+  description,
+  time,
+  answerable,
+  id,
+}: ProjectProps) => {
+  const router = useRouter();
+
+  const getId = () => {
+    router.push('/projects/' + id);
+  };
+
   return (
     <div className="flex flex-col justify-between w-[280.84px] h-[203.62px] bg-white text-black p-2 rounded-md">
       <span className="w-full  h-2 bg-yellow-300"></span>
@@ -19,7 +31,12 @@ const Projects = ({ title, description, time,answerable, id }: ProjectProps) => 
         <p className="text-sm">{description}</p>
         <p className="text-xs">{time}</p>
       </div>
-      <button className="btn bg-black text-white text-sm hover:scale-100">Seguir para o projeto</button>
+      <button
+        className="btn bg-black text-white text-sm hover:scale-100"
+        onClick={getId}
+      >
+        Seguir para o projeto
+      </button>
     </div>
   );
 };
