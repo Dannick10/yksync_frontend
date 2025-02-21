@@ -1,6 +1,6 @@
 "use client";
 
-import { getProject_Id } from "@/redux/slices/ProjectSlices";
+import { getProject_Id, projectDelete, resetProject } from "@/redux/slices/ProjectSlices";
 import { AppDispatch, RootState } from "@/redux/store";
 import { configureTIme } from "@/utils/configureTime";
 import { format } from "date-fns";
@@ -9,19 +9,16 @@ import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ptBR } from "date-fns/locale";
 import clsx from "clsx";
+import { resetMessage } from "@/redux/slices/userSlices";
 
-const page = ({
-  params: asyncParams,
-}: {
-  params: Promise<{ project: string }>;
-}) => {
+const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
   const params = use(asyncParams);
 
   const { project, loading, error, message } = useSelector(
     (state: RootState) => state.project
   );
   const dispatch = useDispatch<AppDispatch>();
-  const id = params?.project;
+  const id: any = params?.id;
 
   useEffect(() => {
     if (id) {
@@ -34,6 +31,20 @@ const page = ({
   const handleEdit = () => {
     router.push("/projects/edit/" + project?._id);
   };
+
+  const handleDelete = () => {
+    dispatch(projectDelete(id));
+
+    setTimeout(() => {
+      dispatch(resetMessage());
+      dispatch(resetProject())
+      router.push("/dashboard");
+    }, 800);
+  };
+
+  useEffect(() => {
+    dispatch(resetMessage());
+  }, [dispatch]);
 
   const pastDateProject = new Date(project?.startDate as string);
   const afterDateProject = new Date(project?.endDate as string);
@@ -53,15 +64,16 @@ const page = ({
   const timeresult =
     project && configureTIme(pastDateProject, afterDateProject);
 
-        return (
+  return (
     <main className="px-2 flex flex-col justify-center items-center gap-10">
       <section className="w-[650px] p-4 text-black bg-zinc-900 rounded-2xl relative">
         <span
           className={clsx(
-            "w-4 h-8 top-10 left-10 border absolute rounded-full",
-            timeresult?.colorStatus
+            "w-4 h-8 top-10 left-10 border absolute rounded-full"
           )}
+          style={{ background: timeresult?.colorStatus }}
         ></span>
+
         <div className="bg-white rounded-2xl p-8">
           <header className="text-center space-y-2">
             <h2 className="font-extrabold text-2xl">{project?.name}</h2>
@@ -172,10 +184,15 @@ const page = ({
             <button className="btn bg-black text-white" onClick={handleEdit}>
               Editar
             </button>
-            <button className="btn bg-red-600 text-white">
+            <button
+              className="btn bg-red-600 text-white"
+              onClick={handleDelete}
+            >
               Excluir projeto
             </button>
           </article>
+          {error && <p className="msg">{error}</p>}
+          {message && <p className="msg">{message}</p>}
         </div>
       </section>
     </main>

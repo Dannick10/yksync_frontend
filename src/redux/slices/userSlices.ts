@@ -36,6 +36,7 @@ export const userSlice = createSlice({
   reducers: {
     resetMessage: (state) => {
       state.message = null;
+      state.error = null;
     },
     resetUser: (state) => {
       state.loading = false;

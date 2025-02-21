@@ -1,6 +1,6 @@
 import { api, requestConfig } from "@/utils/useBaseApi";
 
-const createProject = async (data: any, token: any) => {
+const createProject = async (data: project, token: any) => {
   const config = requestConfig("POST", data, token);
 
   try {
@@ -45,9 +45,9 @@ const getProject_ID = async (_id: string, token: any) => {
   }
 };
 
-const projectEdit = async (project: any, token: any) => {
+const projectEdit = async (project: project, token: any) => {
   const config = requestConfig("PUT",project, token);
-  console.log(project)
+
   try {
     const res = await fetch(api + "project/update/" + project._id, config)
       .then((res) => res.json())
@@ -60,11 +60,27 @@ const projectEdit = async (project: any, token: any) => {
   }
 };
 
+const projectDelete = async(_id: project, token: any) => {
+  const config = requestConfig("DELETE", null, token)
+
+  try {
+    const res = await fetch(api + "project/delete/" + _id, config)
+      .then((res) => res.json())
+      .catch((res) => res);
+
+    return res;
+    
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const projectService = {
   createProject,
   getProject,
   getProject_ID,
-  projectEdit
+  projectEdit,
+  projectDelete
 };
 
 export default projectService;

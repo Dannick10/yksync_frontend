@@ -54,7 +54,7 @@ const Page = () => {
             />
           </div>
           <div className="flex items-center gap-4">
-            <p>{projects && projects.length} Projetos</p>
+            <p>{projects && meta?.totalProjects} Projetos</p>
             <Link href="/projects/add">
               <button
                 className="btn bg-black text-white"

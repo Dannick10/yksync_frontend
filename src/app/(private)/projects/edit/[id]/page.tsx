@@ -150,7 +150,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
     dispatch(projectEdit(project));
     
     setTimeout(() => {
-      resetMessage()
+      dispatch(resetMessage());
     }, 800);
 
     router.push('/projects/' + id)

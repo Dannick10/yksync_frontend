@@ -40,7 +40,8 @@ const Projects = ({
 
   return (
     <section className="flex flex-col justify-between  h-[203.62px] bg-white text-black p-2 rounded-md">
-      <span className={`w-full  h-2 ${time.colorStatus}`}></span>
+      <span className={`w-full  h-2`}
+      style={{background: time.colorStatus}}></span>
       <article className="space-y-2 gap-">
         <div className="flex gap-2">
           <span>

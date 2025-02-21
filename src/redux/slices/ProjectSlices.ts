@@ -90,6 +90,25 @@ export const projectEdit = createAsyncThunk<
   }
 });
 
+export const projectDelete = createAsyncThunk<
+  responseProjects,
+  project,
+  { state: RootState }
+>("project/delete", async (_id, thunkapi) => {
+  try {
+    const token = thunkapi.getState().auth.token;
+    const data = await projectService.projectDelete(_id,token);
+
+    if (data.errors) {
+      return thunkapi.rejectWithValue(data.errors[0]);
+    }
+
+    return data;
+  } catch (err) {
+    return thunkapi.rejectWithValue("Error ao buscar projeto");
+  }
+});
+
 export const projectSlice = createSlice({
   name: "project",
   initialState,
@@ -163,6 +182,24 @@ export const projectSlice = createSlice({
         state.project = undefined;
         state.message = null;
       })
+      .addCase(projectDelete.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(projectDelete.fulfilled, (state, action) => {
+        state.project = undefined
+        state.loading = false;
+        state.success = true;
+        state.message = action.payload.message as string;
+      })
+      .addCase(projectDelete.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.projects = [];
+        state.project = undefined;
+        state.message = null;
+      })
+      
   },
 });
 
