@@ -13,6 +13,41 @@ body{
   color: white;
 }
 
+
+.fc-event {
+  background-color: black !important;
+  color: white !important;
+  border: none !important;
+  padding: 2px !important;
+}
+
+
+.fc-toolbar {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.fc-daygrid-day {
+  background-color: #f5f5f5;
+}
+
+.fc .fc-button {
+  background-color: black !important;
+  color: white !important;
+  border-color: white !important;
+  border-radius: 5px !important;
+}
+
+.fc .fc-today-button {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid black !important;
+}
+
+
+
 @layer components {
   .btn {
     @apply px-8 py-4 bg-white text-black rounded-full min-w-36 text-center transition-transform duration-300 hover:scale-105

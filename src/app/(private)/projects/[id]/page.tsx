@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ptBR } from "date-fns/locale";
 import clsx from "clsx";
 import { resetMessage } from "@/redux/slices/userSlices";
+import MyFullCalendar from "@/components/Calendar";
 
 const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
   const params = use(asyncParams);
@@ -92,12 +93,18 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
 
             <div className="space-y-2">
               <h2 className="font-semibold italic text-xl">Datas</h2>
+              <div className="flex justify-between px-2">
               <p>
                 <span className="font-medium">inicio</span> {startDate}
               </p>
               <p>
                 <span className="font-medium">fim</span> {endDate}
               </p>
+              </div>
+
+              {project &&
+              <MyFullCalendar name={project?.name}  start={pastDateProject} end={afterDateProject} />
+              }
             </div>
 
             <div className="space-y-2">
