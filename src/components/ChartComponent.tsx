@@ -23,56 +23,32 @@ ChartJS.register(
 );
 
 interface ChartComponentProps {
-  projects: any;
+  projects: any[];
 }
 
 const ChartComponent = ({ projects }: ChartComponentProps) => {
-  const [projectStartCounts, SetProjectStartCounts] = useState<{
-    [key: string]: number;
-  }>({});
-  const [projectEndCounts, SetProjectEndCounts] = useState<{
-    [key: string]: number;
-  }>({});
-
-  const getProjectsFinishedToday = () => {
-    const today = new Date();
-    const todayString = today.toISOString().split("T")[0];
-
-    let count: { [key: string]: number } = {};
-
-    projects.forEach((project: any) => {
-      const endDate = new Date(project.endDate);
-      const endDateString = endDate.toISOString().split("T")[0];
-
-      if (endDateString === todayString) {
-        const month = endDate.toLocaleString("default", { month: "short" });
-        if (!count[month]) {
-          count[month] = 0;
-        }
-        count[month] += 1;
-      }
-    });
-
-    return count;
-  };
-
-  const getProjectCount = (dateKey: string) => {
+  const [projectCounts, setProjectCounts] = useState<{
+    startCounts: { [key: string]: number };
+    endCounts: { [key: string]: number };
+    todayCounts: { [key: string]: number };
+  }>({
+    startCounts: {},
+    endCounts: {},
+    todayCounts: {},
+  });
+  
+  const countProjects = (dateKey: string, filterToday: boolean = false) => {
     const counts: { [key: string]: number } = {};
-    const currentDate = new Date(); // Data atual
+    const today = new Date();
+    
+    projects.forEach((project) => {
+      const projectDate = new Date(project[dateKey]);
+      const month = projectDate.toLocaleString("default", { month: "short" });
 
-    projects.forEach((project: any) => {
-      const date = new Date(project[dateKey]);
-
-      if (dateKey === "endDate" && date > currentDate) {
-        return;
-      }
-
-      const month = date.toLocaleString("default", { month: "short" });
-
-      if (!counts[month]) {
-        counts[month] = 1;
-      } else {
-        counts[month] += 1;
+      if (filterToday && projectDate.toLocaleDateString() === today.toLocaleDateString()) {
+        counts[month] = (counts[month] || 0) + 1;
+      } else if (!filterToday && projectDate <= today) {
+        counts[month] = (counts[month] || 0) + 1;
       }
     });
 
@@ -80,8 +56,11 @@ const ChartComponent = ({ projects }: ChartComponentProps) => {
   };
 
   useEffect(() => {
-    SetProjectStartCounts(getProjectCount("startDate"));
-    SetProjectEndCounts(getProjectCount("endDate"));
+    setProjectCounts({
+      startCounts: countProjects("startDate"),
+      endCounts: countProjects("endDate"),
+      todayCounts: countProjects("endDate", true),
+    });
   }, [projects]);
 
   const monthOrder = [
@@ -100,39 +79,34 @@ const ChartComponent = ({ projects }: ChartComponentProps) => {
   ];
   const currentMonth = new Date().toLocaleString("default", { month: "short" });
   const currentMonthIndex = monthOrder.indexOf(currentMonth);
-  const previousMonth = monthOrder[currentMonthIndex + 1];
-  const nextMonth = monthOrder[currentMonthIndex + 3];
-  const months = [previousMonth, currentMonth, nextMonth];
+  const months = [
+    monthOrder[(currentMonthIndex + 11) % 12], 
+    currentMonth,
+    monthOrder[(currentMonthIndex + 1) % 12],
+  ];
 
   const data = {
     labels: months,
     datasets: [
       {
         label: "Projetos Iniciados",
-        data: months.map((month) => projectStartCounts[month] || 0),
+        data: months.map((month) => projectCounts.startCounts[month] || 0),
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
       },
       {
         label: "Projetos Finalizados",
-        data: months.map((month) => projectEndCounts[month] || 0),
+        data: months.map((month) => projectCounts.endCounts[month] || 0),
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
       {
         label: "Projetos de hoje",
-        data: months.map((month) => {
-          const projectsFinishedToday = getProjectsFinishedToday();
-
-          if (projectsFinishedToday[month]) {
-            return projectsFinishedToday[month];
-          }
-          return 0;
-        }),
+        data: months.map((month) => projectCounts.todayCounts[month] || 0),
         borderColor: "rgba(255, 255, 132, 1)",
         backgroundColor: "rgba(255, 255, 1, 0.2)",
         fill: false,
-        tension: 3,
+        tension: 0.4,
         pointRadius: 10,
         lineTension: 0,
       },
