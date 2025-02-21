@@ -8,6 +8,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "@/components/pagination";
 import { Getprofile } from "@/redux/slices/userSlices";
+import ChartComponent from "@/components/ChartComponent";
+import { GrArticle } from "react-icons/gr";
 
 interface Project {
   _id: string;
@@ -54,8 +56,14 @@ const Page = () => {
             />
           </div>
           <div className="flex items-center gap-4">
-            <p>{projects && meta?.totalProjects} Projetos</p>
-            <Link href="/projects/add">
+            <p>
+              {meta && meta!.totalProjects > 0 ? (
+                <p>{meta?.totalProjects} projetos</p>
+              ) : (
+                <p> voçê ainda não têm projetos</p>
+              )}
+            </p>
+            <Link href={"/projects/add"}>
               <button
                 className="btn bg-black text-white"
                 aria-label="Adicionar projeto"
@@ -69,8 +77,31 @@ const Page = () => {
 
       <main className="w-full">
         <section className="flex flex-col justify-center gap-10 mt-10 px-8 min-h-[400px]">
+          {projects && <h2 className="font-medium text-xl">Estatisticas</h2>}
+
+          {!projects && (
+            <div className="flex flex-col gap-4 items-center justify-center">
+              <h1 className="font-bold text-4xl">
+                Para começar acompanhar seus projetos
+              </h1>
+              <h2 className="font-medium text-xl">
+                Adicione seu projeto na barra acima
+              </h2>
+              <Link href="/projects/add">
+                <p className="btn">Tenha controle total aos seus projetos</p>
+              </Link>
+            </div>
+          )}
+
+          {projects && (
+            <article className="h-80 flex">
+              <ChartComponent projects={projects} />
+            </article>
+          )}
+
           <aside className="flex flex-col gap-10">
-            <h2>{projects && projects.length} projetos</h2>
+            {projects && <h2 className="font-medium text-xl">projetos</h2>}
+
             <div className="grid grid-cols-3 justify-start gap-20 mb-4">
               {projects &&
                 projects.map((project) => (
