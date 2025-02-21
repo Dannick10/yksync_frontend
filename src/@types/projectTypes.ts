@@ -8,18 +8,9 @@ interface project {
   frontend: string[];
   backend: string[];
   database: string[];
-  apis: string[];
-  methodology: string;
   tests: string[];
   deploy: string;
-  cicd: string;
-  rollback: string;
-  documentation: string;
-  updateDocumentation: string;
-  projectManager: string;
-  supportLead: string;
-  supportTeam: string[];
-  supportAvailable: string;
+  message: string
 }
 
 interface resumeProject {
@@ -34,18 +25,27 @@ interface resumeProject {
 interface responseProjects {
   message: string;
   project: project[];
+  meta: pagination
 }
 
 interface responseProjectId {
-  message: string;
+  message: {message: string};
   project: project;
 }
 
+interface pagination {
+  currentPage: number;
+  perPage: number;
+  totalPages: number;
+  totalProjects: number;
+}
+
 interface ProjectState {
-  project: project | undefined,
+  project: project | undefined;
   projects: project[];
   error: string | null;
   loading: boolean;
   success: boolean;
   message: string | null;
+  meta: pagination | undefined;
 }

@@ -9,6 +9,7 @@ const initialState: ProjectState = {
   loading: false,
   success: false,
   message: null,
+  meta: undefined,
 };
 
 export const createProject = createAsyncThunk<
@@ -32,13 +33,14 @@ export const createProject = createAsyncThunk<
 
 export const getProject = createAsyncThunk<
   responseProjects,
-  project,
+  number,
   { state: RootState }
->("project/get", async (_, thunkapi) => {
+>("project/get", async (page, thunkapi) => {
   try {
     const token = thunkapi.getState().auth.token;
+    const id = thunkapi.getState().user.user?._id;
 
-    const data = await projectService.getProject(token);
+    const data = await projectService.getProject(token, page, id);
 
     if (data.errors) {
       return thunkapi.rejectWithValue(data.errors[0]);
@@ -69,6 +71,25 @@ export const getProject_Id = createAsyncThunk<
   }
 });
 
+export const projectEdit = createAsyncThunk<
+  responseProjectId,
+  project,
+  { state: RootState }
+>("project/edit", async (project, thunkapi) => {
+  try {
+    const token = thunkapi.getState().auth.token;
+    const data = await projectService.projectEdit(project, token);
+
+    if (data.errors) {
+      return thunkapi.rejectWithValue(data.errors[0]);
+    }
+
+    return data;
+  } catch (err) {
+    return thunkapi.rejectWithValue("Error ao buscar projeto");
+  }
+});
+
 export const projectSlice = createSlice({
   name: "project",
   initialState,
@@ -76,6 +97,13 @@ export const projectSlice = createSlice({
     resetMessage: (state) => {
       state.message = null;
     },
+    resetProject: (state) => {
+      state.loading = false;
+      state.error = null
+      state.projects = [];
+      state.message = null 
+      state.project = undefined
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -102,6 +130,7 @@ export const projectSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.projects = action.payload.project;
+        state.meta = action.payload.meta;
       })
       .addCase(getProject_Id.pending, (state) => {
         state.loading = true;
@@ -116,9 +145,26 @@ export const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.project = undefined;
-      });
+      })
+      .addCase(projectEdit.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(projectEdit.fulfilled, (state, action) => {
+        state.project = action.payload.project
+        state.loading = false;
+        state.success = true;
+        state.message = action.payload.message.message as string;
+      })
+      .addCase(projectEdit.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.projects = [];
+        state.project = undefined;
+        state.message = null;
+      })
   },
 });
 
-export const { resetMessage } = projectSlice.actions;
+export const { resetMessage, resetProject } = projectSlice.actions;
 export default projectSlice.reducer;

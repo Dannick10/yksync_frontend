@@ -37,6 +37,12 @@ export const userSlice = createSlice({
     resetMessage: (state) => {
       state.message = null;
     },
+    resetUser: (state) => {
+      state.loading = false;
+      state.sucess = true;
+      state.error = null;
+      state.user = null
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -53,5 +59,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetMessage } = userSlice.actions;
+export const { resetMessage, resetUser } = userSlice.actions;
 export default userSlice.reducer;

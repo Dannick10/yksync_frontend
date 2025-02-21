@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Getprofile } from "@/redux/slices/userSlices";
 
 type Props = {};
@@ -16,11 +16,14 @@ type navItems = {
 
 const Header = (props: Props) => {
 
-  const { user } = useSelector(
-    (state: RootState) => state.user
-  );
+ 
+  const reduxToken = useSelector((state: RootState) => state.auth.token);
+  const [clientToken, setClientToken] = useState<string | null>(null);
 
-  const {token} = useSelector((state: RootState) => state.auth)
+
+  useEffect(() => {
+    setClientToken(reduxToken);
+  }, [reduxToken])
 
 
   const publicNavItems: navItems[] = [
@@ -53,7 +56,7 @@ const Header = (props: Props) => {
         </Link>
 
         <ul className="hidden md:flex gap-10">
-          {!token  && (
+          {!clientToken  && (
             <>
               {publicNavItems.map((items, index) => (
                 <Link href={items.url} key={index}>
@@ -63,7 +66,7 @@ const Header = (props: Props) => {
             </>
           )}
 
-          {token  && (
+          {clientToken  && (
             <>
               {privateNavItems.map((items, index) => (
                 <Link href={items.url} key={index}>

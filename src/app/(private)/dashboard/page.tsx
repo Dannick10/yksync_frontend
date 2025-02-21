@@ -6,6 +6,8 @@ import { RootState, AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Pagination from "@/components/pagination";
+import { Getprofile } from "@/redux/slices/userSlices";
 
 interface Project {
   _id: string;
@@ -16,15 +18,27 @@ interface Project {
 }
 
 const Page = () => {
-  const { projects, loading, error } = useSelector(
+  const dispatch = useDispatch<AppDispatch>();
+  const { projects, meta, loading, error } = useSelector(
     (state: RootState) => state.project
   );
-  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setPage(selected + 1);
+    scroll(0, 0);
+  };
 
   useEffect(() => {
-    dispatch(getProject());
+    dispatch(Getprofile());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      dispatch(getProject(page));
+    }
+  }, [dispatch, user, page]);
 
   return (
     <>
@@ -40,7 +54,7 @@ const Page = () => {
             />
           </div>
           <div className="flex items-center gap-4">
-            <p>Projetos</p>
+            <p>{projects && projects.length} Projetos</p>
             <Link href="/projects/add">
               <button
                 className="btn bg-black text-white"
@@ -54,23 +68,33 @@ const Page = () => {
       </header>
 
       <main className="w-full">
-        <section className="flex flex-col justify-center gap-20 mt-4 px-4">
-          <aside className="flex flex-col gap-8 overflow-x-auto">
-            <h2>Em andamento</h2>
-            <div className="flex flex-wrap gap-10">
-              {projects.map((project) => (
-                <Projects
-                  key={project._id}
-                  id={project._id}
-                  title={project.name}
-                  answerable={project.answerable}
-                  description={project.description}
-                  time={project.endDate}
-                />
-              ))}
+        <section className="flex flex-col justify-center gap-10 mt-10 px-8 min-h-[400px]">
+          <aside className="flex flex-col gap-10">
+            <h2>{projects && projects.length} projetos</h2>
+            <div className="grid grid-cols-3 justify-start gap-20 mb-4">
+              {projects &&
+                projects.map((project) => (
+                  <Projects
+                    key={project._id}
+                    id={project._id}
+                    title={project.name}
+                    answerable={project.answerable}
+                    description={project.description}
+                    timeStart={project.startDate}
+                    timeEnd={project.endDate}
+                  />
+                ))}
             </div>
           </aside>
         </section>
+
+        {meta && (
+          <Pagination
+            page={page}
+            totalPages={meta?.totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </main>
     </>
   );

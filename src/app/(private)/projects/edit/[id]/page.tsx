@@ -1,5 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+
+import React, { use, useEffect, useState } from "react";
 import {
   RiUser2Fill,
   RiLockPasswordFill,
@@ -15,9 +17,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
-import { createProject, resetMessage } from "@/redux/slices/ProjectSlices";
+import {
+  createProject,
+  getProject_Id,
+  projectEdit,
+  resetMessage,
+  resetProject,
+} from "@/redux/slices/ProjectSlices";
 import { Getprofile } from "@/redux/slices/userSlices";
 
 const projectSchema = z.object({
@@ -45,7 +53,14 @@ const projectSchema = z.object({
 
 type formData = z.infer<typeof projectSchema>;
 
-const page = () => {
+type projectProps = {
+  params: { id: string };
+};
+
+const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
+  const params = use(asyncParams); 
+
+
   const {
     register,
     handleSubmit,
@@ -96,29 +111,57 @@ const page = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const id = params?.id;
+
+  useEffect(() => {
+    dispatch(getProject_Id(id));
+  }, []);
+
   const { user } = useSelector((state: RootState) => state.user);
-  const { loading, error, message } = useSelector(
+  const { project, loading, error, message } = useSelector(
     (state: RootState) => state.project
   );
 
-  const router = useRouter();
+  useEffect(() => {
+    if (project) {
+      setValue("name", project?.name);
+      setValue("answerable", project?.answerable);
+      setValue("description", project?.description);
+      setValue("startDate", project?.startDate.split('T')[0]);
+      setValue("endDate", project?.endDate.split('T')[0]);
+      setValue("frontend", project?.frontend);
+      setValue("backend", project?.backend);
+      setValue("tests", project?.tests as any);
+      setValue("deploy", project?.deploy as any);
 
-  const [answerable, Setansewable] = useState<string | undefined>(user?.name);
+    }
+  }, [project]);
+
+  const router = useRouter();
+  console.log({message})
 
   const handleProject: SubmitHandler<formData> = (data: any) => {
-    dispatch(createProject(data));
-    reset();
 
+    const project = {
+      _id: id,
+      ...data
+    }
+    
+    dispatch(projectEdit(project));
+    
     setTimeout(() => {
-      dispatch(resetMessage());
-      router.push("/dashboard");
+      resetMessage()
     }, 800);
-  };
 
+    router.push('/projects/' + id)
+  };
+  
   useEffect(() => {
     dispatch(Getprofile());
   }, []);
 
+
+  
   useEffect(() => {
     dispatch(resetMessage());
   }, [dispatch]);
@@ -133,7 +176,7 @@ const page = () => {
         >
           <fieldset className="space-y-8">
             <legend className="text-xl font-semibold text-center">
-              Adicionar um projeto
+              editar projeto
             </legend>
 
             <div className="flex flex-col py-4 px-20 gap-8">
@@ -324,7 +367,7 @@ const page = () => {
               <input
                 type="submit"
                 className="btn bg-black text-white mx-10 cursor-pointer"
-                value="Entrar"
+                value="Editar"
               />
             )}
             {loading && (

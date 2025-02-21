@@ -1,6 +1,7 @@
 "use client";
 
 import { LogoutUser, reset } from "@/redux/slices/AuthSlices";
+import { resetUser } from "@/redux/slices/userSlices";
 import { AppDispatch, RootState } from "@/redux/store";
 import React, { use, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,11 +20,14 @@ const page = () => {
   const handleLoogout = () => {
     dispatch(LogoutUser());
     dispatch(reset());
+    dispatch(resetUser())
     router.push('/')
   };
 
   useEffect(() => {
-  dispatch(Getprofile())
+    if(!user) {
+      dispatch(Getprofile())
+    }
   },[])
 
 
