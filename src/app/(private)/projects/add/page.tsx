@@ -324,7 +324,7 @@ const page = () => {
               <input
                 type="submit"
                 className="btn bg-black text-white mx-10 cursor-pointer"
-                value="Entrar"
+                value="Salvar"
               />
             )}
             {loading && (

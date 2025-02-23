@@ -367,7 +367,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
               <input
                 type="submit"
                 className="btn bg-black text-white mx-10 cursor-pointer"
-                value="Editar"
+                value="Salvar"
               />
             )}
             {loading && (

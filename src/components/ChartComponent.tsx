@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 
 import { useEffect, useState } from "react";
+import { statusProject } from "@/@types/statusTypes";
 
 ChartJS.register(
   CategoryScale,
@@ -23,45 +24,21 @@ ChartJS.register(
 );
 
 interface ChartComponentProps {
-  projects: any[];
+  projectsCurrent: statusProject[];
+  projectsFinish: statusProject[];
 }
 
-const ChartComponent = ({ projects }: ChartComponentProps) => {
+const ChartComponent = ({
+  projectsCurrent,
+  projectsFinish,
+}: ChartComponentProps) => {
   const [projectCounts, setProjectCounts] = useState<{
     startCounts: { [key: string]: number };
     endCounts: { [key: string]: number };
-    todayCounts: { [key: string]: number };
   }>({
     startCounts: {},
     endCounts: {},
-    todayCounts: {},
   });
-  
-  const countProjects = (dateKey: string, filterToday: boolean = false) => {
-    const counts: { [key: string]: number } = {};
-    const today = new Date();
-    
-    projects.forEach((project) => {
-      const projectDate = new Date(project[dateKey]);
-      const month = projectDate.toLocaleString("default", { month: "short" });
-
-      if (filterToday && projectDate.toLocaleDateString() === today.toLocaleDateString()) {
-        counts[month] = (counts[month] || 0) + 1;
-      } else if (!filterToday && projectDate <= today) {
-        counts[month] = (counts[month] || 0) + 1;
-      }
-    });
-
-    return counts;
-  };
-
-  useEffect(() => {
-    setProjectCounts({
-      startCounts: countProjects("startDate"),
-      endCounts: countProjects("endDate"),
-      todayCounts: countProjects("endDate", true),
-    });
-  }, [projects]);
 
   const monthOrder = [
     "jan",
@@ -77,13 +54,37 @@ const ChartComponent = ({ projects }: ChartComponentProps) => {
     "nov",
     "dez",
   ];
-  const currentMonth = new Date().toLocaleString("default", { month: "short" });
-  const currentMonthIndex = monthOrder.indexOf(currentMonth);
-  const months = [
-    monthOrder[(currentMonthIndex + 11) % 12], 
-    currentMonth,
-    monthOrder[(currentMonthIndex + 1) % 12],
-  ];
+
+  const countProjects = (
+    projects: statusProject[],
+    dateKey: keyof statusProject
+  ) => {
+    const counts: { [key: string]: number } = {};
+
+    projects.forEach((project) => {
+      const projectDate = new Date(project[dateKey]);
+      const month = monthOrder[projectDate.getMonth()];
+
+      counts[month] = (counts[month] || 0) + 1;
+    });
+
+    return counts;
+  };
+
+  useEffect(() => {
+    setProjectCounts({
+      startCounts: countProjects(projectsCurrent, "startDate"),
+      endCounts: countProjects(projectsFinish, "startDate"),
+    });
+  }, [projectsCurrent, projectsFinish]);
+
+  console.log(projectCounts);
+
+  const currentMonthIndex = new Date().getMonth();
+  const months = Array.from(
+    { length: 5 },
+    (_, i) => monthOrder[(currentMonthIndex + i - 1) % 12]
+  );
 
   const data = {
     labels: months,
@@ -100,16 +101,6 @@ const ChartComponent = ({ projects }: ChartComponentProps) => {
         borderColor: "rgba(255, 99, 132, 1)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
-      {
-        label: "Projetos de hoje",
-        data: months.map((month) => projectCounts.todayCounts[month] || 0),
-        borderColor: "rgba(255, 255, 132, 1)",
-        backgroundColor: "rgba(255, 255, 1, 0.2)",
-        fill: false,
-        tension: 0.4,
-        pointRadius: 10,
-        lineTension: 0,
-      },
     ],
   };
 
@@ -119,7 +110,7 @@ const ChartComponent = ({ projects }: ChartComponentProps) => {
         ticks: {
           stepSize: 1,
         },
-        max: 10,
+        max: Math.min(projectsCurrent.length + 3, 10),
       },
     },
   };

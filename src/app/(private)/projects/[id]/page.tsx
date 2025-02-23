@@ -1,6 +1,10 @@
 "use client";
 
-import { getProject_Id, projectDelete, resetProject } from "@/redux/slices/ProjectSlices";
+import {
+  getProject_Id,
+  projectDelete,
+  resetProject,
+} from "@/redux/slices/ProjectSlices";
 import { AppDispatch, RootState } from "@/redux/store";
 import { configureTIme } from "@/utils/configureTime";
 import { format } from "date-fns";
@@ -10,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ptBR } from "date-fns/locale";
 import clsx from "clsx";
 import { resetMessage } from "@/redux/slices/userSlices";
-import MyFullCalendar from "@/components/Calendar";
+import MyFullCalendar from "@/components/MyFullCalendar";
 
 const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
   const params = use(asyncParams);
@@ -38,7 +42,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
 
     setTimeout(() => {
       dispatch(resetMessage());
-      dispatch(resetProject())
+      dispatch(resetProject());
       router.push("/dashboard");
     }, 800);
   };
@@ -94,17 +98,22 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
             <div className="space-y-2">
               <h2 className="font-semibold italic text-xl">Datas</h2>
               <div className="flex justify-between px-2">
-              <p>
-                <span className="font-medium">inicio</span> {startDate}
-              </p>
-              <p>
-                <span className="font-medium">fim</span> {endDate}
-              </p>
+                <p>
+                  <span className="font-medium">inicio</span> {startDate}
+                </p>
+                <p>
+                  <span className="font-medium">fim</span> {endDate}
+                </p>
               </div>
-
-              {project &&
-              <MyFullCalendar name={project?.name}  start={pastDateProject} end={afterDateProject} />
-              }
+              <div className="h-80">
+                {project && (
+                  <MyFullCalendar
+                    name={project?.name}
+                    start={pastDateProject}
+                    end={afterDateProject}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -188,14 +197,20 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
             </div>
           </aside>
           <article className="flex my-4 gap-5">
-            <button className="btn bg-black text-white" onClick={handleEdit}>
-              Editar
+            <button
+              className="btn bg-green-600 text-white"
+              onClick={handleEdit}
+            >
+              Finalizar projeto
             </button>
             <button
               className="btn bg-red-600 text-white"
               onClick={handleDelete}
             >
               Excluir projeto
+            </button>
+            <button className="btn bg-black text-white" onClick={handleEdit}>
+              Editar
             </button>
           </article>
           {error && <p className="msg">{error}</p>}

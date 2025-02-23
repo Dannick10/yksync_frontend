@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import authReducer from "./slices/AuthSlices"
 import userReduce from "./slices/userSlices"
 import projectReduce from "./slices/ProjectSlices"
+import statusReduce from "./slices/statusSlices"
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReduce,
-    project: projectReduce
+    project: projectReduce,
+    status: statusReduce
   },
 });
 
