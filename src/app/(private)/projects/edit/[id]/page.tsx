@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { use, useEffect, useState } from "react";
 import {
   RiUser2Fill,
@@ -12,6 +11,11 @@ import {
   RiCalendar2Fill,
   RiStackFill,
   RiTestTubeFill,
+  RiColorFilterAiFill,
+  RiCalendar2Line,
+  RiPlayFill,
+  RiStopFill,
+  RiLink,
 } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
@@ -27,39 +31,11 @@ import {
   resetProject,
 } from "@/redux/slices/ProjectSlices";
 import { Getprofile } from "@/redux/slices/userSlices";
-
-const projectSchema = z.object({
-  name: z.string().min(3, "Precisa de no mínimo 3 caracteres"),
-  description: z
-    .string()
-    .min(10, "A descrição deve ter pelo menos 10 caracteres"),
-  answerable: z
-    .string()
-    .min(3, "O responsável deve ter no mínimo 3 caracteres"),
-  startDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Data de início inválida",
-  }),
-  endDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Data de termino inválida",
-  }),
-  frontend: z.array(z.string().optional()),
-  backend: z.array(z.string().optional()),
-  database: z.array(z.string().optional()),
-  tests: z.array(z.enum(["unit", "integration", "e2e"])).optional(),
-  deploy: z
-    .enum(["Vercel", "Netlify", "AWS", "DigitalOcean"])
-    .default("Vercel"),
-});
-
-type formData = z.infer<typeof projectSchema>;
-
-type projectProps = {
-  params: { id: string };
-};
+import { formData, projectSchema } from "../../schema/ProjectSchema";
+import { StatusOptions, techBackendOptions, techDatabaseOptions, techFrontendOptions, techTestsOptions } from "../../schema/ProjectOptions";
 
 const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
-  const params = use(asyncParams); 
-
+  const params = use(asyncParams);
 
   const {
     register,
@@ -72,42 +48,13 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
     resolver: zodResolver(projectSchema),
   });
 
-  const techFrontendOptions: string[] = [
-    "html",
-    "css",
-    "styles-components",
-    "Next.js",
-    "React",
-    "TailwindCSS",
-  ];
   const selectedFrontendTechs = watch("frontend") || [];
-  const techBackendOptions: string[] = [
-    "node",
-    "java",
-    "c#",
-    "firebase",
-    "python",
-    "goLang",
-  ];
+
   const selectedBackendTechs = watch("backend") || [];
-  const techDatabaseOptions: string[] = [
-    "mongodb",
-    "mysql",
-    "postgree",
-    "mariaDb",
-    "sqlLite",
-    "firebase Database",
-    "azure Database",
-  ];
+
   const selectedDatabaseOptions = watch("database") || [];
-  const techTestsOptions: string[] = ["unit", "integration", "e2e"];
+
   const selectedTestsOptions = watch("tests") || [];
-  const DeployProjectOptions: string[] = [
-    "Vercel",
-    "Netlify",
-    "AWS",
-    "DigitalOcean",
-  ];
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -127,41 +74,39 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
       setValue("name", project?.name);
       setValue("answerable", project?.answerable);
       setValue("description", project?.description);
-      setValue("startDate", project?.startDate.split('T')[0]);
-      setValue("endDate", project?.endDate.split('T')[0]);
+      setValue("color", project?.color);
+      setValue("startDate", project?.startDate.split("T")[0]);
+      setValue("endDate", project?.endDate.split("T")[0]);
       setValue("frontend", project?.frontend);
       setValue("backend", project?.backend);
       setValue("tests", project?.tests as any);
-      setValue("deploy", project?.deploy as any);
-
+      setValue("linkDeploy", project?.linkDeploy);
+      setValue("linkRepository", project?.linkRepository );
     }
   }, [project]);
 
   const router = useRouter();
-  console.log({message})
+  console.log({ message });
 
   const handleProject: SubmitHandler<formData> = (data: any) => {
-
     const project = {
       _id: id,
-      ...data
-    }
-    
+      ...data,
+    };
+
     dispatch(projectEdit(project));
-    
+
     setTimeout(() => {
       dispatch(resetMessage());
     }, 800);
 
-    router.push('/projects/' + id)
+    router.push("/projects/" + id);
   };
-  
+
   useEffect(() => {
     dispatch(Getprofile());
   }, []);
 
-
-  
   useEffect(() => {
     dispatch(resetMessage());
   }, [dispatch]);
@@ -176,7 +121,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
         >
           <fieldset className="space-y-8">
             <legend className="text-xl font-semibold text-center">
-              editar projeto
+              Adicionar um projeto
             </legend>
 
             <div className="flex flex-col py-4 px-20 gap-8">
@@ -224,10 +169,42 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
               {errors.answerable && (
                 <p className="msg">{errors.answerable.message}</p>
               )}
-
               <label className="flex justify-center items-center gap-2">
                 <span className="text-2xl">
-                  <RiCalendar2Fill />
+                  <RiColorFilterAiFill />
+                </span>
+                <input
+                  type="color"
+                  className={`input flex-1 ${errors.color ? "border border-red-400" : ""}`}
+                  placeholder="Responsável"
+                  autoComplete="off"
+                  {...register("color", { value: user?.name })}
+                />
+              </label>
+              {errors.color && <p className="msg">{errors.color.message}</p>}
+
+              <legend className="font-semibold">status do projeto ?</legend>
+              <div className="flex-1 w-full">
+                <select
+                  {...register("status")}
+                  className="flex flex-wrap gap-4w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md  cursor-pointer flex-1 w-full"
+                >
+                  {StatusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {errors.status && <p className="msg">{errors.status.message}</p>}
+
+              <legend className="font-semibold flex gap-2 items-center">
+                <RiCalendar2Line />
+                Selecione as datas do projeto
+              </legend>
+              <label className="flex justify-center items-center gap-2">
+                <span className="text-2xl">
+                  <RiPlayFill />
                 </span>
                 <input
                   type="date"
@@ -243,7 +220,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
 
               <label className="flex justify-center items-center gap-2">
                 <span className="text-2xl">
-                  <RiCalendar2Fill />
+                  <RiStopFill />
                 </span>
                 <input
                   type="date"
@@ -350,18 +327,35 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
                   </label>
                 ))}
               </div>
-              <legend className="font-semibold">
-                onde foi realizado o deploy do projeto ?
+
+              <legend className="font-semibold flex gap-2 items-center">
+                <RiLink />
+                Selecione os links (opcional)
               </legend>
-              <div className="flex flex-wrap gap-4">
-                <select {...register("deploy")}>
-                  {DeployProjectOptions.map((deploy) => (
-                    <option key={deploy} value={deploy}>
-                      {deploy}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <label className="flex flex-wrap gap-4">
+                <input
+                  type="text"
+                  className={`input flex-1 ${errors.linkDeploy ? "border border-red-400" : ""}`}
+                  placeholder="deploy"
+                  autoComplete="off"
+                  {...register("linkDeploy")}
+                />
+              </label>
+              {errors.linkDeploy && (
+                <p className="msg">{errors.linkDeploy.message}</p>
+              )}
+              <label className="flex flex-wrap gap-4">
+                <input
+                  type="text"
+                  className={`input flex-1 ${errors.linkRepository ? "border border-red-400" : ""}`}
+                  placeholder="respostorio"
+                  autoComplete="off"
+                  {...register("linkDeploy")}
+                />
+              </label>
+              {errors.linkRepository && (
+                <p className="msg">{errors.linkRepository.message}</p>
+              )}
             </div>
             {!loading && (
               <input

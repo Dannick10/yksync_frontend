@@ -15,6 +15,7 @@ import { ptBR } from "date-fns/locale";
 import clsx from "clsx";
 import { resetMessage } from "@/redux/slices/userSlices";
 import MyFullCalendar from "@/components/MyFullCalendar";
+import Link from "next/link";
 
 const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
   const params = use(asyncParams);
@@ -76,7 +77,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
           className={clsx(
             "w-4 h-8 top-10 left-10 border absolute rounded-full"
           )}
-          style={{ background: timeresult?.colorStatus }}
+          style={{ background: project?.color }}
         ></span>
 
         <div className="bg-white rounded-2xl p-8">
@@ -93,6 +94,12 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
             <div className="space-y-2">
               <h2 className="font-semibold italic text-xl">Sobre</h2>
               <p>{project?.description}</p>
+            </div>
+            <div className="space-y-2">
+              <h2 className="font-semibold italic text-xl">Status</h2>
+              <p>
+                {project?.status == "finish" ? "finalizado" : "em andamento"}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -111,15 +118,29 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
                     name={project?.name}
                     start={pastDateProject}
                     end={afterDateProject}
+                    color={project.color}
                   />
                 )}
               </div>
             </div>
-
-            <div className="space-y-2">
-              <h2 className="font-semibold italic text-xl">Deploy</h2>
-              <p>{project?.deploy}</p>
-            </div>
+            {project && (
+              <div className="space-y-2">
+                {project.linkRepository && (
+                  <Link href={project?.linkRepository}>
+                    <p className="font-semibold italic text-xl bg-black text-white rounded-md px-2 p-1">
+                      Projeto
+                    </p>
+                  </Link>
+                )}
+                {project.linkDeploy && (
+                  <Link href={project?.linkDeploy}>
+                    <p className="font-semibold italic text-xl bg-black text-white rounded-md px-2 p-1">
+                      repositorio
+                    </p>
+                  </Link>
+                )}
+              </div>
+            )}
 
             <div className="space-y-5">
               <h2 className="font-semibold italic text-xl">Tecnologias</h2>
@@ -197,20 +218,14 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
             </div>
           </aside>
           <article className="flex my-4 gap-5">
-            <button
-              className="btn bg-green-600 text-white"
-              onClick={handleEdit}
-            >
-              Finalizar projeto
+            <button className="btn bg-black text-white" onClick={handleEdit}>
+              Editar
             </button>
             <button
               className="btn bg-red-600 text-white"
               onClick={handleDelete}
             >
               Excluir projeto
-            </button>
-            <button className="btn bg-black text-white" onClick={handleEdit}>
-              Editar
             </button>
           </article>
           {error && <p className="msg">{error}</p>}

@@ -16,6 +16,7 @@ type ProjectProps = {
   answerable: string;
   timeStart: string;
   timeEnd: string;
+  color: string;
   id: string;
 };
 
@@ -25,6 +26,7 @@ const Projects = ({
   timeStart,
   timeEnd,
   answerable,
+  color,
   id,
 }: ProjectProps) => {
   const router = useRouter();
@@ -41,7 +43,7 @@ const Projects = ({
   return (
     <section className="flex flex-col justify-between  h-[203.62px] bg-white text-black p-2 rounded-md">
       <span className={`w-full  h-2`}
-      style={{background: time.colorStatus}}></span>
+      style={{background: color}}></span>
       <article className="space-y-2 gap-">
         <div className="flex gap-2">
           <span>

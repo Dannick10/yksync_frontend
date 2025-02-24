@@ -2,6 +2,8 @@ interface project {
   _id: string;
   name: string;
   description: string;
+  color: string;
+  status: string;
   answerable: string;
   startDate: string;
   endDate: string;
@@ -9,7 +11,8 @@ interface project {
   backend: string[];
   database: string[];
   tests: string[];
-  deploy: string;
+  linkDeploy: string;
+  linkRepository: string;
   message: string
 }
 
@@ -20,6 +23,7 @@ interface resumeProject {
   answerable: string;
   startDate: string;
   endDate: string;
+  color: string
 }
 
 interface responseProjects {

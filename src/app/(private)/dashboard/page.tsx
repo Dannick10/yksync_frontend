@@ -33,7 +33,6 @@ const Page = () => {
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
-    scroll(0, 0);
   };
 
   useEffect(() => {
@@ -108,7 +107,7 @@ const Page = () => {
           <article className="h-[600px]">
             {projects && <h2 className="font-medium text-xl">Calendário</h2>}
 
-            {projectTotal && <MyFullCalendar projects={projectTotal} />}
+            {projectTotal && <MyFullCalendar projects={projectTotal}  />}
           </article>
         </section>
 
@@ -126,6 +125,7 @@ const Page = () => {
                   description={project.description}
                   timeStart={project.startDate}
                   timeEnd={project.endDate}
+                  color={project.color}
                 />
               ))}
           </article>

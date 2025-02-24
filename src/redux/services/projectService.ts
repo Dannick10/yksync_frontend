@@ -19,7 +19,7 @@ const getProject = async (token: any, page: any, _id: any) => {
   console.log(_id);
   try {
     const res = await fetch(
-      api + `project/user/` + _id + "?page=" + page + "&limit=5",
+      api + `project/user/` + _id + "?page=" + page + "&limit=6",
       config
     )
       .then((res) => res.json())

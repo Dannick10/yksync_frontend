@@ -4,7 +4,7 @@ export interface status {
   projectsTotal: number;
   projectsCurrents: number;
   projectsFinish: number;
-  projectsUnfinished: number;
+  projectsUnfinished: number
 }
 
 export interface statusProject {
@@ -13,6 +13,7 @@ export interface statusProject {
   status: string;
   startDate: string;
   endDate: string;
+  color: string;
 }
 
 export interface responseStatus {

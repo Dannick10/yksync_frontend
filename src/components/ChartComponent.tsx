@@ -74,7 +74,7 @@ const ChartComponent = ({
   useEffect(() => {
     setProjectCounts({
       startCounts: countProjects(projectsCurrent, "startDate"),
-      endCounts: countProjects(projectsFinish, "startDate"),
+      endCounts: countProjects(projectsFinish, "endDate"),
     });
   }, [projectsCurrent, projectsFinish]);
 

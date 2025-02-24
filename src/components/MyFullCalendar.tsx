@@ -7,19 +7,39 @@ type calendarProps = {
   name?: string;
   start?: Date | string;
   end?: Date | string;
+  color?: string;
   projects?: statusProject[];
 };
 
-const MyFullCalendar = ({ name, start, end, projects }: calendarProps) => {
+const MyFullCalendar = ({
+  name,
+  start,
+  end,
+  color,
+  projects,
+}: calendarProps) => {
+
   const multiGrid = projects ? multiMonthPlugin : dayGridPlugin;
+
   const formatCalendar = projects ? "multiMonthYear" : "dayGridWeek";
+
   const events = projects
-    ? projects.map(({ name, startDate, endDate }) => ({
+    ? projects.map(({ name, startDate, endDate, color }) => ({
         title: name,
         start: startDate,
         end: endDate,
+        backgroundColor: color,
+        borderColor: color,
       }))
-    : [{ title: name, start: start, end: end }];
+    : [
+        {
+          title: name,
+          start: start,
+          end: end,
+          backgroundColor: color,
+          borderColor: color,
+        },
+      ];
 
   return (
     <FullCalendar
