@@ -56,8 +56,6 @@ export default function RegisterPage() {
   }, [dispatch]);
 
   return (
-    <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-4rem)] py-8 px-4">
-      <div className="w-full max-w-md bg-zinc-900 p-4 rounded-2xl">
         <div className="bg-white rounded-2xl p-8">
           <div className="text-center space-y-2 mb-8">
             <h1 className="text-2xl font-bold">Crie sua conta</h1>
@@ -165,7 +163,5 @@ export default function RegisterPage() {
             </div>
           </form>
         </div>
-      </div>
-    </div>
   );
 }

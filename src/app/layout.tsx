@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import { ReduxProvider } from "./provider";
+import FooterComponent from "@/components/FooterComponent";
 
 export default function RootLayout({
   children,
@@ -35,9 +36,10 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <Header />
-          <main className="py-32">
+          <main className="pt-32">
           {children}
           </main>
+          <FooterComponent />
         </ReduxProvider>
       </body>
     </html>

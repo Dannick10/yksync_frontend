@@ -220,33 +220,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-6 md:mb-0">
-              <span className="text-xl font-bold">Yksynk</span>
-            </div>
-            <div className="flex gap-8 text-gray-600">
-              <Link href="#" className="hover:text-black transition-colors">
-                Sobre
-              </Link>
-              <Link href="#" className="hover:text-black transition-colors">
-                Recursos
-              </Link>
-              <Link href="#" className="hover:text-black transition-colors">
-                Preços
-              </Link>
-              <Link href="#" className="hover:text-black transition-colors">
-                Contato
-              </Link>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-100 text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} Yksynk. Todos os direitos reservados.
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

@@ -17,26 +17,11 @@ type navItems = {
 const Header = (props: Props) => {
   const reduxToken = useSelector((state: RootState) => state.auth.token)
   const [clientToken, setClientToken] = useState<string | null>(null)
-  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     setClientToken(reduxToken)
   }, [reduxToken])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
 
   const publicNavItems: navItems[] = [
     {
@@ -64,9 +49,7 @@ const Header = (props: Props) => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "py-3 bg-black/95 backdrop-blur-sm shadow-lg" : "py-5 bg-black"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5 bg-black`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 md:px-10">
         <Link href="/" className="text-2xl font-bold text-white relative group">

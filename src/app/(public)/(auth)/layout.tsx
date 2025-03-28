@@ -23,7 +23,11 @@ const layout = ({children}: LayoutProps) => {
   },[token, router])
 
   return (
-    <div>{children}</div>
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div className="w-full max-w-md bg-white shadow-md rounded-xl overflow-hidden">
+      {children}
+      </div>
+    </div>
   )
 }
 
