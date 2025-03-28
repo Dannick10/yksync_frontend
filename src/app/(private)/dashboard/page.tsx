@@ -1,43 +1,58 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { useDispatch, useSelector } from "react-redux"
-import type { AppDispatch, RootState } from "@/redux/store"
-import { getProject } from "@/redux/slices/ProjectSlices"
-import { Getprofile } from "@/redux/slices/userSlices"
-import { getStatus } from "@/redux/slices/statusSlices"
-import { RiSearchLine, RiAddLine, RiCalendarLine, RiBarChartLine, RiLayoutGridLine } from "react-icons/ri"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { getProject } from "@/redux/slices/ProjectSlices";
+import { Getprofile } from "@/redux/slices/userSlices";
+import { getStatus } from "@/redux/slices/statusSlices";
+import {
+  RiSearchLine,
+  RiAddLine,
+  RiCalendarLine,
+  RiBarChartLine,
+  RiLayoutGridLine,
+} from "react-icons/ri";
 
-
-import Pagination from "@/components/pagination"
-import Projects from "@/components/Projects"
-import ChartComponent from "@/components/ChartComponent"
-import MyFullCalendar from "@/components/MyFullCalendar"
+import Pagination from "@/components/pagination";
+import Projects from "@/components/Projects";
+import ChartComponent from "@/components/ChartComponent";
+import MyFullCalendar from "@/components/MyFullCalendar";
+import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
 export default function DashboardPage() {
-  const dispatch = useDispatch<AppDispatch>()
-  const { projects, meta, loading } = useSelector((state: RootState) => state.project)
-  const { user } = useSelector((state: RootState) => state.user)
-  const { projectTotal, projectsCurrent, projectsFinish } = useSelector((state: RootState) => state.status)
-  const [page, setPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeTab, setActiveTab] = useState("projects")
+  const dispatch = useDispatch<AppDispatch>();
+  const { projects, meta, loading } = useSelector(
+    (state: RootState) => state.project
+  );
+  const { user } = useSelector((state: RootState) => state.user);
+  const { projectTotal, projectsCurrent, projectsFinish } = useSelector(
+    (state: RootState) => state.status
+  );
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [indexMoth, SetIndexMoth] = useState(0);
+  const [activeTab, setActiveTab] = useState("projects");
 
   const handlePageChange = ({ selected }: { selected: number }) => {
-    setPage(selected + 1)
-  }
+    setPage(selected + 1);
+  };
+
+  const handleIndexMothChange = (number: number) => {
+    SetIndexMoth(number);
+  };
 
   useEffect(() => {
-    dispatch(Getprofile())
-    dispatch(getStatus())
-  }, [dispatch])
+    dispatch(Getprofile());
+    dispatch(getStatus());
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {
-      dispatch(getProject(page))
+      dispatch(getProject(page));
     }
-  }, [dispatch, user, page])
+  }, [dispatch, user, page]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -58,7 +73,9 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             {meta && (
               <p className="text-sm text-gray-500">
-                {meta.totalProjects > 0 ? `${meta.totalProjects} projetos` : "Você ainda não tem projetos"}
+                {meta.totalProjects > 0
+                  ? `${meta.totalProjects} projetos`
+                  : "Você ainda não tem projetos"}
               </p>
             )}
             <Link
@@ -78,8 +95,13 @@ export default function DashboardPage() {
             <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-6">
               <RiCalendarLine className="h-16 w-16 text-gray-400" />
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Comece a acompanhar seus projetos</h2>
-                <p className="text-gray-500">Adicione seu primeiro projeto para começar a gerenciar seu trabalho</p>
+                <h2 className="text-2xl font-bold">
+                  Comece a acompanhar seus projetos
+                </h2>
+                <p className="text-gray-500">
+                  Adicione seu primeiro projeto para começar a gerenciar seu
+                  trabalho
+                </p>
               </div>
               <Link
                 href="/projects/add"
@@ -149,7 +171,11 @@ export default function DashboardPage() {
 
                 {meta && meta.totalPages > 1 && (
                   <div className="flex justify-center mt-8">
-                    <Pagination page={page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
+                    <Pagination
+                      page={page}
+                      totalPages={meta.totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </div>
                 )}
               </div>
@@ -157,10 +183,17 @@ export default function DashboardPage() {
 
             {activeTab === "statistics" && (
               <div className="bg-white border rounded-lg shadow-sm p-6">
-                <h2 className="text-xl font-bold mb-4">Estatísticas de Projetos</h2>
-                <div className="h-80">
+                <h2 className="text-xl font-bold mb-4">
+                  Estatísticas de Projetos
+                </h2>
+                <div className="w-full h-[400px] flex justify-center">
                   {projectsCurrent && projectsFinish && (
-                    <ChartComponent projectsCurrent={projectsCurrent} projectsFinish={projectsFinish} />
+                    <ChartComponent
+                      projectsCurrent={projectsCurrent}
+                      projectsFinish={projectsFinish}
+                      indexMoth={0} 
+                      monthDisplayCount={6} 
+                    />
                   )}
                 </div>
               </div>
@@ -168,14 +201,17 @@ export default function DashboardPage() {
 
             {activeTab === "calendar" && (
               <div className="bg-white border rounded-lg shadow-sm p-6">
-                <h2 className="text-xl font-bold mb-4">Calendário de Projetos</h2>
-                <div className="h-[600px]">{projectTotal && <MyFullCalendar projects={projectTotal} />}</div>
+                <h2 className="text-xl font-bold mb-4">
+                  Calendário de Projetos
+                </h2>
+                <div className="h-[600px]">
+                  {projectTotal && <MyFullCalendar projects={projectTotal} />}
+                </div>
               </div>
             )}
           </div>
         )}
       </main>
     </div>
-  )
+  );
 }
-
