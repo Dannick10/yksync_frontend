@@ -24,16 +24,15 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: black;
-  color: white;
-}
-
 
 .fc-event {
   color: white !important;
   border: none !important;
   padding: 2px !important;
+}
+
+.fc-popover .fc-popover-header {
+  background-color: black;
 }
 
 .fc-toolbar {

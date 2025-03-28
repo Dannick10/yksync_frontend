@@ -35,8 +35,9 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <Header />
-
+          <main className="py-32">
           {children}
+          </main>
         </ReduxProvider>
       </body>
     </html>

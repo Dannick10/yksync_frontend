@@ -350,7 +350,7 @@ const page = ({ params: asyncParams }: { params: Promise<{ id: string }> }) => {
                   className={`input flex-1 ${errors.linkRepository ? "border border-red-400" : ""}`}
                   placeholder="respostorio"
                   autoComplete="off"
-                  {...register("linkDeploy")}
+                  {...register("linkRepository")}
                 />
               </label>
               {errors.linkRepository && (

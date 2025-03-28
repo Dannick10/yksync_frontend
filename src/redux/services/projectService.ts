@@ -60,7 +60,7 @@ const projectEdit = async (project: project, token: any) => {
   }
 };
 
-const projectDelete = async(_id: project, token: any) => {
+const projectDelete = async(_id: string, token: any) => {
   const config = requestConfig("DELETE", null, token)
 
   try {

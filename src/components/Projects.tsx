@@ -1,78 +1,65 @@
-import { useRouter } from "next/navigation";
-import React from "react";
-import { FaProjectDiagram, FaUser } from "react-icons/fa";
-import {
-  differenceInDays,
-  differenceInHours,
-  formatDistance,
-  formatRelative,
-  subDays,
-} from "date-fns";
-import { configureTIme, timeResult } from "@/utils/configureTime";
+import { RiCalendarLine, RiClockwiseLine, RiUser2Fill } from "react-icons/ri"
+import Link from "next/link"
+import { configureTIme } from "@/utils/configureTime"
 
-type ProjectProps = {
-  title: string;
-  description: string;
-  answerable: string;
-  timeStart: string;
-  timeEnd: string;
-  color: string;
-  id: string;
-};
+interface ProjectCardProps {
+  id: string
+  title: string
+  answerable: string
+  description: string
+  timeStart: string
+  timeEnd: string
+  color?: string
+}
 
-const Projects = ({
+export default function ProjectCard({
+  id,
   title,
+  answerable,
   description,
   timeStart,
   timeEnd,
-  answerable,
-  color,
-  id,
-}: ProjectProps) => {
-  const router = useRouter();
+  color = "#6366f1",
+}: ProjectCardProps) {
+  const startDate = new Date(timeStart)
+  const endDate = new Date(timeEnd)
+  const timeResult: any = configureTIme(startDate, endDate)
 
-  const getId = () => {
-    router.push("/projects/" + id);
-  };
-
-  const pastDateProject = new Date(timeStart);
-  const afterDateProject = new Date(timeEnd);
-
-  const time: timeResult = configureTIme(pastDateProject, afterDateProject);
+  const isOverdue = endDate < new Date() && timeResult?.days && timeResult.days < 0
 
   return (
-    <section className="flex flex-col justify-between  h-[203.62px] bg-white text-black p-2 rounded-md">
-      <span className={`w-full  h-2`}
-      style={{background: color}}></span>
-      <article className="space-y-2 gap-">
-        <div className="flex gap-2">
-          <span>
-            <FaProjectDiagram />
-          </span>
-          <h2 className="font-medium text-lg overflow-hidden text-ellipsis line-clamp-1">
-            {title}
-          </h2>
+    <Link href={`/projects/${id}`}>
+      <div className="h-full overflow-hidden transition-all duration-200 hover:shadow-md hover:border-gray-300 bg-white border rounded-lg min-w-40">
+        <div className="h-2" style={{ backgroundColor: color }} />
+        <div className="p-4">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="font-semibold text-lg truncate">{title}</h3>
+            {isOverdue && (
+              <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800 shrink-0">
+                Atrasado
+              </span>
+            )}
+          </div>
+          <p className="text-sm text-gray-600 line-clamp-2 mb-4">{description}</p>
+          <div className="flex items-center text-xs text-gray-500 mb-2">
+            <RiUser2Fill className="h-3 w-3 mr-1" />
+            <span className="truncate">{answerable}</span>
+          </div>
+          <div className="flex items-center text-xs text-gray-500 mb-2">
+            <RiClockwiseLine className="h-3 w-3 mr-1" />
+            <span>{timeResult?.formatTime}</span>
+          </div>
+          <div className="flex items-center text-xs text-gray-500">
+            <RiCalendarLine className="h-3 w-3 mr-1" />
+            <span>
+              {startDate.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" })}
+              {" - "}
+              {endDate.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" })}
+            </span>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <FaUser />
-          <p className="text-sm font-medium overflow-hidden text-ellipsis line-clamp-1">
-            {answerable}
-          </p>
-        </div>
+      </div>
+    </Link>
+  )
+}
 
-        <p className="text-sm overflow-hidden text-ellipsis line-clamp-1">
-          {description}
-        </p>
-        <p className="text-xs">{time.formatTime}</p>
-      </article>
-      <button
-        className="btn bg-black text-white text-sm hover:scale-100"
-        onClick={getId}
-      >
-        Seguir para o projeto
-      </button>
-    </section>
-  );
-};
-
-export default Projects;

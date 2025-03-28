@@ -92,7 +92,7 @@ export const projectEdit = createAsyncThunk<
 
 export const projectDelete = createAsyncThunk<
   responseProjects,
-  project,
+  string,
   { state: RootState }
 >("project/delete", async (_id, thunkapi) => {
   try {

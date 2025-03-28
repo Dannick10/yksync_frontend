@@ -1,146 +1,181 @@
-"use client";
-import Projects from "@/components/Projects";
-import { getProject } from "@/redux/slices/ProjectSlices";
-import { RootState, AppDispatch } from "@/redux/store";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Paginatio from "@/components/pagination";
-import { Getprofile } from "@/redux/slices/userSlices";
-import ChartComponent from "@/components/ChartComponent";
-import { getStatus } from "@/redux/slices/statusSlices";
-import MyFullCalendar from "@/components/MyFullCalendar";
-import { statusProject } from "@/@types/statusTypes";
+"use client"
 
-interface Project {
-  _id: string;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-}
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useDispatch, useSelector } from "react-redux"
+import type { AppDispatch, RootState } from "@/redux/store"
+import { getProject } from "@/redux/slices/ProjectSlices"
+import { Getprofile } from "@/redux/slices/userSlices"
+import { getStatus } from "@/redux/slices/statusSlices"
+import { RiSearchLine, RiAddLine, RiCalendarLine, RiBarChartLine, RiLayoutGridLine } from "react-icons/ri"
 
-const Page = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { projects, meta, loading, error } = useSelector(
-    (state: RootState) => state.project
-  );
-  const { user } = useSelector((state: RootState) => state.user);
-  const { status, projectTotal, projectsCurrent, projectsFinish } = useSelector(
-    (state: RootState) => state.status
-  );
-  const [page, setPage] = useState(1);
+
+import Pagination from "@/components/pagination"
+import Projects from "@/components/Projects"
+import ChartComponent from "@/components/ChartComponent"
+import MyFullCalendar from "@/components/MyFullCalendar"
+
+export default function DashboardPage() {
+  const dispatch = useDispatch<AppDispatch>()
+  const { projects, meta, loading } = useSelector((state: RootState) => state.project)
+  const { user } = useSelector((state: RootState) => state.user)
+  const { projectTotal, projectsCurrent, projectsFinish } = useSelector((state: RootState) => state.status)
+  const [page, setPage] = useState(1)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeTab, setActiveTab] = useState("projects")
 
   const handlePageChange = ({ selected }: { selected: number }) => {
-    setPage(selected + 1);
-  };
+    setPage(selected + 1)
+  }
 
   useEffect(() => {
-    dispatch(Getprofile());
-    dispatch(getStatus());
-  }, [dispatch]);
+    dispatch(Getprofile())
+    dispatch(getStatus())
+  }, [dispatch])
 
   useEffect(() => {
     if (user) {
-      dispatch(getProject(page));
+      dispatch(getProject(page))
     }
-  }, [dispatch, user, page]);
+  }, [dispatch, user, page])
 
   return (
-    <>
-      <header className="w-full">
-        <nav className="h-[115px] w-full flex justify-between px-4 items-center bg-white text-black font-medium">
-          <div className="flex gap-4">
-            <h2>Project</h2>
-            <input
-              type="text"
-              className="input"
-              placeholder="Pesquisar projeto"
-              aria-label="Pesquisar projeto"
-            />
+    <div className="flex flex-col min-h-screen">
+      <header className="border-b bg-white">
+        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex items-center w-full max-w-md">
+            <div className="relative w-full">
+              <RiSearchLine className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Pesquisar projeto"
+                className="w-full pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
           <div className="flex items-center gap-4">
-            {meta && meta!.totalProjects > 0 ? (
-              <p>{meta?.totalProjects} projetos</p>
-            ) : (
-              <p>Você ainda não tem projetos</p>
+            {meta && (
+              <p className="text-sm text-gray-500">
+                {meta.totalProjects > 0 ? `${meta.totalProjects} projetos` : "Você ainda não tem projetos"}
+              </p>
             )}
-            <Link href={"/projects/add"}>
-              <button
-                className="btn bg-black text-white"
-                aria-label="Adicionar projeto"
-              >
-                Adicionar projeto
-              </button>
+            <Link
+              href="/projects/add"
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+            >
+              <RiAddLine className="h-4 w-4" />
+              Adicionar projeto
             </Link>
           </div>
-        </nav>
+        </div>
       </header>
 
-      <main className="w-full  px-4 flex flex-col gap-8">
-        {!projects && (
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <h1 className="font-bold text-4xl">
-              Para começar a acompanhar seus projetos
-            </h1>
-            <h2 className="font-medium text-xl">
-              Adicione seu projeto na barra acima
-            </h2>
-            <Link href="/projects/add">
-              <p className="btn">Tenha controle total dos seus projetos</p>
-            </Link>
+      <main className="flex-1 container mx-auto px-4 py-8">
+        {!projects || projects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[60vh] text-center">
+            <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-6">
+              <RiCalendarLine className="h-16 w-16 text-gray-400" />
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">Comece a acompanhar seus projetos</h2>
+                <p className="text-gray-500">Adicione seu primeiro projeto para começar a gerenciar seu trabalho</p>
+              </div>
+              <Link
+                href="/projects/add"
+                className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+              >
+                <RiAddLine className="h-4 w-4" />
+                Adicionar projeto
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            <div className="border-b">
+              <div className="flex space-x-8">
+                <button
+                  onClick={() => setActiveTab("projects")}
+                  className={`flex items-center gap-2 px-4 py-2 border-b-2 font-medium ${
+                    activeTab === "projects"
+                      ? "border-black text-black"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <RiLayoutGridLine className="h-4 w-4" />
+                  Projetos
+                </button>
+                <button
+                  onClick={() => setActiveTab("statistics")}
+                  className={`flex items-center gap-2 px-4 py-2 border-b-2 font-medium ${
+                    activeTab === "statistics"
+                      ? "border-black text-black"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <RiBarChartLine className="h-4 w-4" />
+                  Estatísticas
+                </button>
+                <button
+                  onClick={() => setActiveTab("calendar")}
+                  className={`flex items-center gap-2 px-4 py-2 border-b-2 font-medium ${
+                    activeTab === "calendar"
+                      ? "border-black text-black"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <RiCalendarLine className="h-4 w-4" />
+                  Calendário
+                </button>
+              </div>
+            </div>
+
+            {activeTab === "projects" && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <Projects
+                      key={project._id}
+                      id={project._id}
+                      title={project.name}
+                      answerable={project.answerable}
+                      description={project.description}
+                      timeStart={project.startDate}
+                      timeEnd={project.endDate}
+                      color={project.color}
+                    />
+                  ))}
+                </div>
+
+                {meta && meta.totalPages > 1 && (
+                  <div className="flex justify-center mt-8">
+                    <Pagination page={page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "statistics" && (
+              <div className="bg-white border rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-bold mb-4">Estatísticas de Projetos</h2>
+                <div className="h-80">
+                  {projectsCurrent && projectsFinish && (
+                    <ChartComponent projectsCurrent={projectsCurrent} projectsFinish={projectsFinish} />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeTab === "calendar" && (
+              <div className="bg-white border rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-bold mb-4">Calendário de Projetos</h2>
+                <div className="h-[600px]">{projectTotal && <MyFullCalendar projects={projectTotal} />}</div>
+              </div>
+            )}
           </div>
         )}
-        <section className="gap-10 w-full space-y-8">
-          <aside className="">
-            {projects && <h2 className="font-medium text-xl">Estatísticas</h2>}
-            {projectsCurrent && projectsFinish && (
-              <article className="h-80 flex">
-                <ChartComponent
-                  projectsCurrent={projectsCurrent}
-                  projectsFinish={projectsFinish}
-                />
-              </article>
-            )}
-          </aside>
-
-          <article className="h-[600px]">
-            {projects && <h2 className="font-medium text-xl">Calendário</h2>}
-
-            {projectTotal && <MyFullCalendar projects={projectTotal}  />}
-          </article>
-        </section>
-
-        <section className="flex flex-col gap-10 mt-10">
-          {projects && <h2 className="font-medium text-xl">Projetos</h2>}
-
-          <article className="grid grid-cols-3 justify-start gap-20 mb-4">
-            {projects &&
-              projects.map((project) => (
-                <Projects
-                  key={project._id}
-                  id={project._id}
-                  title={project.name}
-                  answerable={project.answerable}
-                  description={project.description}
-                  timeStart={project.startDate}
-                  timeEnd={project.endDate}
-                  color={project.color}
-                />
-              ))}
-          </article>
-        </section>
-
-        {meta && (
-          <Paginatio
-            page={page}
-            totalPages={meta?.totalPages}
-            onPageChange={handlePageChange}
-          />
-        )}
       </main>
-    </>
-  );
-};
+    </div>
+  )
+}
 
-export default Page;

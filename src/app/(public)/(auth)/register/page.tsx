@@ -1,17 +1,14 @@
 "use client";
-import { reset, signUser } from "@/redux/slices/AuthSlices";
 
-import React, { useEffect, useState } from "react";
-import { RiUser2Fill } from "react-icons/ri";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { RiMailAiFill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { RiUser2Fill, RiMailAiFill, RiLockPasswordFill } from "react-icons/ri";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { redirect, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { Getprofile } from "@/redux/slices/userSlices";
+import { signUser, reset } from "@/redux/slices/AuthSlices";
+import Link from "next/link";
 
 const registerSchema = z
   .object({
@@ -30,122 +27,145 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-type formData = z.infer<typeof registerSchema>;
+type FormData = z.infer<typeof registerSchema>;
 
-const page = () => {
+export default function RegisterPage() {
+  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<formData>({
+  } = useForm<FormData>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { token, loading, error } = useSelector(
-    (state: RootState) => state.auth
-  );
-
-  const handleRegister: SubmitHandler<formData> = async (data) => {
-    await dispatch(signUser(data));
+  const onSubmit = (data: FormData) => {
+    dispatch(signUser(data));
   };
 
-  return (
-    <main className="flex justify-center py-4">
-      <section className="w-[650px] p-4  text-black bg-zinc-900 rounded-2xl">
-        <form
-          method="post"
-          className="bg-white rounded-2xl p-8"
-          onSubmit={handleSubmit(handleRegister)}
-        >
-          <fieldset className="space-y-8">
-            <legend className="text-xl font-semibold text-center">
-              Começe organizar seus projetos
-            </legend>
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch]);
 
-            <div className="flex flex-col py-4 px-20 gap-8  ">
-              <label className="flex justify-center items-center gap-2">
-                <span className="text-2xl">
-                  <RiUser2Fill />
-                </span>
+  return (
+    <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-4rem)] py-8 px-4">
+      <div className="w-full max-w-md bg-zinc-900 p-4 rounded-2xl">
+        <div className="bg-white rounded-2xl p-8">
+          <div className="text-center space-y-2 mb-8">
+            <h1 className="text-2xl font-bold">Crie sua conta</h1>
+            <p className="text-gray-500 text-sm">
+              Comece a organizar seus projetos hoje mesmo
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-1">
+              <label htmlFor="name" className="block text-sm font-medium">
+                Nome completo
+              </label>
+              <div className="flex items-center border rounded-md pl-3 focus-within:ring-2 focus-within:ring-black focus-within:border-black">
+                <RiUser2Fill className="h-5 w-5 text-gray-400" />
                 <input
+                  id="name"
                   type="text"
-                  className={`input flex-1 ${errors.name ? "border border-red-400" : ""}`}
-                  placeholder="Nome completo"
-                  autoComplete="off"
+                  placeholder="Seu nome completo"
+                  className="flex-1 px-3 py-2 border-0 focus:outline-none"
                   {...register("name")}
                 />
+              </div>
+              {errors.name && (
+                <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-1">
+              <label htmlFor="email" className="block text-sm font-medium">
+                Email
               </label>
-              {errors.name && <p className="msg">{errors.name.message}</p>}
-
-              <label className="flex justify-center items-center gap-2">
-                <span className="text-2xl">
-                  <RiMailAiFill />
-                </span>
+              <div className="flex items-center border rounded-md pl-3 focus-within:ring-2 focus-within:ring-black focus-within:border-black">
+                <RiMailAiFill className="h-5 w-5 text-gray-400" />
                 <input
-                  type="text"
-                  className={`input flex-1 ${errors.email ? "border border-red-400" : ""}`}
-                  placeholder="Email"
-                  autoComplete="off"
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  className="flex-1 px-3 py-2 border-0 focus:outline-none"
                   {...register("email")}
                 />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-1">
+              <label htmlFor="password" className="block text-sm font-medium">
+                Senha
               </label>
-              {errors.email && <p className="msg">{errors.email.message}</p>}
-
-              <label className="flex justify-center items-center gap-2">
-                <span className="text-2xl">
-                  <RiLockPasswordFill />
-                </span>
+              <div className="flex items-center border rounded-md pl-3 focus-within:ring-2 focus-within:ring-black focus-within:border-black">
+                <RiLockPasswordFill className="h-5 w-5 text-gray-400" />
                 <input
+                  id="password"
                   type="password"
-                  className={`input flex-1 ${errors.password ? "border border-red-400" : ""}`}
-                  placeholder="Senha"
-                  autoComplete="off"
+                  placeholder="••••••"
+                  className="flex-1 px-3 py-2 border-0 focus:outline-none"
                   {...register("password")}
                 />
-              </label>
+              </div>
               {errors.password && (
-                <p className="msg">{errors.password.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
               )}
-
-              <label className="flex justify-center items-center gap-2">
-                <span className="text-2xl">
-                  <RiLockPasswordFill />
-                </span>
+            </div>
+            
+            <div className="space-y-1">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium">
+                Confirme a senha
+              </label>
+              <div className="flex items-center border rounded-md pl-3 focus-within:ring-2 focus-within:ring-black focus-within:border-black">
+                <RiLockPasswordFill className="h-5 w-5 text-gray-400" />
                 <input
+                  id="confirmPassword"
                   type="password"
-                  className={`input flex-1 ${errors.confirmPassword ? "border border-red-400" : ""}`}
-                  placeholder="Confirme a senha"
-                  autoComplete="off"
+                  placeholder="••••••"
+                  className="flex-1 px-3 py-2 border-0 focus:outline-none"
                   {...register("confirmPassword")}
                 />
-              </label>
+              </div>
               {errors.confirmPassword && (
-                <p className="msg">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
               )}
-              {!loading && (
-                <input
-                  type="submit"
-                  className="btn bg-black text-white mx-10 cursor-pointer"
-                  value="Entrar"
-                />
-              )}
-              {loading && (
-                <input
-                  type="submit"
-                  className="btn bg-black text-white mx-10 cursor-pointer bg-gray-950"
-                  value="aguarde..."
-                  disabled
-                />
-              )}
-              {error && <p className="msg">{error}</p>}
             </div>
-          </fieldset>
-        </form>
-      </section>
-    </main>
-  );
-};
 
-export default page;
+            {error && (
+              <div className="p-3 rounded-md bg-red-50 text-red-600 text-sm">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading ? "Aguarde..." : "Criar conta"}
+            </button>
+            
+            <div className="text-center text-sm">
+              Já tem uma conta?{" "}
+              <Link href="/signin" className="text-black font-medium hover:underline">
+                Entrar
+              </Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
