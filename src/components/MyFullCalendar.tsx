@@ -1,5 +1,6 @@
 "use client";
 
+import ptBrLocale from "@fullcalendar/core/locales/pt-br";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
@@ -90,10 +91,11 @@ const MyFullCalendar = ({
         height="100%"
         eventClick={handleProjectId}
         events={events}
+        locale={ptBrLocale}
         headerToolbar={{
-          left: "prev,next today",
+          left: "prev,next",
           center: "title",
-          right: "",
+          right: "today",
         }}
       />
     </div>
