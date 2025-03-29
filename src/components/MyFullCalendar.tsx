@@ -83,8 +83,10 @@ const MyFullCalendar = ({
         </button>
       </div>
       <FullCalendar
+        key={view}
         plugins={[dayGridPlugin, multiMonthPlugin]}
         initialView={view}
+        initialDate={start ? new Date(start).toISOString().split("T")[0] : undefined}
         height="100%"
         eventClick={handleProjectId}
         events={events}
