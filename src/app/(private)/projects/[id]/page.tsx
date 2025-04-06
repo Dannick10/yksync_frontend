@@ -82,10 +82,12 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-6">
-        <button onClick={() => router.back()} className="flex items-center mr-4 text-gray-600 hover:text-black">
+        <Link href={'/dashboard'}>
+        <button className="flex items-center mr-4 text-gray-600 hover:text-black">
           <RiArrowLeftLine className="h-5 w-5 mr-2" />
           Voltar
         </button>
+        </Link>
         <h1 className="text-2xl font-bold flex items-center">
           {project.name}
           <div className="w-3 h-3 rounded-full ml-3" style={{ backgroundColor: project.color }} />
