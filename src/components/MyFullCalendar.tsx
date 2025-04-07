@@ -26,7 +26,7 @@ const MyFullCalendar = ({
   color,
   projects,
 }: calendarProps) => {
-  const [view, setView] = useState(projects ? "multiMonthYear" : "dayGridWeek");
+  const [view, setView] = useState(projects ? "dayGridMonth" : "dayGridWeek");
 
   const router = useRouter();
 

@@ -76,7 +76,7 @@ export default function DashboardPage() {
   const finishedProjectsCount = status?.projectsFinish || 0;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen">
       <header className="border-b z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center w-full max-w-md">
@@ -100,7 +100,7 @@ export default function DashboardPage() {
               </p>
             )}
             <Link
-              href="/projects/new"
+              href="/projects/add"
               className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               <RiAddLine className="h-4 w-4" />
@@ -183,7 +183,7 @@ export default function DashboardPage() {
                             {totalProjectsCount}
                           </h3>
                         </div>
-                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full  flex items-center justify-center">
                           <RiListCheck className="h-6 w-6 text-gray-500" />
                         </div>
                       </div>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                   <h2 className="text-xl font-bold mb-4">
                     Estatísticas de Projetos
                   </h2>
-                  <div className="w-full h-[400px] flex justify-center">
+                  <div className="w-full flex justify-center">
                     {projectsCurrent && projectsFinish && (
                       <ChartComponent
                         projectsCurrent={projectsCurrent}
