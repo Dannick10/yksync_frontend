@@ -14,6 +14,10 @@ import {
   RiBarChartLine,
   RiLayoutGridLine,
   RiCodeSSlashFill,
+  RiCheckboxCircleLine,
+  RiTimeLine,
+  RiAlarmWarningLine,
+  RiListCheck,
 } from "react-icons/ri";
 
 import Pagination from "@/components/pagination";
@@ -21,8 +25,7 @@ import Projects from "@/components/Projects";
 import ChartComponent from "@/components/ChartComponent";
 import TechStatistics from "@/components/StackStatistics";
 import MyFullCalendar from "@/components/MyFullCalendar";
-import { AnimatePresence } from "framer-motion";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,27 +33,24 @@ export default function DashboardPage() {
     (state: RootState) => state.project
   );
   const { user } = useSelector((state: RootState) => state.user);
-  const { projectTotal, projectsCurrent, projectsFinish } = useSelector(
+  const { projectTotal, projectsCurrent, projectsFinish, status } = useSelector(
     (state: RootState) => state.status
   );
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [indexMoth, SetIndexMoth] = useState(0);
   const [activeTab, setActiveTab] = useState("projects");
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const tabs = [
     { id: "projects", label: "Projetos", icon: RiLayoutGridLine },
     { id: "statistics", label: "Estatísticas", icon: RiBarChartLine },
-    { id: "callendar", label: "Calendário", icon: RiCalendarLine },
     { id: "technologies", label: "Tecnologias", icon: RiCodeSSlashFill },
+    { id: "callendar", label: "Calendário", icon: RiCalendarLine },
   ];
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
-  };
-
-  const handleIndexMothChange = (number: number) => {
-    SetIndexMoth(number);
   };
 
   useEffect(() => {
@@ -64,9 +64,20 @@ export default function DashboardPage() {
     }
   }, [dispatch, user, page]);
 
+  const currentDate = new Date();
+  const overdueProjects =
+    projectTotal?.filter(
+      (project) =>
+        new Date(project.endDate) < currentDate && project.status === "current"
+    ).length || 0;
+
+  const totalProjectsCount = status?.projectsTotal || 0;
+  const activeProjectsCount = status?.projectsCurrents || 0;
+  const finishedProjectsCount = status?.projectsFinish || 0;
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="border-b bg-white">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <header className="border-b z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center w-full max-w-md">
             <div className="relative w-full">
@@ -89,7 +100,7 @@ export default function DashboardPage() {
               </p>
             )}
             <Link
-              href="/projects/add"
+              href="/projects/new"
               className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               <RiAddLine className="h-4 w-4" />
@@ -114,7 +125,7 @@ export default function DashboardPage() {
                 </p>
               </div>
               <Link
-                href="/projects/add"
+                href="/projects/new"
                 className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
               >
                 <RiAddLine className="h-4 w-4" />
@@ -154,26 +165,100 @@ export default function DashboardPage() {
               {activeTab === "projects" && (
                 <motion.div
                   key="projects"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {projects.map((project) => (
-                      <Projects
-                        key={project._id}
-                        id={project._id}
-                        title={project.name}
-                        answerable={project.answerable}
-                        description={project.description}
-                        timeStart={project.startDate}
-                        timeEnd={project.endDate}
-                        color={project.color}
-                      />
-                    ))}
+                  {/* Project Summary Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-500">
+                            Total de Projetos
+                          </p>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {totalProjectsCount}
+                          </h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                          <RiListCheck className="h-6 w-6 text-gray-500" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-500">Em Andamento</p>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {activeProjectsCount}
+                          </h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+                          <RiTimeLine className="h-6 w-6 text-blue-500" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-500">Concluídos</p>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {finishedProjectsCount}
+                          </h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
+                          <RiCheckboxCircleLine className="h-6 w-6 text-green-500" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-500">Atrasados</p>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {overdueProjects}
+                          </h3>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+                          <RiAlarmWarningLine className="h-6 w-6 text-red-500" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Projects Grid */}
+                  {loading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <div
+                          key={i}
+                          className="bg-gray-100 rounded-xl h-64 animate-pulse"
+                        ></div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {projects.map((project) => (
+                        <Projects
+                          key={project._id}
+                          id={project._id}
+                          title={project.name}
+                          answerable={project.answerable}
+                          description={project.description}
+                          timeStart={project.startDate}
+                          timeEnd={project.endDate}
+                          color={project.color}
+                          status={project.status}
+                        />
+                      ))}
+                    </div>
+                  )}
 
                   {meta && meta.totalPages > 1 && (
                     <div className="flex justify-center mt-8">
@@ -190,11 +275,11 @@ export default function DashboardPage() {
               {activeTab === "statistics" && (
                 <motion.div
                   key="statistics"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white border rounded-lg shadow-sm p-6"
+                  className="bg-white border rounded-xl shadow-sm p-6"
                 >
                   <h2 className="text-xl font-bold mb-4">
                     Estatísticas de Projetos
@@ -212,23 +297,6 @@ export default function DashboardPage() {
                 </motion.div>
               )}
 
-              {activeTab === "callendar" && (
-                <motion.div
-                  key="callendar"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white border rounded-lg shadow-sm p-6"
-                >
-                  <h2 className="text-xl font-bold mb-4">
-                    Calendário de Projetos
-                  </h2>
-                  <div className="h-[600px]">
-                    {projectTotal && <MyFullCalendar projects={projectTotal} />}
-                  </div>
-                </motion.div>
-              )}
               {activeTab === "technologies" && (
                 <motion.div
                   key="technologies"
@@ -238,6 +306,24 @@ export default function DashboardPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <TechStatistics />
+                </motion.div>
+              )}
+
+              {activeTab === "callendar" && (
+                <motion.div
+                  key="callendar"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white border rounded-xl shadow-sm p-6"
+                >
+                  <h2 className="text-xl font-bold mb-4">
+                    Calendário de Projetos
+                  </h2>
+                  <div className="h-[600px]">
+                    {projectTotal && <MyFullCalendar projects={projectTotal} />}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
