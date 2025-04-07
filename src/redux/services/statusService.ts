@@ -14,9 +14,6 @@ const getStatus = async (token: any) => {
   }
 };
 
-
 export const statusService = {
-    getStatus
-}
-
-
+  getStatus,
+};

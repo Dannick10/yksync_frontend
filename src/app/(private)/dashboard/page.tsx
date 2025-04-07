@@ -13,13 +13,14 @@ import {
   RiCalendarLine,
   RiBarChartLine,
   RiLayoutGridLine,
+  RiCodeSSlashFill,
 } from "react-icons/ri";
 
 import Pagination from "@/components/pagination";
 import Projects from "@/components/Projects";
 import ChartComponent from "@/components/ChartComponent";
+import TechStatistics from "@/components/StackStatistics";
 import MyFullCalendar from "@/components/MyFullCalendar";
-import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
@@ -41,6 +42,7 @@ export default function DashboardPage() {
     { id: "projects", label: "Projetos", icon: RiLayoutGridLine },
     { id: "statistics", label: "Estatísticas", icon: RiBarChartLine },
     { id: "callendar", label: "Calendário", icon: RiCalendarLine },
+    { id: "technologies", label: "Tecnologias", icon: RiCodeSSlashFill },
   ];
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -123,12 +125,12 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-8">
             <div className="border-b">
-              <div className="flex space-x-8">
+              <div className="flex space-x-8 overflow-x-auto pb-2 scrollbar-hide">
                 {tabs.map((tab) => (
                   <motion.button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className="relative flex items-center gap-2 px-4 py-2 font-medium text-gray-500 hover:text-gray-700"
+                    className="relative flex items-center gap-2 px-4 py-2 font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap"
                   >
                     <tab.icon className="h-4 w-4" />
                     {tab.label}
@@ -148,7 +150,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {activeTab === "projects" && (
                 <motion.div
                   key="projects"
@@ -225,6 +227,17 @@ export default function DashboardPage() {
                   <div className="h-[600px]">
                     {projectTotal && <MyFullCalendar projects={projectTotal} />}
                   </div>
+                </motion.div>
+              )}
+              {activeTab === "technologies" && (
+                <motion.div
+                  key="technologies"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <TechStatistics />
                 </motion.div>
               )}
             </AnimatePresence>

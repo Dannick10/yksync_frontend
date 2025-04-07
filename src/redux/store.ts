@@ -4,13 +4,15 @@ import authReducer from "./slices/AuthSlices"
 import userReduce from "./slices/userSlices"
 import projectReduce from "./slices/ProjectSlices"
 import statusReduce from "./slices/statusSlices"
+import stackReduce from "./slices/stackSlices"
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReduce,
     project: projectReduce,
-    status: statusReduce
+    status: statusReduce,
+    stack: stackReduce
   },
 });
 
