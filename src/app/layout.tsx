@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <Header />
-          <main className="pt-32">
+          <main className="pt-32 min-h-screen">
           {children}
           </main>
           <FooterComponent />

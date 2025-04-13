@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { useDispatch, useSelector } from "react-redux"
-import type { AppDispatch, RootState } from "@/redux/store"
-import { getProject } from "@/redux/slices/ProjectSlices"
-import { Getprofile } from "@/redux/slices/userSlices"
-import { getStatus } from "@/redux/slices/statusSlices"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { getProject } from "@/redux/slices/ProjectSlices";
+import { Getprofile } from "@/redux/slices/userSlices";
+import { getStatus } from "@/redux/slices/statusSlices";
 import {
   RiSearchLine,
   RiAddLine,
@@ -24,44 +24,53 @@ import {
   RiAlarmWarningLine,
   RiListCheck,
   RiCloseLine,
-} from "react-icons/ri"
+} from "react-icons/ri";
 
-import Pagination from "@/components/pagination"
-import Projects from "@/components/Projects"
-import ChartComponent from "@/components/ChartComponent"
-import TechStatistics from "@/components/StackStatistics"
-import MyFullCalendar from "@/components/MyFullCalendar"
-import { AnimatePresence, motion } from "framer-motion"
+import Pagination from "@/components/pagination";
+import Projects from "@/components/Projects";
+import ChartComponent from "@/components/ChartComponent";
+import TechStatistics from "@/components/StackStatistics";
+import MyFullCalendar from "@/components/MyFullCalendar";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function DashboardPage() {
-  const dispatch = useDispatch<AppDispatch>()
-  const { projects, meta, loading } = useSelector((state: RootState) => state.project)
-  const { user } = useSelector((state: RootState) => state.user)
-  const { projectTotal, projectsCurrent, projectsFinish, status } = useSelector((state: RootState) => state.status)
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    projects,
+    meta,
+    loading,
+    error: errorProject,
+  } = useSelector((state: RootState) => state.project);
+  const { user } = useSelector((state: RootState) => state.user);
+  const { projectTotal, projectsCurrent, projectsFinish, status } = useSelector(
+    (state: RootState) => state.status
+  );
 
   const [searchQuery, setSearchQuery] = useState({
     name: "",
     status: "",
     startDate: "",
     endDate: "",
-  })
+  });
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState({
     name: "",
     status: "",
     startDate: "",
     endDate: "",
-  })
-  const [activeTab, setActiveTab] = useState("projects")
-  const [filterOpen, setFilterOpen] = useState(false)
-  const [page, setPage] = useState(1)
+  });
+  const [activeTab, setActiveTab] = useState("projects");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
     setSearchQuery((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleClearFilters = () => {
     setSearchQuery({
@@ -69,53 +78,50 @@ export default function DashboardPage() {
       status: "",
       startDate: "",
       endDate: "",
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery)
-      setPage(1)
-    }, 500)
+      setDebouncedSearchQuery(searchQuery);
+      setPage(1);
+    }, 500);
 
-    return () => clearTimeout(timer)
-  }, [searchQuery])
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   useEffect(() => {
     if (user) {
-      dispatch(getProject({ page, filter: debouncedSearchQuery }))
+      dispatch(getProject({ page, filter: debouncedSearchQuery }));
     }
-  }, [dispatch, user, page, debouncedSearchQuery])
+  }, [dispatch, user, page, debouncedSearchQuery]);
 
   const tabs = [
     { id: "projects", label: "Projetos", icon: RiLayoutGridLine },
     { id: "statistics", label: "Estatísticas", icon: RiBarChartLine },
     { id: "technologies", label: "Tecnologias", icon: RiCodeSSlashFill },
     { id: "callendar", label: "Calendário", icon: RiCalendarLine },
-  ]
+  ];
 
   const handlePageChange = ({ selected }: { selected: number }) => {
-    setPage(selected + 1)
-  }
+    setPage(selected + 1);
+  };
 
   useEffect(() => {
-    dispatch(Getprofile())
-    dispatch(getStatus())
-  }, [dispatch])
+    dispatch(Getprofile());
+    dispatch(getStatus());
+  }, [dispatch]);
 
- 
-
-  const totalProjectsCount = status?.projectsTotal || 0
-  const activeProjectsCount = status?.projectsCurrents || 0
-  const overdueProjectCont = status?.projectsOverdue || 0
-  const finishedProjectsCount = status?.projectsFinish || 0
+  const totalProjectsCount = status?.projectsTotal || 0;
+  const activeProjectsCount = status?.projectsCurrents || 0;
+  const overdueProjectCont = status?.projectsOverdue || 0;
+  const finishedProjectsCount = status?.projectsFinish || 0;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <header className="border-b bg-white sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center w-full max-w-md">
-
             <div className="relative w-full">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <RiSearchLine className="h-4 w-4" />
@@ -130,7 +136,9 @@ export default function DashboardPage() {
               />
               {searchQuery.name && (
                 <button
-                  onClick={() => setSearchQuery((prev) => ({ ...prev, name: "" }))}
+                  onClick={() =>
+                    setSearchQuery((prev) => ({ ...prev, name: "" }))
+                  }
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   aria-label="Limpar pesquisa"
                 >
@@ -142,7 +150,9 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             {meta && (
               <p className="text-sm text-gray-500">
-                {meta.totalProjects > 0 ? `${meta.totalProjects} projetos` : "Você ainda não tem projetos"}
+                {meta.totalProjects > 0
+                  ? `${meta.totalProjects} projetos`
+                  : "Você ainda não tem projetos"}
               </p>
             )}
             <Link
@@ -157,13 +167,18 @@ export default function DashboardPage() {
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        {!projects && totalProjectsCount === 0 ? (
+        {!projects || projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
             <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-6">
               <RiCalendarLine className="h-16 w-16 text-gray-400" />
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Comece a acompanhar seus projetos</h2>
-                <p className="text-gray-500">Adicione seu primeiro projeto para começar a gerenciar seu trabalho</p>
+                <h2 className="text-2xl font-bold">
+                  Comece a acompanhar seus projetos
+                </h2>
+                <p className="text-gray-500">
+                  Adicione seu primeiro projeto para começar a gerenciar seu
+                  trabalho
+                </p>
               </div>
               <Link
                 href="/projects/new"
@@ -212,13 +227,16 @@ export default function DashboardPage() {
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
-
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-500">Total de Projetos</p>
-                          <h3 className="text-2xl font-bold mt-1">{totalProjectsCount}</h3>
+                          <p className="text-sm text-gray-500">
+                            Total de Projetos
+                          </p>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {totalProjectsCount}
+                          </h3>
                         </div>
                         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
                           <RiListCheck className="h-6 w-6 text-gray-500" />
@@ -230,7 +248,9 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-gray-500">Em Andamento</p>
-                          <h3 className="text-2xl font-bold mt-1">{activeProjectsCount}</h3>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {activeProjectsCount}
+                          </h3>
                         </div>
                         <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
                           <RiTimeLine className="h-6 w-6 text-blue-500" />
@@ -242,7 +262,9 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-gray-500">Concluídos</p>
-                          <h3 className="text-2xl font-bold mt-1">{finishedProjectsCount}</h3>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {finishedProjectsCount}
+                          </h3>
                         </div>
                         <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
                           <RiCheckboxCircleLine className="h-6 w-6 text-green-500" />
@@ -254,7 +276,9 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-gray-500">Atrasados</p>
-                          <h3 className="text-2xl font-bold mt-1">{overdueProjectCont}</h3>
+                          <h3 className="text-2xl font-bold mt-1">
+                            {overdueProjectCont}
+                          </h3>
                         </div>
                         <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
                           <RiAlarmWarningLine className="h-6 w-6 text-red-500" />
@@ -290,7 +314,9 @@ export default function DashboardPage() {
 
                       <button
                         onClick={() => {
-                          dispatch(getProject({ page, filter: debouncedSearchQuery }))
+                          dispatch(
+                            getProject({ page, filter: debouncedSearchQuery })
+                          );
                         }}
                         className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-gray-50"
                       >
@@ -300,7 +326,6 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-            
                   {(debouncedSearchQuery.name ||
                     debouncedSearchQuery.status ||
                     debouncedSearchQuery.startDate ||
@@ -308,13 +333,20 @@ export default function DashboardPage() {
                     <div className="bg-gray-50 border rounded-xl p-3 mb-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <span className="text-sm font-medium text-gray-700 mr-3">Filtros ativos:</span>
+                          <span className="text-sm font-medium text-gray-700 mr-3">
+                            Filtros ativos:
+                          </span>
                           <div className="flex flex-wrap gap-2">
                             {debouncedSearchQuery.name && (
                               <div className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 border">
                                 <span>Nome: {debouncedSearchQuery.name}</span>
                                 <button
-                                  onClick={() => setSearchQuery((prev) => ({ ...prev, name: "" }))}
+                                  onClick={() =>
+                                    setSearchQuery((prev) => ({
+                                      ...prev,
+                                      name: "",
+                                    }))
+                                  }
                                   className="text-gray-400 hover:text-gray-600"
                                 >
                                   <RiCloseLine className="h-4 w-4" />
@@ -324,13 +356,21 @@ export default function DashboardPage() {
                             {debouncedSearchQuery.status && (
                               <div className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 border">
                                 <span>
-                                  Status: 
-                                  {debouncedSearchQuery.status === "current" && "Em andamento"}
-                                  {debouncedSearchQuery.status === "finish" && "Concluído"}
-                                  {debouncedSearchQuery.status === "overdue" && "Atrasado"}
+                                  Status:
+                                  {debouncedSearchQuery.status === "current" &&
+                                    "Em andamento"}
+                                  {debouncedSearchQuery.status === "finish" &&
+                                    "Concluído"}
+                                  {debouncedSearchQuery.status === "overdue" &&
+                                    "Atrasado"}
                                 </span>
                                 <button
-                                  onClick={() => setSearchQuery((prev) => ({ ...prev, status: "" }))}
+                                  onClick={() =>
+                                    setSearchQuery((prev) => ({
+                                      ...prev,
+                                      status: "",
+                                    }))
+                                  }
                                   className="text-gray-400 hover:text-gray-600"
                                 >
                                   <RiCloseLine className="h-4 w-4" />
@@ -340,10 +380,18 @@ export default function DashboardPage() {
                             {debouncedSearchQuery.startDate && (
                               <div className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 border">
                                 <span>
-                                  Início após: {new Date(debouncedSearchQuery.startDate).toLocaleDateString()}
+                                  Início após:{" "}
+                                  {new Date(
+                                    debouncedSearchQuery.startDate
+                                  ).toLocaleDateString()}
                                 </span>
                                 <button
-                                  onClick={() => setSearchQuery((prev) => ({ ...prev, startDate: "" }))}
+                                  onClick={() =>
+                                    setSearchQuery((prev) => ({
+                                      ...prev,
+                                      startDate: "",
+                                    }))
+                                  }
                                   className="text-gray-400 hover:text-gray-600"
                                 >
                                   <RiCloseLine className="h-4 w-4" />
@@ -352,9 +400,19 @@ export default function DashboardPage() {
                             )}
                             {debouncedSearchQuery.endDate && (
                               <div className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 border">
-                                <span>Término até: {new Date(debouncedSearchQuery.endDate).toLocaleDateString()}</span>
+                                <span>
+                                  Término até:{" "}
+                                  {new Date(
+                                    debouncedSearchQuery.endDate
+                                  ).toLocaleDateString()}
+                                </span>
                                 <button
-                                  onClick={() => setSearchQuery((prev) => ({ ...prev, endDate: "" }))}
+                                  onClick={() =>
+                                    setSearchQuery((prev) => ({
+                                      ...prev,
+                                      endDate: "",
+                                    }))
+                                  }
                                   className="text-gray-400 hover:text-gray-600"
                                 >
                                   <RiCloseLine className="h-4 w-4" />
@@ -363,7 +421,10 @@ export default function DashboardPage() {
                             )}
                           </div>
                         </div>
-                        <button onClick={handleClearFilters} className="text-sm text-gray-600 hover:text-gray-900">
+                        <button
+                          onClick={handleClearFilters}
+                          className="text-sm text-gray-600 hover:text-gray-900"
+                        >
                           Limpar todos
                         </button>
                       </div>
@@ -379,7 +440,9 @@ export default function DashboardPage() {
                     >
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Status
+                          </label>
                           <select
                             name="status"
                             value={searchQuery.status}
@@ -394,7 +457,9 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Data de Início</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Data de Início
+                          </label>
                           <input
                             type="date"
                             name="startDate"
@@ -405,7 +470,9 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Data de Término</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Data de Término
+                          </label>
                           <input
                             type="date"
                             name="endDate"
@@ -433,14 +500,17 @@ export default function DashboardPage() {
                     </motion.div>
                   )}
 
-
-                  {loading ? (
+                  {/* Projects Grid */}
+                  {loading && !errorProject ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                       {[1, 2, 3, 4, 5, 6].map((i) => (
-                        <div key={i} className="bg-gray-100 rounded-xl h-64 animate-pulse"></div>
+                        <div
+                          key={i}
+                          className="bg-gray-100 rounded-xl h-64 animate-pulse"
+                        ></div>
                       ))}
                     </div>
-                  ) : projects && projects.length > 0 ? (
+                  ) : projects.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                       {projects.map((project) => (
                         <Projects
@@ -461,7 +531,9 @@ export default function DashboardPage() {
                       <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                         <RiSearchLine className="h-8 w-8 text-gray-400" />
                       </div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">Nenhum projeto encontrado</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-1">
+                        Nenhum projeto encontrado
+                      </h3>
                       <p className="text-gray-500 max-w-md">
                         {debouncedSearchQuery.name
                           ? `Não encontramos projetos com o termo "${debouncedSearchQuery.name}"`
@@ -469,10 +541,14 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   )}
-
+                  
                   {meta && meta.totalPages > 1 && (
                     <div className="flex justify-center mt-8">
-                      <Pagination page={page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
+                      <Pagination
+                        page={page}
+                        totalPages={meta.totalPages}
+                        onPageChange={handlePageChange}
+                      />
                     </div>
                   )}
                 </motion.div>
@@ -521,8 +597,12 @@ export default function DashboardPage() {
                   transition={{ duration: 0.3 }}
                   className="bg-white border rounded-xl shadow-sm p-6"
                 >
-                  <h2 className="text-xl font-bold mb-4">Calendário de Projetos</h2>
-                  <div className="h-[600px]">{projectTotal && <MyFullCalendar projects={projectTotal} />}</div>
+                  <h2 className="text-xl font-bold mb-4">
+                    Calendário de Projetos
+                  </h2>
+                  <div className="h-[600px]">
+                    {projectTotal && <MyFullCalendar projects={projectTotal} />}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -530,5 +610,5 @@ export default function DashboardPage() {
         )}
       </main>
     </div>
-  )
+  );
 }
