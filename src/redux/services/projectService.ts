@@ -1,4 +1,5 @@
 import { api, requestConfig } from "@/utils/useBaseApi";
+import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 
 const createProject = async (data: project, token: any) => {
   const config = requestConfig("POST", data, token);
@@ -14,12 +15,13 @@ const createProject = async (data: project, token: any) => {
   }
 };
 
-const getProject = async (token: any, page: any, _id: any) => {
+const getProject = async (token: any, page: number, _id: any, filter: any) => {
   const config = requestConfig("GET", null, token);
-  console.log(_id);
+  const params = new URLSearchParams({ ...filter, page, limit: "6" });
+
   try {
     const res = await fetch(
-      api + `project/user/` + _id + "?page=" + page + "&limit=6",
+      `${api}project/user/${_id}?${params.toString()}`,
       config
     )
       .then((res) => res.json())
@@ -46,7 +48,7 @@ const getProject_ID = async (_id: string, token: any) => {
 };
 
 const projectEdit = async (project: project, token: any) => {
-  const config = requestConfig("PUT",project, token);
+  const config = requestConfig("PUT", project, token);
 
   try {
     const res = await fetch(api + "project/update/" + project._id, config)
@@ -54,14 +56,13 @@ const projectEdit = async (project: project, token: any) => {
       .catch((res) => res);
 
     return res;
-    
   } catch (err) {
     console.log(err);
   }
 };
 
-const projectDelete = async(_id: string, token: any) => {
-  const config = requestConfig("DELETE", null, token)
+const projectDelete = async (_id: string, token: any) => {
+  const config = requestConfig("DELETE", null, token);
 
   try {
     const res = await fetch(api + "project/delete/" + _id, config)
@@ -69,18 +70,17 @@ const projectDelete = async(_id: string, token: any) => {
       .catch((res) => res);
 
     return res;
-    
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 const projectService = {
   createProject,
   getProject,
   getProject_ID,
   projectEdit,
-  projectDelete
+  projectDelete,
 };
 
 export default projectService;

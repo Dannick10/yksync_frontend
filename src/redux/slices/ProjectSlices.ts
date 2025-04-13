@@ -33,14 +33,16 @@ export const createProject = createAsyncThunk<
 
 export const getProject = createAsyncThunk<
   responseProjects,
-  number,
+  { page: number; filter: Record<string, any> },
   { state: RootState }
->("project/get", async (page, thunkapi) => {
+>("project/get", async ({ page, filter }, thunkapi) => {
   try {
     const token = thunkapi.getState().auth.token;
     const id = thunkapi.getState().user.user?._id;
 
-    const data = await projectService.getProject(token, page, id);
+    console.log(filter);
+
+    const data = await projectService.getProject(token, page, id, filter);
 
     if (data.errors) {
       return thunkapi.rejectWithValue(data.errors[0]);

@@ -28,10 +28,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const startDate = new Date(timeStart)
   const endDate = new Date(timeEnd)
-  const currentDate = new Date()
   const timeResult: any = configureTIme(startDate, endDate)
-
-  const isOverdue = endDate < currentDate && status === "current"
 
   const formattedStartDate = startDate.toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -54,7 +51,7 @@ export default function ProjectCard({
         textColor: "text-green-700",
         icon: "✓",
       }
-    } else if (isOverdue) {
+    } else if (status === "overdue") {
       return {
         text: "Atrasado",
         bgColor: "bg-red-50",
@@ -129,7 +126,7 @@ export default function ProjectCard({
         <div className={`px-5 py-3 border-t border-gray-100 flex justify-between items-center`}>
           <div
             className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: status === "finish" ? "#10B981" : isOverdue ? "#EF4444" : color }}
+            style={{ backgroundColor: status === "finish" ? "#10B981" : status === "overdue" ? "#EF4444" : color }}
           />
           <div className="flex items-center text-sm font-medium text-gray-600 group-hover:text-black transition-colors">
             Ver detalhes
