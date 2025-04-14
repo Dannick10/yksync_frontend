@@ -309,7 +309,7 @@ const ChartComponent = ({
     setYearOffset((prev) => prev + delta);
 
   return (
-    <div className="w-full h-full flex flex-col gap-6">
+    <div className="w-full h-auto flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
           <RiLineChartLine className="h-5 w-5 text-gray-700" />
@@ -363,10 +363,9 @@ const ChartComponent = ({
         </div>
       </div>
 
-      <DisplayCountProject />
 
       <motion.div
-        className="flex-1 w-full bg-white rounded-xl border border-gray-200 shadow-sm p-4 overflow-hidden"
+        className="flex-1 w-full bg-white rounded-xl border border-gray-200 shadow-sm p-4 min-h-[300px] overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

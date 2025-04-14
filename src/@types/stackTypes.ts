@@ -15,7 +15,7 @@ export interface responseStacks {
 }
 
 export interface stackState {
-  stacks?: stacks;
+  stacks?: stacks | null;
   error: string | null;
   sucess: boolean;
   loading: boolean;
