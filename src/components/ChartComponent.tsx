@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Line } from "react-chartjs-2"
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,9 +11,9 @@ import {
   Tooltip,
   Legend,
   Filler,
-} from "chart.js"
-import { useMemo, useState } from "react"
-import type { statusProject } from "@/@types/statusTypes"
+} from "chart.js";
+import { useMemo, useState } from "react";
+import type { statusProject } from "@/@types/statusTypes";
 import {
   RiArrowLeftSLine,
   RiArrowRightSLine,
@@ -21,16 +21,28 @@ import {
   RiSkipForwardLine,
   RiLineChartLine,
   RiCalendarLine,
-} from "react-icons/ri"
-import { motion } from "framer-motion"
+} from "react-icons/ri";
+import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import DisplayCountProject from "./DisplayCountProject";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 interface ChartComponentProps {
-  projectsCurrent: statusProject[]
-  projectsFinish: statusProject[]
-  indexMoth?: number
-  monthDisplayCount?: number
+  projectsCurrent: statusProject[];
+  projectsFinish: statusProject[];
+  indexMoth?: number;
+  monthDisplayCount?: number;
 }
 
 const ChartComponent = ({
@@ -39,59 +51,76 @@ const ChartComponent = ({
   indexMoth = 0,
   monthDisplayCount = 6,
 }: ChartComponentProps) => {
-  const [monthOffset, setMonthOffset] = useState(indexMoth)
-  const [yearOffset, setYearOffset] = useState(0)
 
-  const monthOrder = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+  const [monthOffset, setMonthOffset] = useState(indexMoth);
+  const [yearOffset, setYearOffset] = useState(0);
 
-  const countProjects = (projects: statusProject[], dateKey: keyof statusProject) => {
-    const counts: { [key: string]: number } = {}
+  const monthOrder = [
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
+  ];
+
+  const countProjects = (
+    projects: statusProject[],
+    dateKey: keyof statusProject
+  ) => {
+    const counts: { [key: string]: number } = {};
     projects.forEach((project) => {
-      const projectDate = new Date(project[dateKey])
-      const month = monthOrder[projectDate.getMonth()]
-      const year = projectDate.getFullYear()
-      const key = `${month}-${year}`
-      counts[key] = (counts[key] || 0) + 1
-    })
-    return counts
-  }
+      const projectDate = new Date(project[dateKey]);
+      const month = monthOrder[projectDate.getMonth()];
+      const year = projectDate.getFullYear();
+      const key = `${month}-${year}`;
+      counts[key] = (counts[key] || 0) + 1;
+    });
+    return counts;
+  };
 
   const projectCounts = useMemo(
     () => ({
       startCounts: countProjects(projectsCurrent, "startDate"),
       endCounts: countProjects(projectsFinish, "endDate"),
     }),
-    [projectsCurrent, projectsFinish],
-  )
+    [projectsCurrent, projectsFinish]
+  );
 
-  const currentYear = new Date().getFullYear()
-  const currentMonthIndex = new Date().getMonth()
-  const displayYear = currentYear + yearOffset
+  const currentYear = new Date().getFullYear();
+  const currentMonthIndex = new Date().getMonth();
+  const displayYear = currentYear + yearOffset;
 
   const months = Array.from({ length: monthDisplayCount }, (_, i) => {
-    const totalMonths = currentMonthIndex + monthOffset + i
-    const monthIndex = totalMonths % 12
-    const yearAdjust = Math.floor(totalMonths / 12)
-    const month = monthOrder[monthIndex < 0 ? monthIndex + 12 : monthIndex]
-    const year = displayYear + yearAdjust
-    return `${month}/${year % 100}` 
-  })
+    const totalMonths = currentMonthIndex + monthOffset + i;
+    const monthIndex = totalMonths % 12;
+    const yearAdjust = Math.floor(totalMonths / 12);
+    const month = monthOrder[monthIndex < 0 ? monthIndex + 12 : monthIndex];
+    const year = displayYear + yearAdjust;
+    return `${month}/${year % 100}`;
+  });
 
   const createStartedGradient = (ctx: any) => {
-    if (!ctx) return null
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-    gradient.addColorStop(0, "rgba(99, 102, 241, 0.4)")
-    gradient.addColorStop(1, "rgba(99, 102, 241, 0.0)")
-    return gradient
-  }
+    if (!ctx) return null;
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(99, 102, 241, 0.4)");
+    gradient.addColorStop(1, "rgba(99, 102, 241, 0.0)");
+    return gradient;
+  };
 
   const createFinishedGradient = (ctx: any) => {
-    if (!ctx) return null
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-    gradient.addColorStop(0, "rgba(20, 184, 166, 0.4)")
-    gradient.addColorStop(1, "rgba(20, 184, 166, 0.0)")
-    return gradient
-  }
+    if (!ctx) return null;
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(20, 184, 166, 0.4)");
+    gradient.addColorStop(1, "rgba(20, 184, 166, 0.0)");
+    return gradient;
+  };
 
   const data = {
     labels: months,
@@ -101,18 +130,20 @@ const ChartComponent = ({
         data: months.map(
           (monthYear) =>
             projectCounts.startCounts[
-              monthYear.split("/")[0] + "-" + (Number.parseInt(monthYear.split("/")[1]) + 2000)
-            ] || 0,
+              monthYear.split("/")[0] +
+                "-" +
+                (Number.parseInt(monthYear.split("/")[1]) + 2000)
+            ] || 0
         ),
-        borderColor: "#6366f1", 
+        borderColor: "#6366f1",
         backgroundColor: (context: any) => {
-          const chart = context.chart
-          const { ctx, chartArea } = chart
-          if (!chartArea) return null
-          return createStartedGradient(ctx)
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          return createStartedGradient(ctx);
         },
         borderWidth: 2,
-        tension: 0.4, 
+        tension: 0.4,
         fill: true,
         pointBackgroundColor: "#6366f1",
         pointBorderColor: "#ffffff",
@@ -125,18 +156,20 @@ const ChartComponent = ({
         data: months.map(
           (monthYear) =>
             projectCounts.endCounts[
-              monthYear.split("/")[0] + "-" + (Number.parseInt(monthYear.split("/")[1]) + 2000)
-            ] || 0,
+              monthYear.split("/")[0] +
+                "-" +
+                (Number.parseInt(monthYear.split("/")[1]) + 2000)
+            ] || 0
         ),
-        borderColor: "#14b8a6", 
+        borderColor: "#14b8a6",
         backgroundColor: (context: any) => {
-          const chart = context.chart
-          const { ctx, chartArea } = chart
-          if (!chartArea) return null
-          return createFinishedGradient(ctx)
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          return createFinishedGradient(ctx);
         },
         borderWidth: 2,
-        tension: 0.4, 
+        tension: 0.4,
         fill: true,
         pointBackgroundColor: "#14b8a6",
         pointBorderColor: "#ffffff",
@@ -145,7 +178,7 @@ const ChartComponent = ({
         pointHoverRadius: 6,
       },
     ],
-  }
+  };
 
   const options = {
     responsive: true,
@@ -163,7 +196,7 @@ const ChartComponent = ({
           padding: 10,
         },
         grid: {
-          color: "rgba(226, 232, 240, 0.6)", 
+          color: "rgba(226, 232, 240, 0.6)",
           drawBorder: false,
         },
         border: {
@@ -174,14 +207,18 @@ const ChartComponent = ({
             (monthYear) =>
               Math.max(
                 projectCounts.startCounts[
-                  monthYear.split("/")[0] + "-" + (Number.parseInt(monthYear.split("/")[1]) + 2000)
+                  monthYear.split("/")[0] +
+                    "-" +
+                    (Number.parseInt(monthYear.split("/")[1]) + 2000)
                 ] || 0,
                 projectCounts.endCounts[
-                  monthYear.split("/")[0] + "-" + (Number.parseInt(monthYear.split("/")[1]) + 2000)
-                ] || 0,
-              ) + 1,
+                  monthYear.split("/")[0] +
+                    "-" +
+                    (Number.parseInt(monthYear.split("/")[1]) + 2000)
+                ] || 0
+              ) + 1
           ),
-          3, 
+          3
         ),
       },
       x: {
@@ -190,7 +227,7 @@ const ChartComponent = ({
             family: "'Inter', sans-serif",
             size: 12,
           },
-          color: "#64748b", 
+          color: "#64748b",
           padding: 10,
         },
         grid: {
@@ -217,7 +254,7 @@ const ChartComponent = ({
             size: 12,
             weight: "500",
           },
-          color: "#334155", 
+          color: "#334155",
         },
       },
       title: {
@@ -244,9 +281,9 @@ const ChartComponent = ({
         usePointStyle: true,
         callbacks: {
           label: (context: any) => {
-            const label = context.dataset.label || ""
-            const value = context.parsed.y
-            return `${label}: ${value} ${value === 1 ? "projeto" : "projetos"}`
+            const label = context.dataset.label || "";
+            const value = context.parsed.y;
+            return `${label}: ${value} ${value === 1 ? "projeto" : "projetos"}`;
           },
         },
       },
@@ -264,18 +301,21 @@ const ChartComponent = ({
       duration: 1000,
       easing: "easeOutQuart",
     },
-  }
+  };
 
-  const handleMonthChange = (delta: number) => setMonthOffset((prev) => prev + delta)
-  const handleYearChange = (delta: number) => setYearOffset((prev) => prev + delta)
+  const handleMonthChange = (delta: number) =>
+    setMonthOffset((prev) => prev + delta);
+  const handleYearChange = (delta: number) =>
+    setYearOffset((prev) => prev + delta);
 
   return (
     <div className="w-full h-full flex flex-col gap-6">
-      {/* Chart Header with Title and Period */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
           <RiLineChartLine className="h-5 w-5 text-gray-700" />
-          <h3 className="text-xl font-bold text-gray-800">Evolução de Projetos</h3>
+          <h3 className="text-xl font-bold text-gray-800">
+            Evolução de Projetos
+          </h3>
         </div>
 
         <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-lg">
@@ -299,7 +339,8 @@ const ChartComponent = ({
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm">
             <RiCalendarLine className="h-4 w-4 text-gray-500" />
             <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              {months[0].split("/")[0]} - {months[months.length - 1].split("/")[0]} {displayYear}
+              {months[0].split("/")[0]} -{" "}
+              {months[months.length - 1].split("/")[0]} {displayYear}
             </span>
           </div>
 
@@ -322,71 +363,7 @@ const ChartComponent = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-2">
-        <motion.div
-          className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-lg border border-gray-100 shadow-sm"
-          whileHover={{ y: -3, transition: { duration: 0.2 } }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 font-medium">Total de Projetos</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">11</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="bg-gradient-to-br from-blue-50 to-white p-4 rounded-lg border border-blue-100 shadow-sm"
-          whileHover={{ y: -3, transition: { duration: 0.2 } }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-600 font-medium">Em Andamento</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">5</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="bg-gradient-to-br from-green-50 to-white p-4 rounded-lg border border-green-100 shadow-sm"
-          whileHover={{ y: -3, transition: { duration: 0.2 } }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-green-600 font-medium">Concluídos</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">6</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="bg-gradient-to-br from-red-50 to-white p-4 rounded-lg border border-red-100 shadow-sm"
-          whileHover={{ y: -3, transition: { duration: 0.2 } }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-red-600 font-medium">Atrasados</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">2</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      <DisplayCountProject />
 
       <motion.div
         className="flex-1 w-full bg-white rounded-xl border border-gray-200 shadow-sm p-4 overflow-hidden"
@@ -399,8 +376,7 @@ const ChartComponent = ({
         </div>
       </motion.div>
     </div>
-  )
-}
+  );
+};
 
-export default ChartComponent
-
+export default ChartComponent;
