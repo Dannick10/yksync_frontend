@@ -20,6 +20,7 @@ import {
   RiSortAlphabetAsc,
   RiRefreshLine,
   RiCloseLine,
+  RiBookLine,
 } from "react-icons/ri";
 
 import Pagination from "@/components/pagination";
@@ -98,6 +99,7 @@ export default function DashboardPage() {
     { id: "statistics", label: "Estatísticas", icon: RiBarChartLine },
     { id: "technologies", label: "Tecnologias", icon: RiCodeSSlashFill },
     { id: "callendar", label: "Calendário", icon: RiCalendarLine },
+    { id: "resumo", label: "resumo", icon: RiBookLine },
   ];
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -111,9 +113,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <header className="border-b flex-1 container mx-auto px-4 sticky">
-      <DisplayCountProject />
-      </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
         {!projects || projects.length === 0 ? (
@@ -517,6 +516,24 @@ export default function DashboardPage() {
                   </h2>
                   <div className="h-[600px]">
                     {projectTotal && <MyFullCalendar projects={projectTotal} />}
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "resumo" && (
+                <motion.div
+                  key="resumo"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white border rounded-xl shadow-sm p-6"
+                >
+                  <h2 className="text-xl font-bold mb-4">
+                  Resumo dos Projetos
+                  </h2>
+                  <div className="h-auto">
+                  <DisplayCountProject/>
                   </div>
                 </motion.div>
               )}
