@@ -27,11 +27,11 @@ import {
 import { useState } from "react"
 import MyFullCalendar from "@/components/MyFullCalendar"
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
+export default async function ProjectDetailPage  ({ params }: { params: Promise<{ id: string }> })  {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   const { project, loading, error, message } = useSelector((state: RootState) => state.project)
-  const id = params.id
+  const { id } = await params
   const [activeTab, setActiveTab] = useState("info")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
@@ -380,4 +380,5 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
     </div>
   )
 }
+
 

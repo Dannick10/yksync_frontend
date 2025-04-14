@@ -3,7 +3,7 @@ import { promises } from "dns";
 export const api: string = process.env.NEXT_PUBLIC_API || 'http://localhost:8081/api/';
 
 
-export const requestConfig = (method: string, data: any = null, token = null) => {
+export const requestConfig = (method: string, data: any = null, token:string | null = null) => {
   let config: any = {
     method,
     headers: {

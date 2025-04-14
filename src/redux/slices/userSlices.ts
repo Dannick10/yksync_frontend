@@ -15,7 +15,7 @@ export const Getprofile = createAsyncThunk<any, user | void, { state: RootState 
   "user/profile",
   async (_, Thunkapi) => {
     try {
-      const token = Thunkapi.getState().auth.token;
+      const token: string | null = Thunkapi.getState().auth.token;
 
       const data = await userService.profile(token);
 

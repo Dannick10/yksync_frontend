@@ -1,6 +1,6 @@
 import { api, requestConfig } from "@/utils/useBaseApi";
 
-const profile = async (token) => {
+const profile = async (token: string | null) => {
   const config = await requestConfig("GET", null, token);
 
   try {

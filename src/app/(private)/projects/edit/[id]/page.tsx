@@ -26,7 +26,7 @@ import { Getprofile } from "@/redux/slices/userSlices"
 import { type formData, projectSchema, StatusOptions } from "../../schema/ProjectSchema"
 import { motion } from "framer-motion"
 
-const EditProjectForm = ({ params }: { params: { id: string } }) => {
+export default async function EditProjectForm ({ params }: { params: Promise<{ id: string }> })  {
   const {
     register,
     handleSubmit,
@@ -56,7 +56,7 @@ const EditProjectForm = ({ params }: { params: { id: string } }) => {
 
   const dispatch = useDispatch<AppDispatch>()
   const router = useRouter()
-  const id = params.id
+  const { id } = await params
 
   const { project, loading, error, message } = useSelector((state: RootState) => state.project)
 
@@ -555,6 +555,4 @@ const EditProjectForm = ({ params }: { params: { id: string } }) => {
     </main>
   )
 }
-
-export default EditProjectForm
 
