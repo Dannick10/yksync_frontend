@@ -111,51 +111,8 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <header className="border-b bg-white sticky top-0 z-10 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center w-full max-w-md">
-            <div className="relative w-full">
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <RiSearchLine className="h-4 w-4" />
-              </div>
-              <input
-                type="text"
-                name="name"
-                placeholder="Pesquisar projeto"
-                className="w-full pl-9 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                value={searchQuery.name}
-                onChange={handleChange}
-              />
-              {searchQuery.name && (
-                <button
-                  onClick={() =>
-                    setSearchQuery((prev) => ({ ...prev, name: "" }))
-                  }
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  aria-label="Limpar pesquisa"
-                >
-                  <RiCloseLine className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            {meta && (
-              <p className="text-sm text-gray-500">
-                {meta.totalProjects > 0
-                  ? `${meta.totalProjects} projetos`
-                  : "Você ainda não tem projetos"}
-              </p>
-            )}
-            <Link
-              href="/projects/new"
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-            >
-              <RiAddLine className="h-4 w-4" />
-              Adicionar projeto
-            </Link>
-          </div>
-        </div>
+      <header className="border-b flex-1 container mx-auto px-4 sticky">
+      <DisplayCountProject />
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
@@ -219,20 +176,37 @@ export default function DashboardPage() {
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
-                  <DisplayCountProject />
-
                   {/* Project Controls */}
                   <div className="flex flex-wrap justify-between items-center bg-white p-4 rounded-xl border mb-6">
                     <div className="flex items-center space-x-2 mb-2 sm:mb-0">
                       <h2 className="text-lg font-bold">Seus Projetos</h2>
-                      {debouncedSearchQuery.name && (
-                        <div className="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">
-                          Pesquisando: {debouncedSearchQuery.name}
-                        </div>
-                      )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
+                      <div className="relative">
+                        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                          <RiSearchLine className="h-4 w-4" />
+                        </div>
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Pesquisar projeto"
+                          className="w-full pl-9 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                          value={searchQuery.name}
+                          onChange={handleChange}
+                        />
+                        {searchQuery.name && (
+                          <button
+                            onClick={() =>
+                              setSearchQuery((prev) => ({ ...prev, name: "" }))
+                            }
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            aria-label="Limpar pesquisa"
+                          >
+                            <RiCloseLine className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
                       <button
                         onClick={() => setFilterOpen(!filterOpen)}
                         className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-gray-50"
@@ -257,6 +231,13 @@ export default function DashboardPage() {
                         <RiRefreshLine className="h-4 w-4" />
                         Atualizar
                       </button>
+                      <Link
+                        href="/projects/new"
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-gray-50"
+                      >
+                        <RiAddLine className="h-4 w-4" />
+                        Adicionar projeto
+                      </Link>
                     </div>
                   </div>
 
