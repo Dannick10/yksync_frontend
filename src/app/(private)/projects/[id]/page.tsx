@@ -26,6 +26,7 @@ import {
 
 import { useState } from "react"
 import MyFullCalendar from "@/components/MyFullCalendar"
+import Loading from "@/app/loading"
 
 export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: string }> })  {
   const router = useRouter()
@@ -63,11 +64,7 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
 
   if (!project) {
     return (
-      <div className="container mx-auto px-4 py-8 flex justify-center">
-        <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-4">
-          <p>Carregando projeto...</p>
-        </div>
-      </div>
+      <Loading/>
     )
   }
 

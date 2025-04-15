@@ -527,22 +527,13 @@ export default function EditProjectForm ()  {
 
               {/* Submit Button */}
               <div className="pt-4">
-                {!loading ? (
+
                   <button
                     type="submit"
                     className="w-full py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
                   >
                     Atualizar Projeto
                   </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="w-full py-3 bg-gray-800 text-white rounded-lg font-medium cursor-not-allowed opacity-70"
-                    disabled
-                  >
-                    Atualizando...
-                  </button>
-                )}
 
                 {error && <p className="mt-3 text-center text-red-500 bg-red-50 p-2 rounded-lg">{error}</p>}
 

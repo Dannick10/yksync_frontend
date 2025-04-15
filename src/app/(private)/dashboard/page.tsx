@@ -30,7 +30,6 @@ import TechStatistics from "@/components/StackStatistics";
 import MyFullCalendar from "@/components/MyFullCalendar";
 import { AnimatePresence, motion } from "framer-motion";
 import DisplayCountProject from "@/components/DisplayCountProject";
-import Loading from "@/app/loading";
 import LayoutDisplay from "@/components/LayoutDisplay";
 
 export default function DashboardPage() {
@@ -42,7 +41,7 @@ export default function DashboardPage() {
     error: errorProject,
   } = useSelector((state: RootState) => state.project);
   const { user } = useSelector((state: RootState) => state.user);
-  const { projectTotal, projectsCurrent, projectsFinish } = useSelector(
+  const { projectTotal, projectsCurrent, projectsFinish, status } = useSelector(
     (state: RootState) => state.status
   );
 
@@ -113,17 +112,10 @@ export default function DashboardPage() {
     dispatch(getStatus());
   }, [dispatch]);
 
-  console.log(loading)
-  console.log({errorProject})
-
-  if (loading && !errorProject ) {
-    return <Loading />;
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <main className="flex-1 container mx-auto px-4 py-8">
-        {meta?.totalProjects === 0 ? (
+        {status?.projectsTotal === 0 || status?.projectsTotal === undefined ? (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
             <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-6">
               <RiCalendarLine className="h-16 w-16 text-gray-400" />

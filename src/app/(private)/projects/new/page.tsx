@@ -24,7 +24,11 @@ import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { createProject, resetMessage } from "@/redux/slices/ProjectSlices";
 import { Getprofile } from "@/redux/slices/userSlices";
-import { formData, projectSchema, StatusOptions } from "../schema/ProjectSchema";
+import {
+  formData,
+  projectSchema,
+  StatusOptions,
+} from "../schema/ProjectSchema";
 import { motion } from "framer-motion";
 
 const ProjectForm = () => {
@@ -43,7 +47,7 @@ const ProjectForm = () => {
       database: [],
       tests: [],
       color: "#6366f1",
-    }
+    },
   });
 
   const [newFrontendTech, setNewFrontendTech] = useState("");
@@ -81,7 +85,7 @@ const ProjectForm = () => {
     setTech: React.Dispatch<React.SetStateAction<string>>
   ) => {
     if (!tech.trim()) return;
-    
+
     const currentTechs = watch(type) || [];
     if (!currentTechs.includes(tech)) {
       setValue(type, [...currentTechs, tech.trim()]);
@@ -103,7 +107,7 @@ const ProjectForm = () => {
   useEffect(() => {
     dispatch(Getprofile());
     dispatch(resetMessage());
-    
+
     if (user?.name) {
       setValue("answerable", user.name);
     }
@@ -111,12 +115,12 @@ const ProjectForm = () => {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
     <main className="flex justify-center py-8 px-4 bg-gray-50 min-h-screen">
-      <motion.section 
+      <motion.section
         className="w-full max-w-3xl"
         initial="hidden"
         animate="visible"
@@ -126,9 +130,11 @@ const ProjectForm = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="bg-black text-white p-6">
             <h1 className="text-2xl font-bold">Adicionar Projeto</h1>
-            <p className="text-gray-300 mt-1">Crie um novo projeto para acompanhar seu progresso</p>
+            <p className="text-gray-300 mt-1">
+              Crie um novo projeto para acompanhar seu progresso
+            </p>
           </div>
-          
+
           <form
             method="post"
             className="p-6 md:p-8"
@@ -141,7 +147,7 @@ const ProjectForm = () => {
                   <RiProjector2Fill className="text-gray-700" />
                   Informações Básicas
                 </h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -151,18 +157,22 @@ const ProjectForm = () => {
                       <input
                         type="text"
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                          errors.name ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                          errors.name
+                            ? "border-red-400 focus:ring-red-200"
+                            : "border-gray-300"
                         }`}
                         placeholder="Nome do projeto"
                         autoComplete="off"
                         {...register("name")}
                       />
                       {errors.name && (
-                        <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.name.message}
+                        </p>
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Responsável
@@ -171,44 +181,52 @@ const ProjectForm = () => {
                       <input
                         type="text"
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                          errors.answerable ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                          errors.answerable
+                            ? "border-red-400 focus:ring-red-200"
+                            : "border-gray-300"
                         }`}
                         placeholder="Responsável pelo projeto"
                         autoComplete="off"
                         {...register("answerable")}
                       />
                       {errors.answerable && (
-                        <p className="mt-1 text-sm text-red-500">{errors.answerable.message}</p>
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.answerable.message}
+                        </p>
                       )}
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
                     Descrição
                   </label>
                   <textarea
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all min-h-[100px] ${
-                      errors.description ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                      errors.description
+                        ? "border-red-400 focus:ring-red-200"
+                        : "border-gray-300"
                     }`}
                     placeholder="Descreva seu projeto"
                     autoComplete="off"
                     {...register("description")}
                   />
                   {errors.description && (
-                    <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.description.message}
+                    </p>
                   )}
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Cor do Projeto
                     </label>
                     <div className="flex items-center gap-3">
-                      <div 
-                        className="w-10 h-10 rounded-md border border-gray-300" 
+                      <div
+                        className="w-10 h-10 rounded-md border border-gray-300"
                         style={{ backgroundColor: watch("color") }}
                       />
                       <input
@@ -220,10 +238,12 @@ const ProjectForm = () => {
                       />
                     </div>
                     {errors.color && (
-                      <p className="mt-1 text-sm text-red-500">{errors.color.message}</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.color.message}
+                      </p>
                     )}
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Status do Projeto
@@ -239,19 +259,21 @@ const ProjectForm = () => {
                       ))}
                     </select>
                     {errors.status && (
-                      <p className="mt-1 text-sm text-red-500">{errors.status.message}</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.status.message}
+                      </p>
                     )}
                   </div>
                 </div>
               </div>
-              
+
               {/* Dates */}
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
                   <RiCalendar2Line className="text-gray-700" />
                   Datas do Projeto
                 </h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -261,16 +283,20 @@ const ProjectForm = () => {
                       <input
                         type="date"
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                          errors.startDate ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                          errors.startDate
+                            ? "border-red-400 focus:ring-red-200"
+                            : "border-gray-300"
                         }`}
                         {...register("startDate")}
                       />
                       {errors.startDate && (
-                        <p className="mt-1 text-sm text-red-500">{errors.startDate.message}</p>
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.startDate.message}
+                        </p>
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       Data de Término
@@ -279,29 +305,35 @@ const ProjectForm = () => {
                       <input
                         type="date"
                         className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                          errors.endDate ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                          errors.endDate
+                            ? "border-red-400 focus:ring-red-200"
+                            : "border-gray-300"
                         }`}
                         {...register("endDate")}
                       />
                       {errors.endDate && (
-                        <p className="mt-1 text-sm text-red-500">{errors.endDate.message}</p>
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.endDate.message}
+                        </p>
                       )}
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               {/* Technologies */}
               <div className="space-y-6">
-                <h2 className="text-lg font-semibold">Tecnologias Utilizadas</h2>
-                
+                <h2 className="text-lg font-semibold">
+                  Tecnologias Utilizadas
+                </h2>
+
                 {/* Frontend */}
                 <div className="space-y-3">
                   <h3 className="text-md font-medium flex items-center gap-2">
                     <RiCodeSSlashFill className="text-gray-700" />
                     Frontend
                   </h3>
-                  
+
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -310,21 +342,31 @@ const ProjectForm = () => {
                       value={newFrontendTech}
                       onChange={(e) => setNewFrontendTech(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           e.preventDefault();
-                          addTechnology("frontend", newFrontendTech, setNewFrontendTech);
+                          addTechnology(
+                            "frontend",
+                            newFrontendTech,
+                            setNewFrontendTech
+                          );
                         }
                       }}
                     />
                     <button
                       type="button"
                       className="p-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                      onClick={() => addTechnology("frontend", newFrontendTech, setNewFrontendTech)}
+                      onClick={() =>
+                        addTechnology(
+                          "frontend",
+                          newFrontendTech,
+                          setNewFrontendTech
+                        )
+                      }
                     >
                       <RiAddLine className="w-5 h-5" />
                     </button>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {selectedFrontendTechs.map((tech) => (
                       <div
@@ -343,14 +385,14 @@ const ProjectForm = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Backend */}
                 <div className="space-y-3">
                   <h3 className="text-md font-medium flex items-center gap-2">
                     <RiCodeSSlashFill className="text-gray-700" />
                     Backend
                   </h3>
-                  
+
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -359,21 +401,31 @@ const ProjectForm = () => {
                       value={newBackendTech}
                       onChange={(e) => setNewBackendTech(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           e.preventDefault();
-                          addTechnology("backend", newBackendTech, setNewBackendTech);
+                          addTechnology(
+                            "backend",
+                            newBackendTech,
+                            setNewBackendTech
+                          );
                         }
                       }}
                     />
                     <button
                       type="button"
                       className="p-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                      onClick={() => addTechnology("backend", newBackendTech, setNewBackendTech)}
+                      onClick={() =>
+                        addTechnology(
+                          "backend",
+                          newBackendTech,
+                          setNewBackendTech
+                        )
+                      }
                     >
                       <RiAddLine className="w-5 h-5" />
                     </button>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {selectedBackendTechs.map((tech) => (
                       <div
@@ -392,14 +444,14 @@ const ProjectForm = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Database */}
                 <div className="space-y-3">
                   <h3 className="text-md font-medium flex items-center gap-2">
                     <RiDatabase2Fill className="text-gray-700" />
                     Banco de Dados
                   </h3>
-                  
+
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -408,21 +460,31 @@ const ProjectForm = () => {
                       value={newDatabaseTech}
                       onChange={(e) => setNewDatabaseTech(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           e.preventDefault();
-                          addTechnology("database", newDatabaseTech, setNewDatabaseTech);
+                          addTechnology(
+                            "database",
+                            newDatabaseTech,
+                            setNewDatabaseTech
+                          );
                         }
                       }}
                     />
                     <button
                       type="button"
                       className="p-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                      onClick={() => addTechnology("database", newDatabaseTech, setNewDatabaseTech)}
+                      onClick={() =>
+                        addTechnology(
+                          "database",
+                          newDatabaseTech,
+                          setNewDatabaseTech
+                        )
+                      }
                     >
                       <RiAddLine className="w-5 h-5" />
                     </button>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {selectedDatabaseTechs.map((tech) => (
                       <div
@@ -441,14 +503,14 @@ const ProjectForm = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Tests */}
                 <div className="space-y-3">
                   <h3 className="text-md font-medium flex items-center gap-2">
                     <RiTestTubeFill className="text-gray-700" />
                     Testes
                   </h3>
-                  
+
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -457,7 +519,7 @@ const ProjectForm = () => {
                       value={newTestTech}
                       onChange={(e) => setNewTestTech(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           e.preventDefault();
                           addTechnology("tests", newTestTech, setNewTestTech);
                         }
@@ -466,12 +528,14 @@ const ProjectForm = () => {
                     <button
                       type="button"
                       className="p-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                      onClick={() => addTechnology("tests", newTestTech, setNewTestTech)}
+                      onClick={() =>
+                        addTechnology("tests", newTestTech, setNewTestTech)
+                      }
                     >
                       <RiAddLine className="w-5 h-5" />
                     </button>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {selectedTestTechs.map((tech) => (
                       <div
@@ -491,14 +555,14 @@ const ProjectForm = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Links */}
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
                   <RiLink className="text-gray-700" />
                   Links do Projeto
                 </h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700 flex items-center gap-1">
@@ -508,16 +572,20 @@ const ProjectForm = () => {
                     <input
                       type="text"
                       className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                        errors.linkDeploy ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                        errors.linkDeploy
+                          ? "border-red-400 focus:ring-red-200"
+                          : "border-gray-300"
                       }`}
                       placeholder="https://meu-projeto.vercel.app"
                       {...register("linkDeploy")}
                     />
                     {errors.linkDeploy && (
-                      <p className="mt-1 text-sm text-red-500">{errors.linkDeploy.message}</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.linkDeploy.message}
+                      </p>
                     )}
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700 flex items-center gap-1">
                       <RiGitRepositoryLine className="text-gray-500" />
@@ -526,43 +594,37 @@ const ProjectForm = () => {
                     <input
                       type="text"
                       className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black/20 focus:border-black transition-all ${
-                        errors.linkRepository ? "border-red-400 focus:ring-red-200" : "border-gray-300"
+                        errors.linkRepository
+                          ? "border-red-400 focus:ring-red-200"
+                          : "border-gray-300"
                       }`}
                       placeholder="https://github.com/usuario/projeto"
                       {...register("linkRepository")}
                     />
                     {errors.linkRepository && (
-                      <p className="mt-1 text-sm text-red-500">{errors.linkRepository.message}</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.linkRepository.message}
+                      </p>
                     )}
                   </div>
                 </div>
               </div>
-              
+
               {/* Submit Button */}
               <div className="pt-4">
-                {!loading ? (
-                  <button
-                    type="submit"
-                    className="w-full py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
-                  >
-                    Salvar Projeto
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="w-full py-3 bg-gray-800 text-white rounded-lg font-medium cursor-not-allowed opacity-70"
-                    disabled
-                  >
-                    Salvando...
-                  </button>
-                )}
-                
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                >
+                  Salvar Projeto
+                </button>
+
                 {error && (
                   <p className="mt-3 text-center text-red-500 bg-red-50 p-2 rounded-lg">
                     {error}
                   </p>
                 )}
-                
+
                 {message && (
                   <p className="mt-3 text-center text-green-500 bg-green-50 p-2 rounded-lg">
                     {message}

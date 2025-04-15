@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import Cards from "@/components/cards";
-import { motion } from "framer-motion";
 import HeroSection from "./components/HeroSection";
 import FeaturedProject from "./components/FeaturedProject";
 import CardsSection from "./components/CardsSection";
