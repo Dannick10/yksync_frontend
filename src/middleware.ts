@@ -9,7 +9,7 @@ const publicRoutes = [
   {path: '/recursos', whenAuthenticated: 'next'},
   {path: '/termos', whenAuthenticated: 'next'},
   {path: '/politica', whenAuthenticated: 'next'},
-  {path: '/', whenAuthenticated: 'next'},
+  {path: '/', whenAuthenticated: 'redirect'},
 ] as const
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/signin'
