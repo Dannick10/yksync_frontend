@@ -1,9 +1,5 @@
 "use client"
-
-import { Getprofile } from '@/redux/slices/userSlices'
-import { AppDispatch } from '@/redux/store'
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 
 interface LayoutProps {
     children: React.ReactNode
