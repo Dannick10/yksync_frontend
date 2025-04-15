@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Yksynk",
     images: [
       {
-        url: "https://yksynck.vercel.app/preview.png",
+        url: "https://yksynck.vercel.app/preview.webp",
         width: 1200,
         height: 630,
         alt: "Dashboard do Yksynk com projetos organizados",

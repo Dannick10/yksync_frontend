@@ -10,7 +10,7 @@ const HeroSection = () => {
         className="absolute top-0 left-0 w-full h-full"
       >
         <Image
-          src={"/crow.jpeg"}
+          src={"/crow.webp"}
           alt="corvo"
           fill
           className="object-cover opacity-20"

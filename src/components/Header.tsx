@@ -56,7 +56,7 @@ const Header = () => {
         <Link href="/" className="text-2xl font-bold text-white relative group">
           <div className="flex justify-center items-centergap-2">
             <div className="relative w-9 h-9">
-          <Image src={'/ykLogo.png'} fill className="object-cover" alt="logo" />
+          <Image src={'/ykLogo.webp'} fill className="object-cover" alt="logo" />
             </div>
           <span className="relative z-10">YKSYNCK</span>
           </div>

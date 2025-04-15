@@ -29,7 +29,7 @@ export default function SobrePage() {
           </div>
           <div className="relative h-64 md:h-auto">
             <Image
-              src="/about.png"
+              src="/about.webp"
               alt="Interface do Yksynk"
               width={400}
               height={400}

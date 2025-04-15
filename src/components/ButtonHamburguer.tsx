@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -101,6 +102,14 @@ const ButtonHamburguer = ({ items: NavItems }: ButtonHamburguerProps) => {
               </button>
             </div>
             <ul className="flex flex-col text-white p-6 space-y-4">
+              <div className="absolute left-10 top-10 w-9 h-9">
+                <Image
+                  src={"/ykLogo.webp"}
+                  fill
+                  className="object-cover"
+                  alt="logo"
+                />
+              </div>
               {NavItems.map((item, index) => (
                 <Link
                   className="w-full"
@@ -117,7 +126,7 @@ const ButtonHamburguer = ({ items: NavItems }: ButtonHamburguerProps) => {
 
             <ul className="flex flex-col text-white p-6 space-y-4">
               {SubItems.map((item, index) => (
-                <Link className="w-full" href={item.link} key={index}>
+                <Link className="w-full" href={item.link} key={index} onClick={handleChangeButton}>
                   <li className="py-3 px-4 border-b border-gray-500 hover:bg-gray-900 transition-colors rounded-md">
                     {item.label}
                   </li>
