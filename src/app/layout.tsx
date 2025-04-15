@@ -33,14 +33,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Daniel Rocha", url: "https://github.com/Dannick10" }],
   creator: "Daniel Rocha",
   openGraph: {
-    url: "https://yksynk.vercel.app", 
+    url: "https://yksynck.vercel.app",
     title: "Yksynk | Gerencie Projetos com Estilo e Eficiência",
     description:
-    "Transforme ideias em projetos bem organizados com a plataforma Yksynk. Visualize tarefas, acompanhe prazos e evolua com clareza.",
+      "Transforme ideias em projetos bem organizados com a plataforma Yksynk. Visualize tarefas, acompanhe prazos e evolua com clareza.",
     siteName: "Yksynk",
     images: [
       {
-        url: "/preview.png", 
+        url: "https://yksynck.vercel.app/preview.png", 
         width: 1200,
         height: 630,
         alt: "Dashboard do Yksynk com projetos organizados",
@@ -50,10 +50,10 @@ export const metadata: Metadata = {
     locale: "pt_BR",
   },
   icons: {
-    icon: "/favicon.ico", 
+    icon: "https://yksynck.vercel.app/favicon.ico",
   },
-  
 };
+
 
 export default function RootLayout({
   children,
