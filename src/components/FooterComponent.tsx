@@ -50,10 +50,10 @@ const FooterComponent = () => {
 
           {/* network */}
           <div className="flex justify-start md:justify-end gap-4">
-            <Link href="/https://github.com/Dannick10" target={"_blank"}  className="text-gray-400 hover:text-white transition-colors text-xl">
+            <Link href="https://github.com/Dannick10" target={"_blank"}  className="text-gray-400 hover:text-white transition-colors text-xl">
               <FaGithub />
             </Link>
-            <Link href="/https://www.linkedin.com/in/futurodevdaniel/"  target={"_blank"} className="text-gray-400 hover:text-white transition-colors text-xl">
+            <Link href="https://www.linkedin.com/in/futurodevdaniel/"  target={"_blank"} className="text-gray-400 hover:text-white transition-colors text-xl">
               <FaLinkedin />
             </Link>
           </div>

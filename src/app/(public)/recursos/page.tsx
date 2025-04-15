@@ -235,12 +235,12 @@ export default function RecursosPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href={"/signup"}>
-              <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70">
+              <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 w-full">
                 Criar minha conta
               </button>
             </Link>
             <Link href={"/services"}>
-              <button className="flex items-center justify-center px-8 py-3 bg-white border border-zinc-200 font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70">
+              <button className="flex items-center justify-center px-8 py-3 bg-white border border-zinc-200 font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 w-full">
                 Conhecer serviços
               </button>
             </Link>

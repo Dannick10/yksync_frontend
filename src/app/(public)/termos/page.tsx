@@ -10,7 +10,7 @@ export default function Termspage() {
   const lastUpdated = new Date().toLocaleDateString("pt-BR")
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-blue-50 pt-24 pb-16">
+    <main className="min-h-screen bg-gradient-to-b from-white to-zinc-100 pt-24 pb-16">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -180,7 +180,7 @@ export default function Termspage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all"
+                className="px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all w-full md:w-auto"
               >
                 Voltar para a página inicial
               </motion.button>

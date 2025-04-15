@@ -99,7 +99,7 @@ export default function SobrePage() {
             para o próximo nível.
           </p>
           <Link href={"/sign"}>
-            <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto">
+            <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto w-full md:w-auto">
               Criar minha conta
             </button>
           </Link>
