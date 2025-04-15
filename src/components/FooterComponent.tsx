@@ -14,7 +14,7 @@ const FooterComponent = () => {
     },
     {
       label: "Serviços",
-      link: "/services",
+      link: "/servicos",
     },
     {
       label: "Contato",

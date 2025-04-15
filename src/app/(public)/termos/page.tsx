@@ -180,7 +180,7 @@ export default function Termspage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-zinc-950 text-white font-bold rounded-full text-lg shadow-lg hover:shadow-xl transition-all"
+                className="px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all"
               >
                 Voltar para a página inicial
               </motion.button>

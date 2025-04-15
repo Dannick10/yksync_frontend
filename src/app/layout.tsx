@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "Yksynk",
     images: [
       {
-        url: "https://yksynk.vercel.app/og-image.png",
+        url: "https://yksynk.vercel.app/preview.png",
         width: 1200,
         height: 630,
         alt: "Dashboard do Yksynk com projetos organizados",
@@ -62,7 +62,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <Header />
-          <main className="pt-20 bg-gray-50 min-h-screen">
+          <main className="pt-10 md:pt-20 bg-gray-50 min-h-screen">
           {children}
           </main>
           <FooterComponent />

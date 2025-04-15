@@ -41,7 +41,7 @@ const ButtonHamburguer = ({ items: NavItems }: ButtonHamburguerProps) => {
     },
     {
       label: "Serviços",
-      link: "/services",
+      link: "/servicos",
     },
     {
       label: "Contato",

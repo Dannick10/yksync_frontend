@@ -4,9 +4,11 @@ const publicRoutes = [
   {path: '/signin', whenAuthenticated: 'redirect'},
   {path: '/register', whenAuthenticated: 'redirect'},
   {path: '/sobre', whenAuthenticated: 'next'},
-  {path: '/services', whenAuthenticated: 'next'},
+  {path: '/servicos', whenAuthenticated: 'next'},
   {path: '/contato', whenAuthenticated: 'next'},
   {path: '/recursos', whenAuthenticated: 'next'},
+  {path: '/termos', whenAuthenticated: 'next'},
+  {path: '/politica', whenAuthenticated: 'next'},
   {path: '/', whenAuthenticated: 'next'},
 ] as const
 
