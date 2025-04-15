@@ -35,21 +35,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://yksynk.vercel.app",
+    url: "https://yksynk.vercel.app", 
     title: "Yksynk | Gerencie Projetos com Estilo e Eficiência",
     description:
       "Transforme ideias em projetos bem organizados com a plataforma Yksynk. Visualize tarefas, acompanhe prazos e evolua com clareza.",
     siteName: "Yksynk",
     images: [
       {
-        url: "https://yksynck.vercel.app/preview.png",
+        url: "https://yksynk.vercel.app/preview.png", 
         width: 1200,
         height: 630,
         alt: "Dashboard do Yksynk com projetos organizados",
       },
     ],
   },
+  icons: {
+    icon: "/favicon.ico", 
+  },
 };
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
