@@ -18,7 +18,7 @@ const HeroSection = () => {
           }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-900">
+          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-zinc-950">
             Transforme suas ideias em{" "}
             <span className="relative inline-block">
               <span className="relative z-10">projetos organizados</span>
@@ -37,13 +37,13 @@ const HeroSection = () => {
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <Link
               href="/register"
-              className="px-8 py-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
+              className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
             >
               Criar minha conta
             </Link>
             <Link
               href="/signin"
-              className="px-8 py-4 border border-gray-300 text-gray-800 rounded-lg font-medium hover:bg-gray-100 transition-all"
+              className="flex items-center justify-center px-8 py-3 text-zinc-950 bg-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
             >
               Já tenho conta
             </Link>

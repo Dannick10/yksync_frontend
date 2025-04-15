@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "@/redux/store"
@@ -27,17 +27,17 @@ import {
 import { useState } from "react"
 import MyFullCalendar from "@/components/MyFullCalendar"
 
-export default async function ProjectDetailPage  ({ params }: { params: Promise<{ id: string }> })  {
+export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: string }> })  {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   const { project, loading, error, message } = useSelector((state: RootState) => state.project)
-  const { id } = await params
+  const { id } = useParams() 
   const [activeTab, setActiveTab] = useState("info")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   useEffect(() => {
     if (id) {
-      dispatch(getProject_Id(id))
+      dispatch(getProject_Id(id as string))
     }
   }, [dispatch, id])
 
@@ -53,7 +53,7 @@ export default async function ProjectDetailPage  ({ params }: { params: Promise<
   }
 
   const handleDelete = () => {
-    dispatch(projectDelete(id))
+    dispatch(projectDelete(id as string))
     setTimeout(() => {
       dispatch(resetMessage())
       dispatch(resetProject())

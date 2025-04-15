@@ -25,6 +25,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { getStacks } from "@/redux/slices/stackSlices";
+import Loading from "@/app/loading";
 
 ChartJS.register(
   CategoryScale,
@@ -52,9 +53,7 @@ const TechStatistics = () => {
 
   if (loading || !stacks || !stacks.stacks) {
     return (
-      <div className="bg-white border rounded-lg shadow-sm p-6 flex flex-col items-center justify-center h-[400px]">
-        <RiLoader4Line className="h-10 w-10 text-gray-400 animate-spin mb-4" />
-      </div>
+      <Loading/>
     );
   }
 

@@ -7,7 +7,6 @@ import HeroSection from "./components/HeroSection";
 import FeaturedProject from "./components/FeaturedProject";
 import CardsSection from "./components/CardsSection";
 import CTASection from "./components/CTASection";
-import StatsSection from "./components/StatsSection";
 
 const HomePage = () => {
 
@@ -16,7 +15,6 @@ const HomePage = () => {
       <HeroSection />
       <FeaturedProject />
       <CardsSection/>
-      <StatsSection/>
       <CTASection/>
     </div>
   );

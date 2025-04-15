@@ -88,7 +88,7 @@ export const projectEdit = createAsyncThunk<
 
     return data;
   } catch (err) {
-    return thunkapi.rejectWithValue("Error ao buscar projeto");
+    return thunkapi.rejectWithValue("Error ao editar projeto");
   }
 });
 
@@ -107,7 +107,7 @@ export const projectDelete = createAsyncThunk<
 
     return data;
   } catch (err) {
-    return thunkapi.rejectWithValue("Error ao buscar projeto");
+    return thunkapi.rejectWithValue("Error ao deletar projeto");
   }
 });
 
@@ -150,6 +150,7 @@ export const projectSlice = createSlice({
       .addCase(getProject.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
+        state.error = null;
         state.projects = action.payload.project;
         state.meta = action.payload.meta;
       })

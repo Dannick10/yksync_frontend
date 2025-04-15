@@ -18,7 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import type { AppDispatch, RootState } from "@/redux/store"
 import { getProject_Id, projectEdit, resetMessage } from "@/redux/slices/ProjectSlices"
@@ -26,7 +26,7 @@ import { Getprofile } from "@/redux/slices/userSlices"
 import { type formData, projectSchema, StatusOptions } from "../../schema/ProjectSchema"
 import { motion } from "framer-motion"
 
-export default async function EditProjectForm ({ params }: { params: Promise<{ id: string }> })  {
+export default function EditProjectForm ()  {
   const {
     register,
     handleSubmit,
@@ -56,12 +56,12 @@ export default async function EditProjectForm ({ params }: { params: Promise<{ i
 
   const dispatch = useDispatch<AppDispatch>()
   const router = useRouter()
-  const { id } = await params
+  const { id } = useParams()
 
   const { project, loading, error, message } = useSelector((state: RootState) => state.project)
 
   useEffect(() => {
-    dispatch(getProject_Id(id))
+    dispatch(getProject_Id(id as string))
     dispatch(Getprofile())
     dispatch(resetMessage())
   }, [dispatch, id])

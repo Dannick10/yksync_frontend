@@ -30,6 +30,8 @@ import TechStatistics from "@/components/StackStatistics";
 import MyFullCalendar from "@/components/MyFullCalendar";
 import { AnimatePresence, motion } from "framer-motion";
 import DisplayCountProject from "@/components/DisplayCountProject";
+import Loading from "@/app/loading";
+import LayoutDisplay from "@/components/LayoutDisplay";
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -111,11 +113,17 @@ export default function DashboardPage() {
     dispatch(getStatus());
   }, [dispatch]);
 
+  console.log(loading)
+  console.log({errorProject})
+
+  if (loading && !errorProject ) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-
       <main className="flex-1 container mx-auto px-4 py-8">
-        {!projects || projects.length === 0 ? (
+        {meta?.totalProjects === 0 ? (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
             <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-6">
               <RiCalendarLine className="h-16 w-16 text-gray-400" />
@@ -177,12 +185,8 @@ export default function DashboardPage() {
                 >
                   {/* Project Controls */}
                   <div className="flex flex-wrap justify-between items-center bg-white p-4 rounded-xl border mb-6">
-                    <div className="flex items-center space-x-2 mb-2 sm:mb-0">
-                      <h2 className="text-lg font-bold">Seus Projetos</h2>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                      <div className="relative">
+                    <div className="flex w-full lg:w-auto items-center space-x-2 mb-2 lg:mb-0">
+                      <div className="relative w-full">
                         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                           <RiSearchLine className="h-4 w-4" />
                         </div>
@@ -206,6 +210,9 @@ export default function DashboardPage() {
                           </button>
                         )}
                       </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => setFilterOpen(!filterOpen)}
                         className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-gray-50"
@@ -469,14 +476,7 @@ export default function DashboardPage() {
               )}
 
               {activeTab === "statistics" && (
-                <motion.div
-                  key="statistics"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white border rounded-xl shadow-sm p-6"
-                >
+                <LayoutDisplay key="statistics">
                   <div className="w-full h-[400px] flex justify-center">
                     {projectsCurrent && projectsFinish && (
                       <ChartComponent
@@ -487,55 +487,41 @@ export default function DashboardPage() {
                       />
                     )}
                   </div>
-                </motion.div>
+                </LayoutDisplay>
               )}
 
               {activeTab === "technologies" && (
-                <motion.div
-                  key="technologies"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
+                <LayoutDisplay key="technologies">
                   <TechStatistics />
-                </motion.div>
+                </LayoutDisplay>
               )}
 
               {activeTab === "callendar" && (
-                <motion.div
-                  key="callendar"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white border rounded-xl shadow-sm p-6"
-                >
-                  <h2 className="text-xl font-bold mb-4">
-                    Calendário de Projetos
-                  </h2>
-                  <div className="h-[600px]">
-                    {projectTotal && <MyFullCalendar projects={projectTotal} />}
-                  </div>
-                </motion.div>
+                <LayoutDisplay key="callendar">
+                  <>
+                    <h2 className="text-xl font-bold mb-4">
+                      Calendário de Projetos
+                    </h2>
+                    <div className="h-[600px]">
+                      {projectTotal && (
+                        <MyFullCalendar projects={projectTotal} />
+                      )}
+                    </div>
+                  </>
+                </LayoutDisplay>
               )}
 
               {activeTab === "resumo" && (
-                <motion.div
-                  key="resumo"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white border rounded-xl shadow-sm p-6"
-                >
-                  <h2 className="text-xl font-bold mb-4">
-                  Resumo dos Projetos
-                  </h2>
-                  <div className="h-auto">
-                  <DisplayCountProject/>
-                  </div>
-                </motion.div>
+                <LayoutDisplay key="resumo">
+                  <>
+                    <h2 className="text-xl font-bold mb-4">
+                      Resumo dos Projetos
+                    </h2>
+                    <div className="h-auto">
+                      <DisplayCountProject />
+                    </div>
+                  </>
+                </LayoutDisplay>
               )}
             </AnimatePresence>
           </div>

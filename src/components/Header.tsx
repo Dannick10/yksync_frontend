@@ -6,6 +6,7 @@ import ButtonHamburguer from "./ButtonHamburguer"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/store"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 type Props = {}
 
@@ -14,7 +15,7 @@ type navItems = {
   url: string
 }
 
-const Header = (props: Props) => {
+const Header = () => {
   const reduxToken = useSelector((state: RootState) => state.auth.token)
   const [clientToken, setClientToken] = useState<string | null>(null)
 
@@ -53,7 +54,12 @@ const Header = (props: Props) => {
     >
       <div className="container mx-auto flex items-center justify-between px-6 md:px-10">
         <Link href="/" className="text-2xl font-bold text-white relative group">
+          <div className="flex justify-center items-centergap-2">
+            <div className="relative w-9 h-9">
+          <Image src={'/ykLogo.png'} fill className="object-cover" alt="logo" />
+            </div>
           <span className="relative z-10">YKSYNCK</span>
+          </div>
           <span className="absolute bottom-0 left-0 w-0 h-[3px] bg-white group-hover:w-full transition-all duration-300 z-0"></span>
         </Link>
 
