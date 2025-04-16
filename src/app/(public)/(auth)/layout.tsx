@@ -9,7 +9,7 @@ interface LayoutProps {
     children: React.ReactNode
 }
 
-const layout = ({children}: LayoutProps) => {
+const Layout = ({children}: LayoutProps) => {
 
   const {token } = useSelector((state: RootState) => state.auth)
 
@@ -19,7 +19,6 @@ const layout = ({children}: LayoutProps) => {
     if(token) {
       router.push('/dashboard')
     }
-
   },[token, router])
 
   return (
@@ -31,4 +30,4 @@ const layout = ({children}: LayoutProps) => {
   )
 }
 
-export default layout
+export default Layout

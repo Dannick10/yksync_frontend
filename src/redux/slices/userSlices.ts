@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "../services/userService";
-import { AppDispatch, RootState } from "../store";
+import { RootState } from "../store";
 import { user, userStates } from "@/@types/userTypes";
+import Cookies from "js-cookie";
 
 const initialState: userStates = {
   user: null,
@@ -20,11 +21,13 @@ export const Getprofile = createAsyncThunk<any, user | void, { state: RootState 
       const data = await userService.profile(token);
 
       if (data.erros) {
+        Cookies.remove("token"); 
         return Thunkapi.rejectWithValue(data.erros[0]);
       }
 
       return data;
     } catch (err) {
+      Cookies.remove("token"); 
       return Thunkapi.rejectWithValue("Erro ao resgatar usuário");
     }
   }

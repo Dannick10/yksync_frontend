@@ -1,15 +1,18 @@
 "use client"
-import React from 'react'
+import { RootState } from '@/redux/store'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 interface LayoutProps {
     children: React.ReactNode
 }
 
-const layout = ({children}: LayoutProps) => {
+const Layout = ({children}: LayoutProps) => {
 
   return (
     <div>{children}</div>
   )
 }
 
-export default layout
+export default Layout
