@@ -14,6 +14,7 @@ import {
   RiMailLine,
 } from "react-icons/ri";
 import Loading from "@/app/loading";
+import Cookies from "js-cookie";
 
 const PerfilPage = () => {
   const { user, message, error, loading } = useSelector(
@@ -26,6 +27,7 @@ const PerfilPage = () => {
     dispatch(LogoutUser());
     dispatch(reset());
     dispatch(resetUser());
+    Cookies.remove("token"); 
     router.push("/");
   };
 
