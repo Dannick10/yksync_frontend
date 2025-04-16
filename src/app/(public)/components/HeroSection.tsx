@@ -15,7 +15,7 @@ const HeroSection = () => {
           fill
           className="object-cover opacity-20"
         />
-        <div className="absolute bg-gradient-to-t to-transparent from-white bottom-0 h-10 w-full" />
+        <div className="absolute bg-gradient-to-t to-transparent from-gray-50 bottom-0 h-16 w-full" />
       </div>
       {/* Content */}
       <div className="container relative mx-auto px-4 z-10">
@@ -50,13 +50,13 @@ const HeroSection = () => {
             <div className="flex flex-wrap justify-center gap-4 pt-4">
               <Link
                 href="/register"
-                className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
+                className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 w-full md:w-auto"
               >
                 Criar minha conta
               </Link>
               <Link
                 href="/signin"
-                className="flex items-center justify-center px-8 py-3 text-zinc-950 bg-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
+                className="flex items-center justify-center px-8 py-3 text-zinc-950 bg-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 w-full md:w-auto"
               >
                 Já tenho conta
               </Link>
