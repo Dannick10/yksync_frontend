@@ -28,6 +28,7 @@ const PerfilPage = () => {
     dispatch(reset());
     dispatch(resetUser());
     router.push("/");
+    window.location.reload()
   };
 
   useEffect(() => {
