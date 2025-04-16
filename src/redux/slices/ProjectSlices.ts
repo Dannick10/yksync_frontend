@@ -151,8 +151,13 @@ export const projectSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.error = null;
-        state.projects = action.payload.project;
+        state.projects = action.payload.project || [];
         state.meta = action.payload.meta;
+      })
+      .addCase(getProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.projects = []; 
       })
       .addCase(getProject_Id.pending, (state) => {
         state.loading = true;

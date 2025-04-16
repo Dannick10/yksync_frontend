@@ -1,7 +1,8 @@
+import { PayloadLogin, PayloadSignin } from "@/@types/authTypes";
 import { api,requestConfig } from "@/utils/useBaseApi";
 import Cookies from "js-cookie";
 
-const register = async (data: any) => {
+const register = async (data: PayloadSignin) => {
     const config  = requestConfig("POST", data)
 
     try {
@@ -25,7 +26,7 @@ const logout = () => {
     Cookies.remove("token")
 }
 
-const login = async (data: any) => {
+const login = async (data: PayloadLogin) => {
     const config  = requestConfig("POST", data)
 
     try {

@@ -1,5 +1,4 @@
 import { api, requestConfig } from "@/utils/useBaseApi";
-import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 
 const createProject = async (data: project, token: any) => {
   const config = requestConfig("POST", data, token);
@@ -29,7 +28,7 @@ const getProject = async (token: any, page: number, _id: any, filter: any) => {
     console.log(res);
     return res;
   } catch (err) {
-    console.log(err);
+    throw new Error("Erro ao buscar projetos");
   }
 };
 

@@ -7,7 +7,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { Getprofile } from "@/redux/slices/userSlices";
-import { RiUser2Fill, RiLogoutBoxRLine, RiEditLine, RiMailLine } from "react-icons/ri";
+import {
+  RiUser2Fill,
+  RiLogoutBoxRLine,
+  RiEditLine,
+  RiMailLine,
+} from "react-icons/ri";
+import Loading from "@/app/loading";
 
 const PerfilPage = () => {
   const { user, message, error, loading } = useSelector(
@@ -15,14 +21,12 @@ const PerfilPage = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = () => {
-    setIsLoading(true);
     dispatch(LogoutUser());
     dispatch(reset());
     dispatch(resetUser());
-    router.push('/');
+    router.push("/");
   };
 
   useEffect(() => {
@@ -32,13 +36,7 @@ const PerfilPage = () => {
   }, [dispatch, user]);
 
   if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8 flex justify-center">
-        <div className="w-full max-w-md bg-white border rounded-lg shadow-sm p-10 flex flex-col items-center space-y-4">
-          <p>Carregando perfil...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -48,13 +46,13 @@ const PerfilPage = () => {
           <div className="p-6 border-b">
             <h1 className="text-2xl font-bold">Perfil</h1>
           </div>
-          
+
           <div className="p-6">
             <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
               <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
                 <RiUser2Fill className="w-12 h-12" />
               </div>
-              
+
               <div className="flex-1 text-center md:text-left">
                 <h2 className="text-2xl font-bold">{user.name}</h2>
                 {user.email && (
@@ -65,36 +63,35 @@ const PerfilPage = () => {
                 )}
               </div>
             </div>
-            
+
             <div className="space-y-6">
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold mb-4">Ações</h3>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button 
+                  <button
                     className="flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-                    onClick={() => router.push('/perfil/edit')}
+                    onClick={() => router.push("/perfil/edit")}
                   >
                     <RiEditLine className="w-4 h-4" />
                     Editar perfil
                   </button>
-                  
-                  <button 
+
+                  <button
                     className="flex items-center justify-center gap-2 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50 transition-colors"
                     onClick={handleLogout}
-                    disabled={isLoading}
                   >
                     <RiLogoutBoxRLine className="w-4 h-4" />
-                    {isLoading ? "Saindo..." : "Sair da conta"}
+                    Sair da conta
                   </button>
                 </div>
               </div>
-              
+
               {error && (
                 <div className="p-4 rounded-md bg-red-50 border border-red-200 text-red-700 text-sm">
                   {error}
                 </div>
               )}
-              
+
               {message && (
                 <div className="p-4 rounded-md bg-green-50 border border-green-200 text-green-700 text-sm">
                   {message}

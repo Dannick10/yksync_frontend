@@ -619,11 +619,6 @@ const ProjectForm = () => {
                   Salvar Projeto
                 </button>
 
-                {error && (
-                  <p className="mt-3 text-center text-red-500 bg-red-50 p-2 rounded-lg">
-                    {error}
-                  </p>
-                )}
 
                 {message && (
                   <p className="mt-3 text-center text-green-500 bg-green-50 p-2 rounded-lg">
