@@ -27,7 +27,6 @@ const PerfilPage = () => {
     dispatch(LogoutUser());
     dispatch(reset());
     dispatch(resetUser());
-    Cookies.remove("token"); 
     router.push("/");
   };
 

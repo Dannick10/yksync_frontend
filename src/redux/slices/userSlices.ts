@@ -41,12 +41,7 @@ export const userSlice = createSlice({
       state.message = null;
       state.error = null;
     },
-    resetUser: (state) => {
-      state.loading = false;
-      state.sucess = true;
-      state.error = null;
-      state.user = null
-    }
+    resetUser: () => initialState,
   },
   extraReducers: (builder) => {
     builder
