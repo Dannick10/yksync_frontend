@@ -86,13 +86,15 @@ export default function ContatoPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0 }}
-              className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-center gap-3 hover:shadow-lg transition-all"
+              className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-between gap-3 hover:shadow-lg transition-all "
             >
-              <div className="bg-blue-50  rounded-full text-zinc-900">
-                <RiPhoneFill className="h-6 w-6" />
+              <div className="flex gap-2">
+                <div className="bg-blue-50  rounded-full text-zinc-900">
+                  <RiPhoneFill className="h-6 w-6" />
+                </div>
+                <span className="text-xl font-semibold ">Telefone</span>
               </div>
-              <h2 className="text-xl font-semibold ">Telefone</h2>
-              <p className="text-gray-700">(11) 9999-9999</p>
+              <p className="text-gray-700">(79) 9835-5720</p>
             </motion.div>
 
             <motion.div
@@ -100,12 +102,14 @@ export default function ContatoPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-center gap-3 hover:shadow-lg transition-all"
+              className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-between gap-3 hover:shadow-lg transition-all "
             >
-              <div className="bg-blue-50 rounded-full  text-zinc-900">
-                <RiMailLine className="h-6 w-6" />
+              <div className="flex gap-2">
+                <div className="bg-blue-50 rounded-full  text-zinc-900">
+                  <RiMailLine className="h-6 w-6" />
+                </div>
+                <span className="text-xl font-semibold ">E-mail</span>
               </div>
-              <h2 className="text-xl font-semibold ">E-mail</h2>
               <p className="text-gray-700">ykdanieldev@gmail.com</p>
             </motion.div>
           </div>
@@ -123,15 +127,21 @@ export default function ContatoPage() {
                 transition={{ duration: 0.5, delay: 0 }}
                 whileHover={{ scale: 1.03 }}
                 rel="noopener noreferrer"
-                className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-center gap-3 hover:shadow-lg transition-all"
+                className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center gap-3 hover:shadow-lg transition-all justify-between"
               >
-                <RiLinkedinBoxFill className="h-6 w-6 text-[#0077B5]" />
+                <div className="flex items-center justify-center gap-2">
+                  <RiLinkedinBoxFill className="h-6 w-6 text-[#0077B5]" />
+                  <span className="text-xl font-semibold ">GitHub</span>
+                </div>
                 <span className="font-medium">LinkedIn: futurodevdaniel</span>
               </motion.div>
             </Link>
 
-            <Link href={"https://github.com/Dannick10"} target="_blank"
-            className="w-full">
+            <Link
+              href={"https://github.com/Dannick10"}
+              target="_blank"
+              className="w-full"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -139,10 +149,12 @@ export default function ContatoPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 whileHover={{ scale: 1.03 }}
                 rel="noopener noreferrer"
-                className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-center gap-3 hover:shadow-lg transition-all"
+                className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 flex items-center justify-between gap-3 hover:shadow-lg transition-all"
               >
-                <RiGithubFill className="h-6 w-6 text-gray-900" />
-                <span className="font-medium">GitHub: Dannick10</span>
+                <div className="flex items-center justify-center gap-2">
+                  <RiGithubFill className="h-6 w-6 text-gray-900" />
+                  <span className="text-xl font-semibold ">GitHub</span>
+                </div>
               </motion.div>
             </Link>
           </div>

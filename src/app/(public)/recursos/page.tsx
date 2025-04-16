@@ -239,7 +239,7 @@ export default function RecursosPage() {
                 Criar minha conta
               </button>
             </Link>
-            <Link href={"/services"}>
+            <Link href={"/servicos"}>
               <button className="flex items-center justify-center px-8 py-3 bg-white border border-zinc-200 font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 w-full">
                 Conhecer serviços
               </button>

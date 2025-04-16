@@ -1,7 +1,13 @@
+"use client";
+
+import { RootState } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function SobrePage() {
+  const { user } = useSelector((state: RootState) => state.user);
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-5xl mx-auto">
@@ -98,11 +104,19 @@ export default function SobrePage() {
             para dar vida a suas ideias. Cadastre-se agora e leve seus projetos
             para o próximo nível.
           </p>
-          <Link href={"/sign"}>
-            <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto w-full md:w-auto">
-              Criar minha conta
-            </button>
-          </Link>
+          {user ? (
+            <Link href={"/dashboard"}>
+              <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto w-full md:w-auto">
+                ir para Dashboard
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/register"}>
+              <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto w-full md:w-auto">
+                Criar minha conta
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

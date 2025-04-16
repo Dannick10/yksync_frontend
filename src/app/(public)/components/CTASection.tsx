@@ -29,7 +29,7 @@ const CTASection = () => {
         >
           <Link
             href="/register"
-            className="inline-block px-10 py-4 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
+            className="inline-block px-10 py-4 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 w-full md:w-auto"
           >
             Comece aqui
           </Link>
