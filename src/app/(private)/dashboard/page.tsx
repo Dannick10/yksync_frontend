@@ -31,6 +31,7 @@ import MyFullCalendar from "@/components/MyFullCalendar";
 import { AnimatePresence, motion } from "framer-motion";
 import DisplayCountProject from "@/components/DisplayCountProject";
 import LayoutDisplay from "@/components/LayoutDisplay";
+import Loading from "@/app/loading";
 
 
 export default function DashboardPage() {
@@ -112,6 +113,10 @@ export default function DashboardPage() {
     dispatch(Getprofile());
     dispatch(getStatus());
   }, [dispatch]);
+
+  if(!user) {
+    return <Loading/>
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 py-10">

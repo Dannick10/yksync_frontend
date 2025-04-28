@@ -18,19 +18,20 @@ export default function SobrePage() {
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <h2 className="text-2xl font-semibold mb-4">
-              Transformando Ideias em Ação
+              Organize Ideias. Sincronize Resultados.
             </h2>
             <p className="text-gray-700 mb-4">
-              O <strong>Yksynk</strong> nasceu com a missão de revolucionar a
-              forma como pessoas e equipes gerenciam seus projetos. Nada de
-              planilhas confusas ou prazos esquecidos — aqui, tudo está
-              conectado, intuitivo e no seu controle.
+              O <strong>Yksynk</strong> nasceu para transformar a forma como
+              pessoas e equipes organizam seus projetos e tarefas. Chega de
+              planilhas espalhadas ou ferramentas complicadas — aqui você
+              acompanha tudo em tempo real, de forma simples, visual e
+              eficiente.
             </p>
             <p className="text-gray-700">
-              Projetado com foco na produtividade, estilo e usabilidade, o
-              Yksynk permite criar, acompanhar e analisar projetos com fluidez.
-              Mais que uma plataforma, é um aliado para quem deseja crescer com
-              organização e visão estratégica.
+              Com dashboards personalizáveis, visão de progresso e gestão
+              intuitiva, o Yksynk conecta produtividade com design e
+              performance. Criado para quem precisa mais controle e menos
+              burocracia no dia a dia.
             </p>
           </div>
           <div className="relative h-64 md:h-auto">
@@ -49,47 +50,49 @@ export default function SobrePage() {
             Como Tudo Começou
           </h2>
           <p className="text-gray-700 mb-4">
-            O Yksynk é um projeto idealizado e desenvolvido por{" "}
+            O Yksynk foi idealizado por{" "}
             <strong>Daniel Rocha</strong>, desenvolvedor front-end apaixonado
-            por criar soluções funcionais e impactantes. Lançado em 2025, o
-            projeto surgiu da necessidade real de organizar ideias, prazos e
-            progresso de forma prática.
+            por criar soluções digitais acessíveis, intuitivas e com impacto
+            real na rotina de quem desenvolve, gerencia ou organiza projetos.
           </p>
           <p className="text-gray-700 mb-4">
-            Ao unir experiência em UI/UX, tecnologias modernas como Next.js,
-            Tailwind e TypeScript, e um olhar voltado à experiência do usuário,
-            nasceu uma plataforma moderna e eficiente.
+            Lançado oficialmente em 2025, o projeto surgiu da necessidade de
+            centralizar ideias, prazos e tarefas em uma única plataforma, com
+            visual limpo, performance de app e recursos sob medida para equipes
+            e freelancers.
           </p>
           <p className="text-gray-700">
-            então, o Yksynk pretende ajudar profissionais a manter seus projetos
-            no ritmo certo, com controle e confiança.
+            Com tecnologias como <strong>Next.js</strong>, <strong>TailwindCSS</strong>,{" "}
+            <strong>Redux</strong> e <strong>TypeScript</strong>, o Yksynk foi
+            pensado para evoluir continuamente e acompanhar as novas demandas
+            do mercado criativo e tech.
           </p>
         </div>
 
         <div className="mb-16">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            O que me move
+            O que move esse projeto
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-xl font-medium mb-3">Organização</h3>
               <p className="text-gray-700">
-                Cada detalhe da plataforma foi pensado para tornar a gestão de
-                projetos mais fluida e clara.
+                Planeje, crie e acompanhe projetos de forma estruturada, sem
+                poluir a sua rotina ou perder deadlines.
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-3">Eficiência</h3>
+              <h3 className="text-xl font-medium mb-3">Produtividade</h3>
               <p className="text-gray-700">
-                Com dashboards visuais, verificação de prazos e acompanhamento
-                de progresso, você ganha tempo e visão.
+                Dashboards visuais, progressos claros e alertas inteligentes que
+                fazem você ganhar tempo e foco.
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-3">Inovação</h3>
+              <h3 className="text-xl font-medium mb-3">Evolução Contínua</h3>
               <p className="text-gray-700">
-                Sempre buscando melhorias e novas funcionalidades para manter o
-                Yksynk à frente das necessidades do mercado.
+                O Yksynk está em constante melhoria, ouvindo usuários e
+                implementando novas features para se manter à frente.
               </p>
             </div>
           </div>
@@ -97,17 +100,17 @@ export default function SobrePage() {
 
         <div className="text-center">
           <h2 className="text-2xl font-semibold mb-6">
-            Pronto para organizar seu mundo?
+            Bora sincronizar suas ideias?
           </h2>
           <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            Junte-se a milhares de usuários que já estão utilizando o Yksynk
-            para dar vida a suas ideias. Cadastre-se agora e leve seus projetos
-            para o próximo nível.
+            Faça parte da comunidade que já usa o Yksynk para dar vida aos seus
+            projetos. Cadastre-se grátis e leve seu workflow para o próximo
+            nível.
           </p>
           {user ? (
             <Link href={"/dashboard"}>
               <button className="flex items-center justify-center px-8 py-3 bg-zinc-950 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-70 mx-auto w-full md:w-auto">
-                ir para Dashboard
+                Ir para o Dashboard
               </button>
             </Link>
           ) : (

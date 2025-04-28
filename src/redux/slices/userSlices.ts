@@ -12,26 +12,50 @@ const initialState: userStates = {
   message: null,
 };
 
-export const Getprofile = createAsyncThunk<any, user | void, { state: RootState }>(
-  "user/profile",
-  async (_, Thunkapi) => {
-    try {
-      const token: string | null = Thunkapi.getState().auth.token;
+export const Getprofile = createAsyncThunk<
+  any,
+  user | void,
+  { state: RootState }
+>("user/profile", async (_, Thunkapi) => {
+  try {
+    const token: string | null = Thunkapi.getState().auth.token;
 
-      const data = await userService.profile(token);
+    const data = await userService.profile(token);
 
-      if (data.erros) {
-        Cookies.remove("token"); 
-        return Thunkapi.rejectWithValue(data.erros[0]);
-      }
-
-      return data;
-    } catch (err) {
-      Cookies.remove("token"); 
-      return Thunkapi.rejectWithValue("Erro ao resgatar usuário");
+    if (data.erros) {
+      Cookies.remove("token");
+      return Thunkapi.rejectWithValue(data.erros[0]);
     }
+
+    return data;
+  } catch (err) {
+    Cookies.remove("token");
+    return Thunkapi.rejectWithValue("Erro ao resgatar usuário");
   }
-);
+});
+
+export const udpateProfile = createAsyncThunk<
+  any,
+  user | void,
+  { state: RootState }
+>("user/update", async (body, Thunkapi) => {
+  try {
+    const token: string | null = Thunkapi.getState().auth.token;
+    console.log(token)
+
+    const data = await userService.editProfile(token, body);
+
+    if (data.erros) {
+      Cookies.remove("token");
+      return Thunkapi.rejectWithValue(data.erros[0]);
+    }
+
+    return data;
+  } catch (err) {
+    Cookies.remove("token");
+    return Thunkapi.rejectWithValue("Erro ao resgatar usuário");
+  }
+});
 
 export const userSlice = createSlice({
   name: "user",
@@ -54,6 +78,23 @@ export const userSlice = createSlice({
         state.sucess = true;
         state.error = null;
         state.user = action.payload.user;
+      })
+      .addCase(udpateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(udpateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sucess = true;
+        state.error = null;
+        state.message = action.payload.message
+        state.user = action.payload.user;
+      })
+      .addCase(udpateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.sucess = true;
+        state.error = action.payload as string;
+        state.user = null
       });
   },
 });

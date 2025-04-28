@@ -1,113 +1,104 @@
-import Link from "next/link";
-import React from "react";
-import { motion } from "framer-motion";
-import ProjectCard from "@/components/Projects";
-import { RiArrowRightLine } from "react-icons/ri";
+import Image from "next/image";
+import React, { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 
-const sampleProjects = [
-  {
-    id: "123",
-    title: "E-commerce Platform",
-    answerable: "John Developer",
-    description:
-      "Um e-commerce completo desenvolvido com Next.js, Tailwind e API RESTful",
-    timeStart: "2024-02-01",
-    timeEnd: "2024-06-01",
-    color: "#6366f1",
-    status: "current",
-  },
-  {
-    id: "124",
-    title: "Dashboard Analytics",
-    answerable: "Maria Designer",
-    description:
-      "Dashboard interativo com gráficos e análise de dados em tempo real",
-    timeStart: "2024-01-15",
-    timeEnd: "2024-03-30",
-    color: "#8b5cf6",
-    status: "finish",
-  },
-  {
-    id: "125",
-    title: "Mobile App",
-    answerable: "Carlos Mobile",
-    description: "Aplicativo móvel para iOS e Android usando React Native",
-    timeStart: "2024-03-01",
-    timeEnd: "2024-02-28",
-    color: "#ec4899",
-    status: "current",
-  },
-  {
-    id: "126",
-    title: "API Integration",
-    answerable: "Ana Backend",
-    description:
-      "Integração com múltiplas APIs de pagamento e serviços externos",
-    timeStart: "2024-02-15",
-    timeEnd: "2024-04-15",
-    color: "#14b8a6",
-    status: "current",
-  },
-];
+type featureProject = {
+  title: string;
+  subtitle: string;
+  img: string;
+};
 
 const FeaturedProject = () => {
+  const featureProjects: featureProject[] = [
+    {
+      title: "Organização de Projetos",
+      subtitle:
+        "Crie e gerencie todos os seus projetos em um só lugar. Adicione prazos, tecnologias, descrições e links úteis. Visualize cada detalhe de forma organizada e tenha controle total sobre seus processos.",
+      img: "/home/projeto.png",
+    },
+    {
+      title: "Estatísticas Detalhadas",
+      subtitle:
+        "Acompanhe o desempenho dos seus projetos com gráficos interativos e relatórios por data. Veja estatísticas de produtividade, tecnologias mais usadas e evolução ao longo do tempo.",
+      img: "/home/estatistica.png",
+    },
+    {
+      title: "Calendário Integrado",
+      subtitle:
+        "Gerencie prazos com facilidade usando um calendário visual sincronizado. Veja de forma intuitiva as datas de entrega, status de cada projeto e organize seu fluxo de trabalho de maneira eficiente.",
+      img: "/home/calendario.png",
+    },
+    {
+      title: "Gestão de Tecnologias",
+      subtitle:
+        "Gerencie todas as tecnologias que você domina ou utiliza nos seus projetos. Organize por categorias como Frontend, Backend e Testes, visualize quais stacks estão associadas a cada projeto e acompanhe quais ferramentas você mais usa no seu dia a dia.",
+      img: "/home/tech.png",
+    },
+  ];
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
-    <section className="container mx-auto px-4 py-10">
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+    <>
+      <section className="relative">
+      <div className="absolute top-40 left-0 bg-zinc-700 w-full "></div>
+      <motion.div className="sticky container mx-auto top-20 rounded-md left-0 w-full h-2 bg-zinc-500 z-10 overflow-hidden"
+      initial={{opacity: 0}}
+      transition={{duration: .6, delay: .8}}
+      whileInView={{opacity: 1}}
+      exit={{opacity: 0}}
+      animate={{opacity: 0}}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Projetos em Destaque
-        </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Veja exemplos de como o Yksynk pode ajudar a organizar seus projetos
-          de forma eficiente
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {sampleProjects.map((project, index) => (
           <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <ProjectCard
-              id={project.id}
-              title={project.title}
-              answerable={project.answerable}
-              description={project.description}
-              timeStart={project.timeStart}
-              timeEnd={project.timeEnd}
-              color={project.color}
-              status={project.status}
-            />
-          </motion.div>
-        ))}
-      </div>
+            className="w-full h-2 bg-zinc-900 z-20 origin-left"
+            style={{ scaleX }}
+          />
+        </motion.div>
 
-      <motion.div
-        className="mt-12 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-800 rounded-lg font-medium hover:bg-gray-200 transition-all"
-        >
-          Ver todos os projetos
-          <RiArrowRightLine className="h-5 w-5" />
-        </Link>
-      </motion.div>
-    </section>
+        <div ref={containerRef} className="container mx-auto px-4 py-10">
+          <div className="space-y-20">
+            {featureProjects.map((project, i) => (
+              <motion.div
+                key={i}
+                className="flex flex-col-reverse md:flex-row gap-8 items-center justify-center sticky top-40 md:top-20 left-0 bg-zinc-50 h-screen"
+                initial={{ opacity: 0, x: -300 }}
+                whileInView={{ opacity: 1, x: 0}}
+                transition={{ duration: .6, ease: "easeOut" }}
+              >
+                <div className="flex-1 flex flex-col gap-4">
+                  <h2 className="text-3xl md:text-5xl font-bold text-gray-950">
+                    {project.title}
+                  </h2>
+                  <p className="text-zinc-600 text-lg">{project.subtitle}</p>
+                </div>
+
+                <div className="">
+                  <div className="relative">
+                    <Image
+                      src={project.img}
+                      alt={project.title}
+                      width={600}
+                      height={675}
+                      className="w-full h-auto rounded-lg shadow-xl"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -21,63 +21,66 @@ export default function RecursosPage() {
         <div className="grid md:grid-cols-2 gap-12 mb-16">
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-semibold mb-4">
-                Gerenciamento de Projetos
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4">Organização de Projetos</h2>
+              <p className="text-gray-700 mb-4">
+                Crie e gerencie todos os seus projetos em um só lugar. Adicione prazos, tecnologias, descrições e links úteis. Visualize cada detalhe de forma organizada e tenha controle total sobre seus processos.
+              </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Criação e organização de projetos por categorias
+                    Controle completo de prazos e marcos
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Definição de prazos e marcos importantes
+                    Adição de tecnologias e stacks utilizadas
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Acompanhamento de progresso em tempo real
+                    Descrições detalhadas e documentação
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Visualização em diferentes formatos (lista, kanban,
-                    calendário)
+                    Links úteis e materiais de referência
                   </span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Colaboração</h2>
+              <h2 className="text-2xl font-semibold mb-4">Estatísticas Detalhadas</h2>
+              <p className="text-gray-700 mb-4">
+                Acompanhe o desempenho dos seus projetos com gráficos interativos e relatórios por data. Veja estatísticas de produtividade, tecnologias mais usadas e evolução ao longo do tempo.
+              </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Compartilhamento de projetos com equipes
+                    Gráficos e visualizações interativas
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Atribuição de tarefas e responsabilidades
+                    Relatórios por período temporal
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Comentários e feedback em tempo real
+                    Métricas de produtividade
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Controle de permissões e acessos
+                    Análise de tecnologias mais utilizadas
                   </span>
                 </li>
               </ul>
@@ -86,62 +89,66 @@ export default function RecursosPage() {
 
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Produtividade</h2>
+              <h2 className="text-2xl font-semibold mb-4">Calendário Integrado</h2>
+              <p className="text-gray-700 mb-4">
+                Gerencie prazos com facilidade usando um calendário visual sincronizado. Veja de forma intuitiva as datas de entrega, status de cada projeto e organize seu fluxo de trabalho de maneira eficiente.
+              </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Automação de tarefas repetitivas
+                    Visualização clara de prazos e entregas
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Lembretes e notificações personalizáveis
+                    Sincronização automática com projetos
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Integração com calendários e ferramentas externas
+                    Status de cada projeto visível
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Modelos pré-definidos para diferentes tipos de projetos
+                    Organização eficaz do fluxo de trabalho
                   </span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold mb-4">
-                Análise e Relatórios
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4">Gestão de Tecnologias</h2>
+              <p className="text-gray-700 mb-4">
+                Gerencie todas as tecnologias que você domina ou utiliza nos seus projetos. Organize por categorias como Frontend, Backend e Testes, visualize quais stacks estão associadas a cada projeto e acompanhe quais ferramentas você mais usa no seu dia a dia.
+              </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Dashboards personalizáveis com métricas-chave
+                    Categorização por tipo (Frontend, Backend, Testes)
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Relatórios de desempenho e produtividade
+                    Associação clara com cada projeto
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Análise de tempo e recursos utilizados
+                    Acompanhamento de stacks mais usadas
                   </span>
                 </li>
                 <li className="flex items-start">
                   <RiCheckFill className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
                   <span className="text-gray-700">
-                    Exportação de dados em diferentes formatos
+                    Links para documentação e materiais
                   </span>
                 </li>
               </ul>
