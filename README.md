@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yksynk — Gerenciador de Projetos Moderno
 
-## Getting Started
+![ChatGPT Image Apr 29, 2025, 03_01_05 PM](https://github.com/user-attachments/assets/7eccc0c6-137f-4c07-83cb-e7f594dc758b)
 
-First, run the development server:
+## Recursos da Aplicação
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 📌 Organização de Projetos
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| ![Organização de Projetos](https://github.com/user-attachments/assets/78f97ab0-3c04-4f97-925b-212c40b3c12a) |
+|:--|
+| **Crie e gerencie projetos em um único lugar** |
+| Defina prazos, tecnologias e links de fácil acesso. |
+| Acompanhe detalhes e status de forma organizada pela data definida. |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 📊 Estatísticas Detalhadas
 
-## Learn More
+| ![Estatísticas Detalhadas](https://github.com/user-attachments/assets/93c9f10f-0276-4b7f-90dd-8423fb360abb) |
+|:--|
+| **Gráficos interativos de produtividade por mês e ano.** |
+| Relatórios por período e acompanhamento de evolução. |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📅 Calendário Integrado
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| ![Calendário Integrado](https://github.com/user-attachments/assets/342c9d69-9678-4883-9072-a4d8a3922ab4) |
+|:--|
+| **Visualização clara de prazos e status de projetos.** |
+| Sincronização automática com tarefas cadastradas. |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 💻 Gestão de Tecnologias
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| ![Gestão de Tecnologias](https://github.com/user-attachments/assets/03c8e7ba-1d68-4eea-a610-ba07c3104d2a) |
+|:--|
+| **Categorização de stacks (Frontend, Backend, Database, Testes).** |
+| Visualização de tecnologias associadas a cada projeto. |
+| Estatísticas baseadas em todos os projetos adicionados. |
+
+## ⚙️ Recursos Técnicos
+
+| 🛡️ Criptografia de dados sensíveis com **Bcrypt** | 🔐 Autenticação via **JWT** |
+|:--|:--|
+| Protege informações críticas como senhas de forma segura. | Garante sessões seguras e protegidas via tokens. |
+
+| 🔗 API RESTful com **Express + MongoDB** | 🗂️ Persistência de Dados com **Redux** |
+|:--|:--|
+| Estrutura robusta de API com integração a banco NoSQL. | Armazena e gerencia o estado global da aplicação. |
+
+| 🎨 Animações bem pensadas com **Framer Motion** |
+|:--|
+| Transições suaves, efeitos interativos e experiência fluida. |
+
+
+---
+## Tecnologias e Ferramentas
+
+Este projeto foi desenvolvido com as seguintes tecnologias:
+
+- **Next.js** — Frontend React-based framework
+- **TailwindCSS** — Estilização moderna e responsiva
+- **TypeScript** — Tipagem estática para maior segurança
+- **Framer Motion** — Animações fluidas e interativas
+- **Redux Toolkit** — Gerenciamento de estado global
+- **Node.js & Express** — Backend robusto e escalável
+- **MongoDB** — Banco de dados NoSQL flexível
+- **Bcrypt** — Criptografia de senhas
+- **JWT (JSON Web Token)** — Autenticação segura via token
+
+---
+
+## 🔧 **Backend**  
+O backend do YkSynck foi desenvolvido utilizando **Node.js**, **Express**, **MongoDB**, **Bcrypt** e **JWT**.
+
+Acesse o Repositório do Backend: [YKMiniURL Repositório Backend](https://github.com/Dannick10/YKSync-)
+
+
+
+
+### Licença
+Distribuído sob a licença MIT. Veja LICENSE para mais informações.
+
+### 📞 Contato
+Daniel Rocha — @futurodevdaniel
+Email: ykdanieldev@gmail.com
+
+### Observação
+Este projeto está em constante evolução. Fique à vontade para contribuir, sugerir melhorias ou reportar problemas!
