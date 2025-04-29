@@ -41,7 +41,6 @@ export const udpateProfile = createAsyncThunk<
 >("user/update", async (body, Thunkapi) => {
   try {
     const token: string | null = Thunkapi.getState().auth.token;
-    console.log(token)
 
     const data = await userService.editProfile(token, body);
 

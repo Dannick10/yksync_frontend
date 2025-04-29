@@ -40,8 +40,6 @@ export const getProject = createAsyncThunk<
     const token = thunkapi.getState().auth.token;
     const id = thunkapi.getState().user.user?._id;
 
-    console.log(filter);
-
     const data = await projectService.getProject(token, page, id, filter);
 
     if (data.errors) {
