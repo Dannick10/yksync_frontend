@@ -106,10 +106,6 @@ export default function DashboardPage() {
     { id: "resumo", label: "resumo", icon: RiBookLine },
   ];
 
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    setPage(selected + 1);
-  };
 
   useEffect(() => {
     dispatch(Getprofile());
