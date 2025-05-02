@@ -43,9 +43,10 @@ export default function DashboardPage() {
     error: errorProject,
   } = useSelector((state: RootState) => state.project);
   const { user } = useSelector((state: RootState) => state.user);
-  const { projectTotal, projectsCurrent, projectsFinish, status } = useSelector(
+  const { projectTotal, projectsCurrent, projectsFinish, projectsOverdue, status } = useSelector(
     (state: RootState) => state.status
   );
+
 
   const [searchQuery, setSearchQuery] = useState({
     name: "",
@@ -106,6 +107,7 @@ export default function DashboardPage() {
   ];
 
   const handlePageChange = ({ selected }: { selected: number }) => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     setPage(selected + 1);
   };
 
@@ -468,6 +470,7 @@ export default function DashboardPage() {
                     <ChartComponent
                       projectsCurrent={projectsCurrent}
                       projectsFinish={projectsFinish}
+                      projectsOverdue={projectsOverdue || []}
                       indexMoth={0}
                       monthDisplayCount={6}
                     />

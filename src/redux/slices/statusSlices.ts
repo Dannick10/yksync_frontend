@@ -69,6 +69,7 @@ export const statusSlice = createSlice({
         state.projectTotal = action.payload.projectsTotal;
         state.projectsCurrent = action.payload.projectsCurrent;
         state.projectsFinish = action.payload.projectsFinish;
+        state.projectsOverdue = action.payload.projectsOverdue
       });
   },
 });

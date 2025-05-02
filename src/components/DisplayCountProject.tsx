@@ -9,12 +9,12 @@ import {
 import { useSelector } from "react-redux";
 
 const DisplayCountProject = () => {
-  const { status } = useSelector((state: RootState) => state.status);
+  const { status, projectsOverdue } = useSelector((state: RootState) => state.status);
 
   const totalProjectsCount = status?.projectsTotal || 0;
   const activeProjectsCount = status?.projectsCurrents || 0;
-  const overdueProjectCont = status?.projectsOverdue || 0;
   const finishedProjectsCount = status?.projectsFinish || 0;
+  const overdueProjectCont = projectsOverdue?.length || 0;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">

@@ -41,6 +41,7 @@ ChartJS.register(
 interface ChartComponentProps {
   projectsCurrent: statusProject[];
   projectsFinish: statusProject[];
+  projectsOverdue: statusProject[];
   indexMoth?: number;
   monthDisplayCount?: number;
 }
@@ -48,6 +49,7 @@ interface ChartComponentProps {
 const ChartComponent = ({
   projectsCurrent,
   projectsFinish,
+  projectsOverdue,
   indexMoth = 0,
   monthDisplayCount = 6,
 }: ChartComponentProps) => {
@@ -89,8 +91,9 @@ const ChartComponent = ({
     () => ({
       startCounts: countProjects(projectsCurrent, "startDate"),
       endCounts: countProjects(projectsFinish, "endDate"),
+      overdueCounts: countProjects(projectsOverdue, "endDate")
     }),
-    [projectsCurrent, projectsFinish]
+    [projectsCurrent, projectsFinish, projectsOverdue]
   );
 
   const currentYear = new Date().getFullYear();
@@ -122,6 +125,14 @@ const ChartComponent = ({
     return gradient;
   };
 
+  const createOverdueGradient = (ctx: any) => {
+    if(!ctx) return null; 
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(187, 20, 166, 0.4)");
+    gradient.addColorStop(1, "rgba(187, 20, 166, 0.0)");
+    return gradient;
+  }
+
   const data = {
     labels: months,
     datasets: [
@@ -152,7 +163,7 @@ const ChartComponent = ({
         pointHoverRadius: 6,
       },
       {
-        label: "Projetos Finalizados",
+        label: "Projetos concluídos",
         data: months.map(
           (monthYear) =>
             projectCounts.endCounts[
@@ -172,6 +183,32 @@ const ChartComponent = ({
         tension: 0.4,
         fill: true,
         pointBackgroundColor: "#14b8a6",
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      },
+      {
+        label: "Projetos atrasados",
+        data: months.map(
+          (monthYear) =>
+            projectCounts.overdueCounts[
+              monthYear.split("/")[0] +
+                "-" +
+                (Number.parseInt(monthYear.split("/")[1]) + 2000)
+            ] || 0
+        ),
+        borderColor: "#CA3F3E",
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          return createOverdueGradient(ctx);
+        },
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: "#A62631",
         pointBorderColor: "#ffffff",
         pointBorderWidth: 2,
         pointRadius: 4,

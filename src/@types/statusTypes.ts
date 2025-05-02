@@ -22,7 +22,7 @@ export interface responseStatus {
   projectsTotal: statusProject[];
   projectsCurrent: statusProject[];
   projectsFinish: statusProject[];
-  overdueProject: statusProject[];
+  projectsOverdue: statusProject[];
 }
 
 export interface statusState {
@@ -30,7 +30,7 @@ export interface statusState {
   projectTotal?: statusProject[];
   projectsCurrent?: statusProject[];
   projectsFinish?: statusProject[] ;
-  overdueProject?: statusProject[];
+  projectsOverdue?: statusProject[];
   error: string | null;
   sucess: boolean;
   loading: boolean;
