@@ -71,6 +71,25 @@ export const getProject_Id = createAsyncThunk<
   }
 });
 
+export const projectUpdateStats = createAsyncThunk<
+  responseProjectId,
+  string,
+  { state: RootState }
+>("project/update-stats", async (_id, thunkapi) => {
+  try {
+    const token = thunkapi.getState().auth.token;
+    const data = await projectService.projectUpdateStats(_id, token);
+
+    if (data.errors) {
+      return thunkapi.rejectWithValue(data.errors[0]);
+    }
+
+    return data;
+  } catch (err) {
+    return thunkapi.rejectWithValue("Error ao editar projeto");
+  }
+});
+
 export const projectEdit = createAsyncThunk<
   responseProjectId,
   project,
@@ -97,7 +116,7 @@ export const projectDelete = createAsyncThunk<
 >("project/delete", async (_id, thunkapi) => {
   try {
     const token = thunkapi.getState().auth.token;
-    const data = await projectService.projectDelete(_id,token);
+    const data = await projectService.projectDelete(_id, token);
 
     if (data.errors) {
       return thunkapi.rejectWithValue(data.errors[0]);
@@ -118,11 +137,11 @@ export const projectSlice = createSlice({
     },
     resetProject: (state) => {
       state.loading = false;
-      state.error = null
+      state.error = null;
       state.projects = [];
-      state.message = null 
-      state.project = undefined
-    }
+      state.message = null;
+      state.project = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -155,7 +174,7 @@ export const projectSlice = createSlice({
       .addCase(getProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        state.projects = []; 
+        state.projects = [];
       })
       .addCase(getProject_Id.pending, (state) => {
         state.loading = true;
@@ -176,7 +195,7 @@ export const projectSlice = createSlice({
         state.error = null;
       })
       .addCase(projectEdit.fulfilled, (state, action) => {
-        state.project = action.payload.project
+        state.project = action.payload.project;
         state.loading = false;
         state.success = true;
         state.message = action.payload.message.message as string;
@@ -193,7 +212,7 @@ export const projectSlice = createSlice({
         state.error = null;
       })
       .addCase(projectDelete.fulfilled, (state, action) => {
-        state.project = undefined
+        state.project = undefined;
         state.loading = false;
         state.success = true;
         state.message = action.payload.message as string;
@@ -205,7 +224,20 @@ export const projectSlice = createSlice({
         state.project = undefined;
         state.message = null;
       })
-      
+      .addCase(projectUpdateStats.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(projectUpdateStats.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.project = action.payload.project;
+      })
+      .addCase(projectUpdateStats.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.project = undefined;
+      });
   },
 });
 

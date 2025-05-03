@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import { useDispatch, useSelector } from "react-redux"
-import type { AppDispatch, RootState } from "@/redux/store"
-import { getProject_Id, projectDelete, resetMessage, resetProject } from "@/redux/slices/ProjectSlices"
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { configureTIme } from "@/utils/configureTime"
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
+import {
+  getProject_Id,
+  projectDelete,
+  projectUpdateStats,
+  resetMessage,
+  resetProject,
+} from "@/redux/slices/ProjectSlices";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { configureTIme } from "@/utils/configureTime";
 import {
   RiArrowLeftLine,
   RiCalendarLine,
@@ -22,72 +28,88 @@ import {
   RiDeleteBinLine,
   RiUser2Fill,
   RiAlertLine,
-} from "react-icons/ri"
+  RiCheckFill,
+  RiArrowGoBackFill,
+} from "react-icons/ri";
 
-import { useState } from "react"
-import MyFullCalendar from "@/components/MyFullCalendar"
-import Loading from "@/app/loading"
+import { useState } from "react";
+import MyFullCalendar from "@/components/MyFullCalendar";
+import Loading from "@/app/loading";
 
-export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: string }> })  {
-  const router = useRouter()
-  const dispatch = useDispatch<AppDispatch>()
-  const { project, loading, error, message } = useSelector((state: RootState) => state.project)
-  const { id } = useParams() 
-  const [activeTab, setActiveTab] = useState("info")
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+export default function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const { project, loading, error, message } = useSelector(
+    (state: RootState) => state.project
+  );
+  const { id } = useParams();
+  const [activeTab, setActiveTab] = useState("info");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     if (id) {
-      dispatch(getProject_Id(id as string))
+      dispatch(getProject_Id(id as string));
     }
-  }, [dispatch, id])
+  }, [dispatch, id]);
 
   useEffect(() => {
-    dispatch(resetMessage())
+    dispatch(resetMessage());
     return () => {
-      dispatch(resetProject())
-    }
-  }, [dispatch])
+      dispatch(resetProject());
+    };
+  }, [dispatch]);
 
   const handleEdit = () => {
-    router.push(`/projects/edit/${project?._id}`)
-  }
+    router.push(`/projects/edit/${project?._id}`);
+  };
+
+  const handleUpdateStats = () => {
+    dispatch(projectUpdateStats(id as string));
+    setTimeout(() => {
+      dispatch(resetMessage());
+    }, 800);
+  };
 
   const handleDelete = () => {
-    dispatch(projectDelete(id as string))
+    dispatch(projectDelete(id as string));
     setTimeout(() => {
-      dispatch(resetMessage())
-      dispatch(resetProject())
-      router.push("/dashboard")
-    }, 800)
-  }
+      dispatch(resetMessage());
+      dispatch(resetProject());
+      router.push("/dashboard");
+    }, 800);
+  };
 
   if (!project) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   }
 
-  const pastDateProject = new Date(project.startDate)
-  const afterDateProject = new Date(project.endDate)
+  const pastDateProject = new Date(project.startDate);
+  const afterDateProject = new Date(project.endDate);
 
-  const startDate = format(pastDateProject, "dd/MM/yyyy", { locale: ptBR })
-  const endDate = format(afterDateProject, "dd/MM/yyyy", { locale: ptBR })
+  const startDate = format(pastDateProject, "dd/MM/yyyy", { locale: ptBR });
+  const endDate = format(afterDateProject, "dd/MM/yyyy", { locale: ptBR });
 
-  const timeResult = configureTIme(pastDateProject, afterDateProject)
+  const timeResult = configureTIme(pastDateProject, afterDateProject);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-6">
-        <Link href={'/dashboard'}>
-        <button className="flex items-center mr-4 text-gray-600 hover:text-black">
-          <RiArrowLeftLine className="h-5 w-5 mr-2" />
-          Voltar
-        </button>
+        <Link href={"/dashboard"}>
+          <button className="flex items-center mr-4 text-gray-600 hover:text-black">
+            <RiArrowLeftLine className="h-5 w-5 mr-2" />
+            Voltar
+          </button>
         </Link>
         <h1 className="text-2xl font-bold flex items-center">
           {project.name}
-          <div className="w-3 h-3 rounded-full ml-3" style={{ backgroundColor: project.color }} />
+          <div
+            className="w-3 h-3 rounded-full ml-3"
+            style={{ backgroundColor: project.color }}
+          />
         </h1>
         <span className="ml-auto px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
           {project.status === "finish" ? "Finalizado" : "Em andamento"}
@@ -178,10 +200,12 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
                     </div>
                     <div className="flex justify-between text-sm">
                       <div>
-                        <span className="text-gray-500">Início:</span> {startDate}
+                        <span className="text-gray-500">Início:</span>{" "}
+                        {startDate}
                       </div>
                       <div>
-                        <span className="text-gray-500">Término:</span> {endDate}
+                        <span className="text-gray-500">Término:</span>{" "}
+                        {endDate}
                       </div>
                     </div>
                   </div>
@@ -230,7 +254,8 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
                       <RiCodeLine className="h-5 w-5 mr-2 text-gray-500" />
                       <h3 className="font-medium">Frontend</h3>
                     </div>
-                    {Array.isArray(project.frontend) && project.frontend.length > 0 ? (
+                    {Array.isArray(project.frontend) &&
+                    project.frontend.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {project.frontend.map((tech) => (
                           <span
@@ -251,7 +276,8 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
                       <RiCodeLine className="h-5 w-5 mr-2 text-gray-500" />
                       <h3 className="font-medium">Backend</h3>
                     </div>
-                    {Array.isArray(project.backend) && project.backend.length > 0 ? (
+                    {Array.isArray(project.backend) &&
+                    project.backend.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {project.backend.map((tech) => (
                           <span
@@ -272,7 +298,8 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
                       <RiDatabase2Line className="h-5 w-5 mr-2 text-gray-500" />
                       <h3 className="font-medium">Banco de dados</h3>
                     </div>
-                    {Array.isArray(project.database) && project.database.length > 0 ? (
+                    {Array.isArray(project.database) &&
+                    project.database.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {project.database.map((tech) => (
                           <span
@@ -293,7 +320,8 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
                       <RiTestTubeLine className="h-5 w-5 mr-2 text-gray-500" />
                       <h3 className="font-medium">Testes</h3>
                     </div>
-                    {Array.isArray(project.tests) && project.tests.length > 0 ? (
+                    {Array.isArray(project.tests) &&
+                    project.tests.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {project.tests.map((tech) => (
                           <span
@@ -333,6 +361,25 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
             </div>
             <div className="p-6 space-y-4">
               <button
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2
+                ${project.status !== "finish" ? "bg-green-600" : "bg-orange-600"} 
+                 text-white rounded-md ${project.status !== "finish" ? "hover:bg-green-800" : " hover:bg-orange-800"} transition-colors`}
+                onClick={handleUpdateStats}
+              >
+                {project.status === "finish" ? (
+                  <>
+                    <RiArrowGoBackFill className="h-4 w-4" />
+                    voltar desenvolver
+                  </>
+                ) : (
+                  <>
+                    <RiCheckFill className="h-4 w-4" />
+                    Concluir projeto
+                  </>
+                )}
+              </button>
+
+              <button
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
                 onClick={handleEdit}
               >
@@ -351,8 +398,8 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
               ) : (
                 <div className="border rounded-md p-4 space-y-4">
                   <p className="text-sm text-gray-700">
-                    Tem certeza? Esta ação não pode ser desfeita. Isso excluirá permanentemente o projeto "
-                    {project.name}".
+                    Tem certeza? Esta ação não pode ser desfeita. Isso excluirá
+                    permanentemente o projeto "{project.name}".
                   </p>
                   <div className="flex gap-3">
                     <button
@@ -375,7 +422,5 @@ export default function ProjectDetailPage  ({ params }: { params: Promise<{ id: 
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-

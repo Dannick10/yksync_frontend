@@ -60,6 +60,20 @@ const projectEdit = async (project: project, token: any) => {
   }
 };
 
+const projectUpdateStats = async (_id: string, token: any) => {
+  const config = requestConfig("PUT", null, token);
+
+  try {
+    const res = await fetch(api + "project/updateStats/" + _id, config)
+      .then((res) => res.json())
+      .catch((res) => res);
+
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const projectDelete = async (_id: string, token: any) => {
   const config = requestConfig("DELETE", null, token);
 
@@ -80,6 +94,7 @@ const projectService = {
   getProject_ID,
   projectEdit,
   projectDelete,
+  projectUpdateStats
 };
 
 export default projectService;

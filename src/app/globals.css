@@ -7,19 +7,27 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #555555;
+  background: #101010;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #272727;
+  background: #909090;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #909090;
+}
+
+::selection {
+  background: black;
+  color: #fff;
 }
 
 * {
@@ -27,8 +35,6 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
-
-
 
 .fc-event {
   color: white !important;
@@ -39,6 +45,28 @@ html {
 .fc-popover .fc-popover-header {
   background-color: black;
 }
+
+.fc-header-toolbar {
+  display: flex;
+}
+
+.fc-button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 568px) {
+  .fc-header-toolbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fc-button-group {
+    width: 100%;
+    gap: 0.5rem;
+  }
+}
+
 
 .fc-toolbar {
   background-color: black;

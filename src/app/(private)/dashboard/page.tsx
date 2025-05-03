@@ -83,6 +83,11 @@ export default function DashboardPage() {
     });
   };
 
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setPage(selected + 1);
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
@@ -105,7 +110,6 @@ export default function DashboardPage() {
     { id: "callendar", label: "Calendário", icon: RiCalendarLine },
     { id: "resumo", label: "resumo", icon: RiBookLine },
   ];
-
 
   useEffect(() => {
     dispatch(Getprofile());
