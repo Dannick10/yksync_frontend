@@ -31,10 +31,17 @@ import {
   RiCheckFill,
   RiArrowGoBackFill,
 } from "react-icons/ri";
+import { motion } from "framer-motion";
 
 import { useState } from "react";
 import MyFullCalendar from "@/components/MyFullCalendar";
 import Loading from "@/app/loading";
+import TaskComponent from "@/components/TaskComponent";
+
+type NavButton = {
+  text: string;
+  path: string;
+};
 
 export default function ProjectDetailPage({
   params,
@@ -95,6 +102,25 @@ export default function ProjectDetailPage({
 
   const timeResult = configureTIme(pastDateProject, afterDateProject);
 
+  const buttonNav: NavButton[] = [
+    {
+      text: "Informações",
+      path: "info",
+    },
+    {
+      text: "Tecnologias",
+      path: "tech",
+    },
+    {
+      text: "Calendário",
+      path: "calendar",
+    },
+    {
+      text: "Tarefas",
+      path: "task",
+    },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-6">
@@ -138,40 +164,34 @@ export default function ProjectDetailPage({
             </div>
             <div className="p-6">
               <div className="border-b mb-6">
-                <div className="flex flex-wrap -mb-px">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("info")}
-                    className={`mr-4 py-2 px-4 border-b-2 font-medium ${
-                      activeTab === "info"
-                        ? "border-black text-black"
-                        : "border-transparent text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    Informações
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("tech")}
-                    className={`mr-4 py-2 px-4 border-b-2 font-medium ${
-                      activeTab === "tech"
-                        ? "border-black text-black"
-                        : "border-transparent text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    Tecnologias
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("calendar")}
-                    className={`mr-4 py-2 px-4 border-b-2 font-medium ${
-                      activeTab === "calendar"
-                        ? "border-black text-black"
-                        : "border-transparent text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    Calendário
-                  </button>
+                <div className="flex flex-wrap  overflow-x-auto pb-2 scrollbar-hide">
+                  {buttonNav.map((button, index) => (
+                    <motion.button
+                      id={button.path}
+                      type="button"
+                      onClick={() => setActiveTab(button.path)}
+                      className={`mr-4 py-2 px-4 border-b-2 font-medium relative ${
+                        activeTab === button.path
+                          ? "text-black"
+                          : "border-transparent text-gray-500 hover:text-gray-700"
+                      }`}
+                      key={index}
+                    >
+                      {button.text}
+
+                      {activeTab === button.path && (
+                        <motion.div
+                          layoutId="active-tab"
+                          className="absolute bottom-0 left-0 w-full h-[2px] bg-black"
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                          }}
+                        />
+                      )}
+                    </motion.button>
+                  ))}
                 </div>
               </div>
 
@@ -348,6 +368,12 @@ export default function ProjectDetailPage({
                     end={afterDateProject}
                     color={project.color}
                   />
+                </div>
+              )}
+
+              {activeTab === "task" && (
+                <div>
+                  <TaskComponent id={id as string}/>
                 </div>
               )}
             </div>

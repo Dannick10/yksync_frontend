@@ -5,6 +5,7 @@ import userReduce from "./slices/userSlices"
 import projectReduce from "./slices/ProjectSlices"
 import statusReduce from "./slices/statusSlices"
 import stackReduce from "./slices/stackSlices"
+import taskReduce from "./slices/TaskSlice"
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
     user: userReduce,
     project: projectReduce,
     status: statusReduce,
-    stack: stackReduce
+    stack: stackReduce,
+    task: taskReduce
   },
 });
 

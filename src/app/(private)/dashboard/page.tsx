@@ -136,8 +136,8 @@ export default function DashboardPage() {
                   {tab.label}
                   {activeTab === tab.id && (
                     <motion.div
-                      layoutId="active-tab"
-                      className="absolute bottom-0 left-0 w-full h-[2px] bg-black"
+                    layoutId="active-tab"
+                    className="absolute bottom-0 left-0 w-full h-[2px] bg-black"
                       transition={{
                         type: "spring",
                         stiffness: 300,

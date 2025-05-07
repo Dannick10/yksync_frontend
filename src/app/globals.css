@@ -12,17 +12,16 @@ html {
 }
 
 ::-webkit-scrollbar-track {
+  background: #909090;
+}
+
+::-webkit-scrollbar-thumb {
   background: #101010;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #909090;
-  border-radius: 4px;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #909090;
+  background: #101010;
 }
 
 ::selection {
@@ -74,7 +73,6 @@ html {
   padding: 10px;
   border-radius: 20px;
 }
-
 
 .fc-multimonth-title{
   background-color: black;
