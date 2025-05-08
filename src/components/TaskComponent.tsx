@@ -102,11 +102,18 @@ const TaskComponent = ({ id }: TaskProps) => {
 
   const handleDragStart = () => {
     setIsDragMove(true);
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(50); 
+    }
   };
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     setIsDragMove(false);
+
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(20); 
+    }
 
     const validStatuses = filteredDashboardUpdate.map((s) => s);
     if (over && validStatuses.includes(over.id as string)) {
@@ -286,11 +293,11 @@ const TaskComponent = ({ id }: TaskProps) => {
                 </section>
 
                 {isDragMove && (
-                  <div className="absolute flex bottom-0 left-0 w-full gap-2 p-2 bg-white/80 backdrop-blur-sm z-50">
+                  <div className="absolute flex bottom-0 left-0 w-full gap-2 p-2 backdrop-blur-sm z-50">
                     {filteredDashboardUpdate.map((status, index) => (
                       <Droppable key={index} id={status}>
                         <motion.div
-                          className="border rounded-md shadow w-60 group cursor-pointer"
+                          className="border rounded-md w-30 lg:w-60 shadow group cursor-pointer"
                           initial={{ y: 50 }}
                           animate={{ y: 0 }}
                           transition={{ ease: "circIn", duration: 0.2 }}
@@ -301,7 +308,7 @@ const TaskComponent = ({ id }: TaskProps) => {
                               {handleMapConvertStatus(status)}
                             </h3>
                           </header>
-                          <section className="h-40 w-full overflow-y-auto bg-gray-50">
+                          <section className="h-40 overflow-y-auto bg-gray-50">
                             <div className="border-b p-2 w-full h-20 bg-white opacity-0 group-hover:opacity-100 transition-all duration-75">
                               <span
                                 className={`${getStatusColor(status)} w-2 h-2 rounded-full mt-2 absolute`}

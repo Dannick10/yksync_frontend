@@ -30,6 +30,7 @@ const DraggableTaskItem = ({
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         opacity: isDragging ? 0.4 : 1,
         cursor: 'grab',
+        touchAction: 'none',
       };
 
       const handleRemoveTask = (_id: string) => {
@@ -42,7 +43,7 @@ const DraggableTaskItem = ({
       style={style}
       {...attributes}
       {...listeners}
-      className={`p-3 border-l-4 rounded-lg flex justify-between items-start bg-white shadow-sm hover:shadow-md transition-all ${
+      className={`p-3 border-l-4 rounded-lg flex justify-between items-start bg-white shadow-sm hover:shadow-md transition-all touch-none ${
         task.status === "pending"
           ? "border-blue-500 bg-blue-50"
           : task.status === "current"

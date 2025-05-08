@@ -7,6 +7,10 @@ const Droppable = ({ id, children }: { id: string; children: React.ReactNode }) 
     <div 
       ref={setNodeRef}
       className={`h-full ${isOver ? 'bg-gray-100' : ''}`}
+      style={{
+        minHeight: '200px',
+        touchAction: 'none'
+      }}
     >
       {children}
     </div>
