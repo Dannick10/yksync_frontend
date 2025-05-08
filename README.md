@@ -80,6 +80,9 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 - **Bcrypt** — Criptografia de senhas
 - **JWT (JSON Web Token)** — Autenticação segura via token
 - **Dnd-kit** — biblioteca de drag and drop ( arrasta e solta) moderna para react.
+- **Calendar.js** — Pequena biblioteca JS pra manipulação e controle de calendários.
+- **Day.js** — Biblioteca JS moderna e enxuta para manipulação de datas e horários.
+- **Chart.js** — Biblioteca JS para criação de gráficos responsivos e interativos.
 ---
 
 ## 🔧 **Backend**  
