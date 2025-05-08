@@ -12,6 +12,7 @@ export interface statusTask {
 }
 
 export interface responseTask {
+  task: any;
   message: string;
   tasks: Task[];
 }

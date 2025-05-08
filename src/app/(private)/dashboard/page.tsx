@@ -47,7 +47,6 @@ export default function DashboardPage() {
     (state: RootState) => state.status
   );
 
-
   const [searchQuery, setSearchQuery] = useState({
     name: "",
     status: "",

@@ -2,6 +2,7 @@ import {
   createTask,
   getTask,
   resetMessageTask,
+  updateTaks,
 } from "@/redux/slices/TaskSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,13 +17,12 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  rectIntersection 
+  rectIntersection,
 } from "@dnd-kit/core";
 import DraggableTaskItem from "./DraggableTaskItem";
 import { getStatusColor } from "@/utils/getStatusColor";
 import { motion } from "framer-motion";
 import Droppable from "./Droppable";
-
 
 type feedbackStatus = {
   title: string;
@@ -50,7 +50,6 @@ const TaskComponent = ({ id }: TaskProps) => {
     "dashboard"
   );
   const [isDragMove, setIsDragMove] = useState(false);
-  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -101,26 +100,20 @@ const TaskComponent = ({ id }: TaskProps) => {
     return mapKeys[status as keyof typeof mapKeys] ?? "inválido";
   };
 
-  const handleDragStart = (event: any) => {
+  const handleDragStart = () => {
     setIsDragMove(true);
-    setActiveTaskId(event.active.id);
   };
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     setIsDragMove(false);
-    setActiveTaskId(null);
 
-    const validStatuses = filteredDashboardUpdate.map(s => s);
+    const validStatuses = filteredDashboardUpdate.map((s) => s);
     if (over && validStatuses.includes(over.id as string)) {
       const newStatus = over.id.toString();
       const taskId = active.id.toString();
-      console.log(`Movendo tarefa ${taskId} para status ${newStatus}`);
-
-    } else {
-      console.log("Drop inválido - não foi em um status");
+      dispatch(updateTaks({ id: taskId, status: newStatus }));
     }
-  
   };
 
   const onSubmit = (data: any) => {
@@ -209,7 +202,7 @@ const TaskComponent = ({ id }: TaskProps) => {
         <>
           <div className="space-y-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-between">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {feedBackStatus.map((feedback, index) => (
                   <button
                     key={index}
@@ -275,7 +268,6 @@ const TaskComponent = ({ id }: TaskProps) => {
                 onDragEnd={handleDragEnd}
                 onDragCancel={() => setIsDragMove(false)}
               >
-
                 <section className="h-[300px] overflow-y-auto">
                   {filteredTasks?.map((task) => (
                     <DraggableTaskItem
@@ -285,13 +277,18 @@ const TaskComponent = ({ id }: TaskProps) => {
                       handleMapConvertStatus={handleMapConvertStatus}
                     />
                   ))}
-                </section>
 
+                  {tasks?.length === 0 && (
+                    <div className="flex items-center justify-center h-full">
+                      <p>Nenhuma tarefa</p>
+                    </div>
+                  )}
+                </section>
 
                 {isDragMove && (
                   <div className="absolute flex bottom-0 left-0 w-full gap-2 p-2 bg-white/80 backdrop-blur-sm z-50">
                     {filteredDashboardUpdate.map((status, index) => (
-                      <Droppable key={index} id={status}> 
+                      <Droppable key={index} id={status}>
                         <motion.div
                           className="border rounded-md shadow w-60 group cursor-pointer"
                           initial={{ y: 50 }}

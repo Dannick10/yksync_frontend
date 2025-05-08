@@ -1,6 +1,9 @@
 import { Task } from "@/@types/taskTypes";
+import { deleteTask } from "@/redux/slices/TaskSlice";
+import { AppDispatch } from "@/redux/store";
 import { useDraggable } from "@dnd-kit/core";
 import { RiDeleteBinFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 
 interface DraggableTaskItemProps {
   task: Task;
@@ -21,11 +24,17 @@ const DraggableTaskItem = ({
         }
       });
 
+      const dispatch = useDispatch<AppDispatch>()
+
       const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         opacity: isDragging ? 0.4 : 1,
         cursor: 'grab',
       };
+
+      const handleRemoveTask = (_id: string) => {
+        dispatch(deleteTask(_id))
+      }
 
   return (
     <div
@@ -62,6 +71,7 @@ const DraggableTaskItem = ({
         <button
           className="p-2 text-gray-500 hover:text-red-500 transition-colors"
           aria-label="Delete task"
+          onClick={() => handleRemoveTask(task._id)}
         >
           <RiDeleteBinFill />
         </button>
