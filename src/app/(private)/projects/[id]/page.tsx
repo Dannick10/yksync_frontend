@@ -164,7 +164,7 @@ export default function ProjectDetailPage({
             </div>
             <div className="p-6">
               <div className="border-b mb-6">
-                <div className="flex flex-wrap  overflow-x-auto pb-2 scrollbar-hide">
+                <div className="flex overflow-x-auto pb-2 scrollbar-hide">
                   {buttonNav.map((button, index) => (
                     <motion.button
                       id={button.path}
