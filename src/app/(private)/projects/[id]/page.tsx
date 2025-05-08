@@ -37,6 +37,7 @@ import { useState } from "react";
 import MyFullCalendar from "@/components/MyFullCalendar";
 import Loading from "@/app/loading";
 import TaskComponent from "@/components/TaskComponent";
+import { resetMessageTask } from "@/redux/slices/TaskSlice";
 
 type NavButton = {
   text: string;
@@ -60,6 +61,7 @@ export default function ProjectDetailPage({
   useEffect(() => {
     if (id) {
       dispatch(getProject_Id(id as string));
+      dispatch(resetMessageTask())
     }
   }, [dispatch, id]);
 
