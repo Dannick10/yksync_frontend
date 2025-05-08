@@ -79,7 +79,7 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 - **MongoDB** — Banco de dados NoSQL flexível
 - **Bcrypt** — Criptografia de senhas
 - **JWT (JSON Web Token)** — Autenticação segura via token
-
+- **Dnd-kit** — biblioteca de drag and drop ( arrasta e solta) moderna para react.
 ---
 
 ## 🔧 **Backend**  
