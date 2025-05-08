@@ -35,6 +35,11 @@ const FeaturedProject = () => {
         "Gerencie todas as tecnologias que você domina ou utiliza nos seus projetos. Organize por categorias como Frontend, Backend e Testes, visualize quais stacks estão associadas a cada projeto e acompanhe quais ferramentas você mais usa no seu dia a dia.",
       img: "/home/tech.png",
     },
+    {
+      title: "Organização de Tarefas",
+      subtitle: "Crie atividades, defina prazos e categorize por status: A Fazer, Em Andamento, Concluído e Finalizado. Arraste e solte as tarefas entre as colunas com facilidade, acompanhe o progresso de cada etapa e tenha controle total sobre os fluxos de trabalho do seu projeto.",
+      img: "/home/todolist.png"
+    }
   ];
 
   const projectsRef = useRef<(HTMLDivElement | null)[]>([]);
